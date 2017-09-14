@@ -1,2 +1,2 @@
 # arup-da-amcr
-Digitalni archiv AIS CR
+Digitální archiv AMČR
