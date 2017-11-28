@@ -1,0 +1,100 @@
+/*** ---/ TIMELINE CSS /--- ***/
+.app-timeline {
+  display: table;
+  width: 100%;
+  /*margin-top: 20px;*/
+  margin-bottom: 30px;
+}
+
+.app-timeline-left,
+.app-timeline-right,
+.app-timeline-middle {
+  display: table-cell;
+}
+
+.app-timeline-left,
+.app-timeline-right {
+  width: 60px;
+}
+
+.app-timeline-middle {
+  vertical-align: middle;
+  /*padding: 0 10px;*/
+}
+
+.app-timeline-body {
+  display: table;
+  position: relative;
+}
+
+.app-timeline-out {
+  position: absolute;
+  left: 0;
+  top: 9.5px;
+  width: 100%;
+  height: 5px;
+  background-color: #e6e6e6;
+  border-radius: 2px;
+}
+
+.app-timeline-in {
+  display: table-cell;
+  width: 100%;
+}
+
+.app-timeline-in > div {
+  position: relative;
+  height: 5px;
+  z-index: 1001;
+  background-color: #5882c4;
+}
+
+.app-timeline-btn-circle {
+  position: relative;
+  z-index: 1001;
+  width: 21px;
+  height: 21px;
+  border-radius: 10.5px;
+  padding: 5px !important;
+  
+}
+
+.app-timeline-btn-circle > span {
+  display: table-cell;
+  height:9px;
+  width: 9px;
+  vertical-align: top;
+  border-radius: 4.5px;
+  background-color: #ffffff;
+}
+
+.app-timeline-btn-circle.app-btn-left {
+  margin-left: 15px;
+}
+
+.app-timeline-btn-circle.app-btn-right {
+  margin-right: 15px;
+}
+
+/*** Timeline period ***/
+.app-timeline-period {
+  position: absolute;
+  height: auto;
+/*  background-color: #e6e6e6;*/
+  border-radius: 4px;
+  color: #5882c4;
+  max-width: 200px;
+/*  padding: 1px 8px;*/
+  text-align: center;
+  font-size: 13px;
+}
+
+.app-timeline-btn-circle.app-btn-left > .app-timeline-period {
+  left: 0;
+  top: -22px;
+}
+
+.app-timeline-btn-circle.app-btn-right > .app-timeline-period {
+  top: 23px;
+  right: 0;
+}

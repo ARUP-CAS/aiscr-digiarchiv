@@ -1,0 +1,57 @@
+<!-- Modal -->
+<modal [animation]="true"  #modal class="app-modal-file-viewer" >
+  <modal-header [show-close]="false" >
+    <ul class="nav nav-pills">
+      <li *ngFor="let file of files; let idx = index" role="presentation" [class.active]="file === selectedFile">
+        <a data-toggle="pill" (click)="selectFile(file, idx)" class="app-border-radius">{{file.nazev}}</a>
+      </li>
+      <button type="button" class="close" (click)="close()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </ul>
+  </modal-header><!--/.modal header -->
+  <!-- Modal body -->
+  <modal-body>
+    <!-- Tab content -->
+    <div *ngIf="selectedFile !== null && showing" class="tab-content">
+      <!-- Tab item -->
+      <div [id]="'file-'+fileid" class="tab-pane fade in active clearfix">
+        <div class="pull-left">
+          <a *ngIf="currentPage > 1" role="button" class="app-color-gray-light" data-slide="prev"
+            (click)="prevPage()" [attr.href]="'#app-carousel-file-'+fileid"><i class="fa fa-angle-left fa-lg"></i></a><span *ngIf="currentPage > 1" class="app-color-silver">&nbsp;|&nbsp;</span>
+          <input class="form-control" rel="tooltip" [title]="'Přejděte číslo stránky' | translate" [(ngModel)]="currentPage" (keyup.enter)="setPage()" />&#160; {{'stránka ze' | translate}} <strong>{{selectedFile.rozsah}}</strong>&nbsp;&nbsp;<span *ngIf="currentPage < selectedFile.rozsah" class="app-color-silver">&nbsp;|&nbsp;</span>
+          <a *ngIf="currentPage < selectedFile.rozsah" role="button" class="app-color-gray-light" data-slide="next"
+            (click)="nextPage()" [attr.href]="'#app-carousel-file-'+fileid"><i class="fa fa-angle-right fa-lg"></i></a>
+        </div>
+        <div class="pull-right">
+          <span class="app-color-gray-light"><small>{{'Velikost souboru' | translate}}: <strong>{{selectedFile.humanFileSize}}</strong>&nbsp;<span class="app-color-silver">|</span>&nbsp;{{'Typ souboru' | translate}}: <strong>{{mimetype()}}</strong></small></span>
+          <span *ngIf="solrService.config['logged'] && selectedFile !== null && solrService.hasRights('D')"><span class="app-color-silver">|</span>&nbsp;<a class="app-cursor-pointer" rel="tooltip" [title]="'Stáhněte soubor' | translate" [href]="downloadUrl()" [download]="selectedFile.nazev"><i class="fa fa-download fa-16"></i></a></span>
+        </div>
+        <div class="clearfix"></div>
+        <hr />
+        <!-- Carousel -->
+        <div data-interval="false" data-ride="carousel" class="carousel slide" [id]="'app-carousel-file-'+fileid">
+          <!-- Slides wrapper -->
+          <div *ngIf="selectedFile !== null && showing" role="listbox" class="carousel-inner">
+            <div *ngFor="let page of selectedFile.pages; let idx = index" class="item" [class.active]="idx === 0">{{page}}
+              <img class="center-block img-responsive" [alt]="'page'+idx" [src]="solrService.imgPoint(selectedFile) + '?size=medium&id='+selectedFile.nazev + '&page=' + idx" />
+            </div>
+          </div><!--/.slides wrapper -->
+            <a *ngIf="currentPage > 1 && !rolling" class="left carousel-control" (click)="prevPage()" [href]="'#app-carousel-file-'+fileid" role="button" data-slide="prev">
+              <span class="glyphicon glyphicon-chevron-left app-color-silver" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a *ngIf="currentPage < selectedFile.rozsah && !rolling" class="right carousel-control"  (click)="nextPage()" [attr.href]="'#app-carousel-file-'+fileid"  role="button" data-slide="next">
+              <span class="glyphicon glyphicon-chevron-right app-color-silver" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+        </div><!--/.carousel -->
+      </div><!--/.tab item -->
+    </div><!--/.tab content -->
+  </modal-body><!--/.modal body -->
+</modal><!-- modal -->
+
+
+          
+          
+            

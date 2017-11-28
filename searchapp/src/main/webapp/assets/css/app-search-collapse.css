@@ -1,0 +1,47 @@
+/*** ---/ SEARCH COLLAPSE STYLES /--- ***/
+
+.app-search-collapse {
+  box-shadow: 0px 4px 7px -6px #9E9E9E;
+  -webkit-box-shadow: 0px 4px 7px -6px #242424;
+  -moz-box-shadow: 0px 4px 7px -6px #242424;
+  -o-box-shadow: 0px 4px 7px -6px #242424;
+  padding-bottom: 15px;
+  background-color: #fff;
+}
+
+.app-search-collapse-map {
+  padding-bottom: 30px;
+}
+
+.app-search-collapse .container {
+  padding-top: 30px;
+}
+
+.app-search-collapse .btn-group,
+.app-search-collapse .form-control {
+  margin-right: 11px;
+}
+
+.app-search-collapse .form-control {
+  display: inline-block;
+  width: auto;
+}
+
+.app-search-collapse .dropdown-menu {
+  overflow: auto;
+  max-height: 400px;
+  z-index: 1024;
+}
+
+
+/*** Btn collapse ***/
+.app-btn-search-collapse:before {
+  content: '\f107';
+  font-family: FontAwesome;
+  margin-right: 4px;
+  font-size: 16px;
+}
+
+.app-btn-search-collapse.collapsed:before {
+  content: '\f105';
+}

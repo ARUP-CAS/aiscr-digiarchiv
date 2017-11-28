@@ -1,0 +1,23 @@
+/*** ---/ NAVBAR STYLES /--- ***/
+
+.app-navbar {
+  margin-bottom: 30px;
+  min-height: 78px;
+}
+
+.app-navbar .navbar-toggle .icon-bar {
+  background-color: #666666;
+}
+
+.app-navbar .app-navbar-item-login .dropdown-menu {
+  padding: 15px;
+  min-width: 250px;
+  z-index: 1024;
+}
+
+.app-navbar .nav > li > a:focus,
+.app-navbar .nav .open > a, 
+.app-navbar .nav .open > a:focus, 
+.app-navbar .nav .open > a:hover {
+    background-color: #fff;
+}

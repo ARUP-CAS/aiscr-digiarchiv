@@ -1,0 +1,21 @@
+/*** ---/ NAV TREE STYLES /--- ***/
+
+.app-nav-tree li {
+  list-style-type:none;
+  margin:0;
+  position:relative
+}
+
+.app-nav-tree li ul {
+  padding-left: 20px;
+}
+
+.app-nav-tree li ul li {
+  /*display: none;*/
+/*  -webkit-transition: width 5s;
+  transition: width 5s;*/
+}
+
+.app-nav-tree li.parent_li > span {
+  cursor:pointer;
+}

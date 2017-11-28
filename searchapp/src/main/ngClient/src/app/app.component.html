@@ -1,0 +1,10 @@
+<span [class]="solrService.bodyClass">
+	<div class="app-page-wrapper">
+		<app-header *ngIf="solrService.route !== 'export'"></app-header>
+		<app-search-form *ngIf="solrService.route !== 'export'"></app-search-form> 
+		<app-breadcrumbs *ngIf="solrService.route === 'results'" (onOpenTimeline)="onOpenTimeline($event)" ></app-breadcrumbs>
+		<router-outlet></router-outlet>
+	</div>
+  <app-footer *ngIf="solrService.route !== 'export'"></app-footer>
+</span>
+<ng2-slim-loading-bar [color]="'#5882c4'"></ng2-slim-loading-bar>

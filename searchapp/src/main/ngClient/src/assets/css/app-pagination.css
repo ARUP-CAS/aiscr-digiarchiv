@@ -1,0 +1,7 @@
+/*** ---/ PAGINATION STYLES /--- ***/
+
+.app-pagination > .active > a,
+.app-pagination > .active > a:hover {
+  background-color: #5882c4;
+  color: #fff !important;
+}

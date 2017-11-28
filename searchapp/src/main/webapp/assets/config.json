@@ -1,0 +1,276 @@
+{
+	"isTest": false,
+	"defaultLang": "cs",
+  "serverUrl": "http://digiarchiv.amapa.cz",
+	"searchParams": {
+		"q": "*",
+		"rows": 20,
+		"facets": [
+			"klient",
+			"oblast"
+		],
+		"multipleFacets": [
+			"oblast",
+			"space"
+		],
+		"host2": "http://localhost:8084/search/",
+		"host": "http://localhost:8983/solr/",
+		"core": "dokument",
+		"exportCore": "export",
+		"relationsCore": "relations",
+		"handler": "/full",
+		"noacl_handler": "/noacl",
+		"other": [
+			""
+		]
+	},
+	"exportRowsLimit" : 1000,
+	"texts": "http://localhost:8084/texts",
+	"fav": "http://localhost:8084/fav",
+	"img": "http://localhost:8084/img",
+	"pdf": "http://localhost:8084/pdf",
+	"loginPoint": "http://localhost:8084/login",
+	"aktivity":{
+		"sídlištní":"sidlistni",
+		"pohřbívání":"pohrebni",
+		"výroba":"vyrobni",
+		"těžba":"tezebni",
+		"kult":"kultovni",
+		"komunikace":"komunikace",
+		"deponování":"deponovani",
+		"boj":"boj",
+		"jiný druh aktivity":"jina",
+		"intruze":"intruze"
+		
+	},
+	"advancedFields": [
+		{
+			"type": "text",
+			"field": "text_all"
+		},
+		{
+			"type": "heslar",
+			"heslar": "typ_akce_druha",
+			"field": "akce_typ"
+		},
+		{
+			"type": "date",
+			"field": "datum"
+		},
+		{
+			"type": "heslar",
+			"heslar": "jazyk_dokumentu",
+			"field": "jazyk_dokumentu"
+		},
+		{
+			"type": "heslar",
+			"heslar": "material_dokumentu",
+			"field": "material_originalu"
+		},
+		{
+			"type": "heslar",
+			"heslar": "nahrada",
+			"field": "extra_data_nahrada"
+		},
+		{
+			"type": "text",
+			"field": "dokument_popis"
+		},
+		{
+			"type": "heslar",
+			"heslar": "rada",
+			"field": "rada"
+		},
+		{
+			"type": "heslar",
+			"heslar": "typ_dokumentu",
+			"field": "typ_dokumentu"
+		},
+		{
+			"type": "heslar",
+			"heslar": "posudek",
+			"field": "typ_dokumentu_posudek"
+		},
+		{
+			"type": "heslar",
+			"heslar": "ulozeni_originalu",
+			"field": "ulozeni_originalu"
+		},
+		{
+			"type": "heslar",
+			"heslar": "zachovalost",
+			"field": "zachovalost"
+		},
+		{
+			"type": "text",
+			"field": "identifikator"
+		},
+		{
+			"type": "text",
+			"field": "adv_jmeno"
+		},
+		{
+			"type": "text",
+			"field": "katastr"
+		},
+		{
+			"type": "heslar",
+			"heslar": "aktivity",
+			"field": "komponenta_aktivita"
+		},
+		{
+			"type": "heslar",
+			"heslar": "areal_druha",
+			"field": "komponenta_areal"
+		},
+		{
+			"type": "heslar",
+			"heslar": "obdobi_druha",
+			"field": "komponenta_dokumentu_obdobi",
+      "heslarDisplay": "nazev",
+      "heslarValue" : "zkratka"
+		},
+		{
+			"type": "heslar",
+			"heslar": "tvar",
+			"field": "tvar_tvar"
+		},
+		{
+			"type": "heslar",
+			"heslar": "druh_lokality_druha",
+			"field": "lokalita_druh"
+		},
+		{
+			"type": "text",
+			"field": "lokalita_nazev"
+		},
+		{
+			"type": "heslar",
+			"heslar": "typ_lokality",
+			"field": "lokalita_typ_lokality"
+		},
+		{
+			"type": "heslar",
+			"heslar": "objekt_druh",
+			"field": "druh_nalezu_objekt",
+			"searchField": "druh_nalezu"
+		},
+		{
+			"type": "heslar",
+			"heslar": "predmet_druh",
+			"field": "druh_nalezu_predmet",
+			"searchField": "druh_nalezu"
+		},
+    
+    {
+			"type": "heslar",
+			"heslar": "predmet_kategorie",
+			"field": "predmet_kategorie",
+			"searchField": "nalez_kategorie"
+		},
+    {
+			"type": "heslar",
+			"heslar": "objekt_kategorie",
+			"field": "objekt_kategorie",
+			"searchField": "nalez_kategorie"
+		},
+
+		{
+			"type": "heslar",
+			"heslar": "specifikace_objektu_druha",
+			"field": "nalez_specifikace_objektu",
+			"searchField": "nalez_specifikace"
+		},
+		{
+			"type": "heslar",
+			"heslar": "specifikace_predmetu",
+			"field": "nalez_specifikace_predmetu",
+			"searchField": "nalez_specifikace"
+		},
+    {
+			"type": "heslar",
+			"heslar": "okresy",
+			"field": "okres",
+			"heslarDisplay": "full_name"
+		},
+		{
+			"type": "heslar",
+			"heslar": "organizace",
+			"field": "organizace",
+			"heslarDisplay": "zkratka"
+		}
+	],
+	"advancedFieldsCond": [
+		"starts",
+		"contains",
+		"equals"
+	],
+	"advancedFieldsOperator": [
+		"and",
+		"or",
+		"andnot"
+	],
+	"home": {
+		"boxes": [
+			{
+				"label": "Texty",
+				"index": "texty",
+				"field": "text",
+				"ico": "file-text"
+			},
+			{
+				"label": "Fotografie",
+				"index": "foto",
+				"field": "photo",
+				"ico": "camera"
+			},
+			{
+				"label": "Letecké fotografie",
+				"index": "lfoto",
+				"field": "plane-photo",
+				"ico": "plane"
+			},
+			{
+				"label": "Plány a mapy",
+				"index": "mplany",
+				"field": "map",
+				"ico": "map"
+			},
+			{
+				"label": "Digitální data",
+				"index": "ddata",
+				"field": "data",
+				"ico": "database"
+			}
+		]
+	},
+	"user": {
+		"jmeno": "Jaroslava Svobodova",
+		"prijmeni": ""
+	},
+	"facets":{
+		"translate":{
+			"kategorie":{"type": "i18n"}, 
+			"f_aktivita":{"type": "i18n"}, 
+			"f_obdobi": {"type": "i18n", "heslar": "obdobi_druha", "lookupField": "zkratka", "retField": "nazev"}, 
+			"obdobi_poradi": {"type": "i18n"}
+		}
+	},
+  "heslarToPole":{
+    "areal_druha" : "f_areal",
+    "obdobi_druha" : "f_obdobi"
+  },
+	"icons": {
+		"MS PowerPoint": "file-powerpoint",
+		"MS Word": "file-word",
+		"MS Excel": "file-excel",
+		"PDF": "file-pdf",
+		"Email": "envelope",
+		"ppt": "file-powerpoint",
+		"doc": "file-word",
+		"xls": "file-excel",
+		"xlsx": "file-excel",
+		"pdf": "file-pdf",
+		"msg": "envelope"
+	}
+}

@@ -1,0 +1,64 @@
+<!-- Title -->
+<div class="app-result-item-nav-title app-border-radius app-cursor-pointer app-color-blue-pastel collapsed" 
+     data-toggle="collapse" 
+     (click)="getDokJednotky()"
+    [attr.data-target]="'#'+id()">
+  <strong>{{'Akce' | translate}} {{idShort()}}</strong>  ({{'přístupnost' | translate}}: {{data.pristupnost}}):
+</div><!--/.title -->
+
+<!-- Collapse -->
+<ul class="list-unstyled app-color-black collapse" [id]="id()">
+  <li class="app-nav-li-separator"></li>
+  
+  <li *ngIf="hasValue('katastr') || hasValue('dalsi_katastry') || hasValue('okres')">
+    <label>{{'Katastr (okres)' | translate}}:</label> 
+    <span *ngIf="hasValue('katastr')">{{data.katastr}}</span>
+    <span *ngIf="hasValue('dalsi_katastry')">{{data.dalsi_katastry}}</span>
+    <span *ngIf="hasValue('okres')">({{data.okres}})</span>
+  </li>
+  <li *ngIf="hasValue('vedouci_akce') || hasValue('vedouci_akce_ostatni') || hasValue('organizace')">
+		<label>{{'Vedoucí výzkumu' | translate}}:</label> 
+		<span *ngIf="hasValue('vedouci_akce')">{{data.vedouci_akce}}</span>
+		<span *ngIf="hasValue('organizace')">({{data.organizace}});</span>
+		<span *ngIf="hasValue('vedouci_akce_ostatni')">{{data.vedouci_akce_ostatni}} </span>
+		<span *ngIf="hasValue('organizace_ostatni')">({{data.organizace_ostatni}})</span>
+  </li>
+  <li *ngIf="hasValue('hlavni_typ') || hasValue('vedlejsi_typ')">
+    <label>{{'Typ' | translate}}:</label> 
+    <span *ngIf="hasValue('hlavni_typ')">{{data.hlavni_typ | translateHeslar: 'typ_akce_druha'}}</span><span *ngIf="hasValue('hlavni_typ') && hasValue('vedlejsi_typ')">,</span>
+    <span *ngIf="data.vedlejsi_typ">{{data.vedlejsi_typ}}</span>
+  </li>
+  <li *ngIf="hasValue('datum_zahajeni_v') || hasValue('datum_ukonceni_v')">
+    <label>{{'Datum výzkumu' | translate}}:</label> 
+    <span *ngIf="hasValue('datum_zahajeni_v')">{{data.datum_zahajeni_v}}</span>
+		<span *ngIf="hasValue('datum_ukonceni_v')">- {{data.datum_ukonceni_v}}</span>
+  </li>
+  <li *ngIf="hasValue('lokalizace')">
+    <label>{{'Lokalizace' | translate}}:</label> 
+    <span>{{data.lokalizace}}</span>
+  </li>
+  <li *ngIf="hasValue('poznamka')">
+    <label>{{'Poznámka' | translate}}:</label>
+    <span [innerHTML]="poznamka()"></span>
+  </li>
+  <li *ngIf="hasValue('ulozeni_nalezu')">
+    <label>{{'Uložení nálezů' | translate}}:</label>
+    <span >{{data.ulozeni_nalezu}}</span>
+  </li>
+  
+  <!-- Dokumentacni jednotka -->
+  <span *ngIf="dokJednotky.length > 0">
+    <li *ngFor="let k of dokJednotky">
+      <app-dok-jednotka [dok]="k" [docId]="id()"></app-dok-jednotka>
+    </li>
+  </span><!--/.dokumentacni jednotka -->
+  
+  <!-- Externi zdroje -->
+  <span *ngIf="extZdroj.length > 0">
+    <li *ngFor="let k of extZdroj">
+      <app-externi-zdroj [data]="k" [docId]="id()"></app-externi-zdroj>
+    </li>
+  </span><!--/.Externi zdroje -->
+  
+  <li class="app-nav-li-separator"></li>
+</ul><!--/.collapse -->

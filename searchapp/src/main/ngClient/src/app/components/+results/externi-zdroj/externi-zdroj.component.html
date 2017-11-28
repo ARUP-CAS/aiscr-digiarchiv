@@ -1,0 +1,68 @@
+<!-- Title -->
+<span [attr.data-target]="'#'+ id()">
+	<i class="fa fa-check-circle" aria-hidden="true"></i><span>{{data.autori}} {{data.rok_vydani_vzniku}}:</span>
+	<span *ngIf="hasValue('nazev')">{{data.nazev}}.</span>
+	<span *ngIf="hasValue('podnazev')">{{data.podnazev}}.</span>
+	<span *ngIf="hasValue('typ_dokumentu')">{{data.typ_dokumentu | translateHeslar: 'typ_dokumentu'}}<span *ngIf="!hasValue('oznaceni')">.</span></span>
+	<span *ngIf="hasValue('oznaceni')">{{data.oznaceni}}.</span>
+	<span *ngIf="hasValue('organizace')">{{data.organizace}}</span>
+	<span *ngIf="hasValue('sbornik_editor')">{{data.sbornik_editor}} (ed.),</span>
+	<span *ngIf="hasValue('sbornik_nazev')">{{data.sbornik_nazev}}.</span>
+	<span *ngIf="hasValue('edice_rada')">{{data.edice_rada}}.</span>
+	<span *ngIf="hasValue('casopis_denik_nazev')">{{data.casopis_denik_nazev}}</span>
+	<span *ngIf="hasValue('casopis_rocnik')">{{data.casopis_rocnik}}</span>
+	<span *ngIf="hasValue('datum_rd')">{{data.datum_rd}}.</span>
+	<span *ngIf="hasValue('misto')">{{data.misto}}<span *ngIf="hasValue('vydavatel')">:</span><span *ngIf="!hasValue('vydavatel')">.</span></span>
+	<span *ngIf="hasValue('vydavatel')">{{data.vydavatel}}.</span>
+	<span *ngIf="hasValue('isbn')">{{data.isbn}}</span>
+	<span *ngIf="hasValue('issn')">{{data.issn}}</span>
+	<span *ngIf="hasValue('ident_cely') || hasValue('sysno')">({{data.ident_cely}}<span *ngIf="hasValue('sysno')">, sysno: </span>{{data.sysno}}).</span>
+	<span *ngIf="hasValue('paginace_titulu')">{{paginace_titulu}}<span *ngIf="!hasValue('paginace')">.</span></span>
+	<span *ngIf="hasValue('paginace')">({{paginace}}).</span>
+</span><!--/.title -->
+
+<!-- Collapse 
+<ul class="list-unstyled collapse" [id]="id()">
+  <li *ngIf="hasValue('nazev') || hasValue('podnazev')">
+		<label>{{'Název' | translate}}:</label>
+		<span *ngIf="hasValue('nazev')">{{data.nazev}}</span>
+		<span *ngIf="hasValue('podnazev')">{{data.podnazev}}.</span>
+	</li>
+	<li *ngIf="hasValue('typ_dokumentu') || hasValue('oznaceni')">
+		<label>{{'Typ dokumentu' | translate}}:</label>
+		<span *ngIf="hasValue('typ_dokumentu')">{{data.typ_dokumentu}}</span>
+		<span *ngIf="hasValue('oznaceni')">{{data.oznaceni}}.</span>
+	</li>
+	<li *ngIf="hasValue('organizace') || hasValue('sbornik_editor')">
+		<label>{{'Organizace' | translate}}:</label>
+		<span *ngIf="hasValue('organizace')">{{data.organizace}}</span>
+		<span *ngIf="hasValue('sbornik_editor')">{{data.sbornik_editor}} (ed.),</span>
+	</li>
+	<li *ngIf="hasValue('sbornik_nazev') || hasValue('edice_rada')">
+		<label>{{'Sborník' | translate}}:</label>
+		<span *ngIf="hasValue('sbornik_nazev')">{{data.sbornik_nazev}}.</span>
+		<span *ngIf="hasValue('edice_rada')">{{data.edice_rada}}.</span>
+	</li>
+	<li *ngIf="hasValue('casopis_denik_nazev') || hasValue('casopis_rocnik')">
+		<label>{{'Časopis' | translate}}:</label>
+		<span *ngIf="hasValue('casopis_denik_nazev')">{{data.casopis_denik_nazev}}</span>
+		<span *ngIf="hasValue('casopis_rocnik')">{{data.casopis_rocnik}}</span>
+	</li>
+	<li *ngIf="hasValue('datum_rd') || hasValue('misto') || hasValue('vydavatel')">
+		<label>{{'Datum' | translate}}:</label>
+		<span *ngIf="hasValue('datum_rd')">{{data.datum_rd}}.</span>
+		<span *ngIf="hasValue('datum_misto')">{{data.misto}}:</span>
+		<span *ngIf="hasValue('vydavatel')">{{data.vydavatel}}</span>
+	</li>
+	<li *ngIf="hasValue('isbn') || hasValue('issn') || hasValue('ident_cely')">
+		<label>{{'Ident' | translate}}:</label>
+		<span *ngIf="hasValue('isbn')">{{data.isbn}}</span>
+		<span *ngIf="hasValue('issn')">{{data.issn}}</span>
+		<span *ngIf="hasValue('ident_cely')">({{data.ident_cely}}),</span>
+	</li>
+	<li *ngIf="hasValue('paginace_titulu') || hasValue('paginace')">
+		<label>{{'Paginace' | translate}}:</label>
+		<span *ngIf="hasValue('paginace_titulu')">{{paginace_titulu}}</span>
+		<span *ngIf="hasValue('paginace')">({{paginace}}),</span>
+	</li>
+</ul><!--/.collapse -->

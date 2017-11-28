@@ -1,0 +1,54 @@
+<!-- Breadcrumb -->
+<div class="container" *ngIf="!solrService.isHome">
+  <ol class="breadcrumb app-breadcrumb app-clean-border-radius app-clean-bg app-clean-mg clearfix">
+    <li *ngIf="solrService.inFavorites">
+      <a class="app-cursor-pointer" (click)="solrService.removeInFav()">{{'Favorites' | translate}}</a>
+    </li>
+    <li *ngFor="let crumb of solrService.breadcrumbs">
+      <a class="app-cursor-pointer" (click)="solrService.removeFilterFromCrumb(crumb)">{{getTranslated(crumb)}}</a>
+    </li>
+    <li class="pull-right">
+      <strong>{{solrService.numFound}}</strong> {{'výsledků' | translate}}
+      <span class="app-color-silver app-pipe">|</span>
+      <a (click)="solrService.gotoExport()" [title]="'Export' | translate" rel="tooltip">
+				<i class="fa fa-external-link app-clean-pd" aria-hidden="true"></i></a>
+      <!-- Pipe -->
+      <span class="app-color-silver app-pipe">|</span>
+      <!--/.pipe -->
+      <span class="dropdown">
+        <a data-toggle="dropdown" class="dropdown-toggle" href="#" [title]="'Řazení výsledků' | translate" rel="tooltip">{{'Řazení' | translate}}&#160;<span class="caret"></span></a>
+        <ul class="dropdown-menu app-border-radius">
+          <li *ngFor="let sort of solrService.sorts"><a (click)="solrService.sortBy(sort)">{{sort.label}}
+              <i class="fa" [class.fa-caret-up]="sort.dir === 'asc'" [class.fa-caret-down]="sort.dir === 'desc'" aria-hidden="true"></i></a></li>
+        </ul>
+      </span>
+      <!-- Pipe -->
+      <span class="app-color-silver app-pipe">|</span>
+      <!--/.pipe -->
+      <span class="dropdown">
+        <a data-toggle="dropdown" class="dropdown-toggle" href="#" [title]="'Počet záznamů na stránce' | translate" rel="tooltip">{{solrService.rows}}&#160;<span class="caret"></span></a>
+        <ul class="dropdown-menu app-border-radius app-dropdown-display">
+          <li *ngFor="let r of solrService.selRows"><a (click)="solrService.setRows(r)"
+              title="Počet záznamů na stránce" rel="tooltip">{{r}}</a></li>
+        </ul>
+      </span>
+      <!-- Pipe -->
+      <span class="app-color-silver app-pipe">|</span>
+      <!--/.pipe -->
+      <span class="dropdown">
+        <a data-toggle="dropdown" class="dropdown-toggle" href="#" [title]="'Zobrazení výsledků' | translate" rel="tooltip"><i class="fa fa-desktop app-clean-pd" aria-hidden="true"></i>&#160;<span class="caret"></span></a>
+        <ul class="dropdown-menu app-border-radius app-dropdown-display">
+          <li><a [title]="'Řádkové zobrazení výsledků' | translate" rel="tooltip" (click)="solrService.setItemView('row')"><i class="fa fa-list" aria-hidden="true"></i></a></li>
+          <li><a [title]="'Sloupcové zobrazení výsledků' | translate" rel="tooltip" (click)="solrService.setItemView('col')"><i class="fa fa-columns" aria-hidden="true"></i></a></li>
+          <li><a [title]="'Výchozí zobrazení výsledků' | translate" rel="tooltip" (click)="solrService.setItemView('default')"><i class="fa fa-desktop" aria-hidden="true"></i></a></li>
+        </ul>
+      </span>
+      <!-- Pipe -->
+      <span class="app-color-silver app-pipe">|</span>
+      <!--/.pipe -->
+      <a (click)="openTimeline()" [title]="'Zobrazit časovou osu' | translate" rel="tooltip" class="app-btn-timeline" data-toggle="collapse" data-target="#app-collapse-timeline">
+        <i class="fa fa-bar-chart" aria-hidden="true"></i></a>
+      <div class="clearfix"></div>
+    </li>
+  </ol>
+</div><!--/.breadcrumb -->

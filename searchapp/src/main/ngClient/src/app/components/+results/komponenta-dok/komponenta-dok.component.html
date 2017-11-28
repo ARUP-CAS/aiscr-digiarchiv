@@ -1,0 +1,35 @@
+<!-- Title -->
+<div class="app-result-item-nav-title app-border-radius app-cursor-pointer app-color-blue-pastel collapsed" data-toggle="collapse" [attr.data-target]="'#'+ id()">
+  <strong>{{'Komponenta dokumentu' | translate}} {{idShort()}}:</strong>
+</div><!--/.title -->
+
+<!-- Collapse -->
+<ul class="list-unstyled app-nav-tree app-color-black collapse" [id]="id()">
+  <li class="app-nav-li-separator"></li>
+  <li *ngIf="hasValue('obdobi')">
+    <label>{{'Období' | translate}}:</label> 
+    <span>{{'f_obdobi.' + komponenta.obdobi | translate}}</span>
+    <span *ngIf="hasValue('jistota')">(
+      <span *ngIf="hasValue('jistota')">{{komponenta.jistota}};</span>
+      <span *ngIf="hasValue('presna_datace')"> {{komponenta.presna_datace}})</span>
+    )</span>
+  </li>
+  <li *ngIf="hasValue('areal')">
+    <label>{{'Areál' | translate}}:</label>
+    <span>{{komponenta.areal | translateHeslar: 'areal_druha'}}</span>
+    <span *ngIf="aktivity.length >0">
+      <span>(<span *ngFor="let aktivita of aktivity; let idx = index">{{'f_aktivita.'+aktivita | translate}}<span *ngIf="idx<aktivity.length-1">, </span></span>)</span>
+    </span>
+  </li>
+  <li *ngIf="hasValue('poznamka')">
+    <label>{{'Poznámka' | translate}}:</label>
+    <span>{{komponenta.poznamka}}</span>
+  </li>
+  <!-- Nalez -->
+  <span *ngIf="nalez.length > 0">
+    <li *ngFor="let n of nalez">
+      <app-nalez [nalez]="n" [docId]="id()"></app-nalez>
+    </li>
+  </span><!--/.nalez -->
+  <li class="app-nav-li-separator"></li>
+</ul><!--/.collapse -->

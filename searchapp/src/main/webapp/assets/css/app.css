@@ -1,0 +1,144 @@
+/*** ---/ GENERAL STYLES /--- ***/
+
+* {
+	margin: 0;
+}
+
+html, body {
+	height: 100%;
+}
+
+span:not(.app-page-export) .app-page-wrapper {
+	min-height: 100%;
+	/* equal to footer height */
+	margin-bottom: -110px;
+}
+
+span:not(.app-page-export) .app-page-wrapper:after {
+	content: "";
+	display: block;
+}
+
+span:not(.app-page-export) .app-page-wrapper:after {
+	min-height: 110px;
+}
+
+
+.app-loading {
+	position: absolute;
+	top: 10px;
+	left: 0;
+	right: 0;
+}
+
+h1, h2, h3, h4 {
+  font-family: "Conv_RobotoCondensed-Light";
+}
+
+h1 {
+  font-size: 28px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 22px
+}
+
+h4 {
+  font-size: 20px;
+}
+
+a {
+  cursor: pointer;
+}
+
+mark {
+  font-weight: bold;
+  background-color: #FFFADB;
+}
+
+.fa {padding-right: 8px;}
+
+.fa-16 {
+	font-size: 16px;
+}
+
+.form-control, 
+.btn {
+  height: 44px;
+}
+
+
+/*** Cleaners ***/
+.app-clean-container {
+  margin: 0;
+}
+
+.app-clean-mg {
+  margin: 0;
+}
+
+.app-clean-mg-top {
+  margin-top: 0;
+}
+
+.app-clean-mg-bottom {
+  margin-bottom: 0;
+}
+
+.app-mg-bottom-15 {
+  margin-bottom: 15px;
+}
+
+.app-clean-pd {
+  padding: 0;
+}
+
+.app-clean-pd-top {
+  padding-top: 0 !important;
+}
+
+.app-clean-border,
+.app-clean-border li > a {
+  border: none;
+}
+
+.app-clean-border-radius,
+.app-clean-border-radius li > a:not(.app-btn-timeline) {
+  border-radius: 0 !important;
+}
+
+.app-clean-bg {
+  background-color: transparent;
+}
+
+
+/*** Others ***/
+.app-border-radius {
+  border-radius: 3px !important;
+}
+
+.app-border-radius-r {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.app-border-radius-l {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.app-cursor-pointer {
+  cursor: pointer;
+}
+
+.app-display-block {
+	display: block;
+}
+
+.app-weight-bold {
+	font-weight: bold;
+}

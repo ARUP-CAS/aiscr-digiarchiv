@@ -1,0 +1,22 @@
+{
+  "/search/**": {
+    "target": "http://localhost:8983/solr/",
+    "ignorePath": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/search":""
+    },
+    "changeOrigin": false,
+    "secure": false
+  },
+  "/assets/i18n/**": {
+    "target": "http://localhost:8084/assets/i18n/",
+    "ignorePath": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/assets/i18n":""
+    },
+    "changeOrigin": false,
+    "secure": false
+  }
+}

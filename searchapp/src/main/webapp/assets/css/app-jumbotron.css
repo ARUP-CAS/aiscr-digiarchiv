@@ -1,0 +1,33 @@
+/*** ---/ JUMBOTRON STYLES /--- ***/
+
+.app-jumbotron {
+  background: #fff url('../img/bg-hatching.png') repeat;
+  box-shadow: inset 0px 10px 4px -7px #e5e5e5;
+  -webkit-box-shadow: inset 0px 10px 4px -7px #e5e5e5;
+  -moz-box-shadow: inset 0px 10px 4px -7px #e5e5e5;
+  -o-box-shadow: inset 0px 10px 4px -7px #e5e5e5;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.app-jumbotron .col-md-7 .form-control,
+.app-jumbotron .col-md-7 .input-group {
+  width: 100%;
+}
+
+.app-jumbotron .col-md-7 .input-group {
+  margin-bottom: 15px;
+}
+
+.app-jumbotron .col-md-7 .input-group .btn {
+  font-size: 22px;
+  padding-right: 5px;
+}
+
+.app-jumbotron .input-group .input-group-btn {
+  width: 1%;
+}
+
+.app-jumbotron .col-md-5 .app-btn {
+  margin-right: 11px;
+}

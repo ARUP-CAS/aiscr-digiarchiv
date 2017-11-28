@@ -1,0 +1,43 @@
+/*** ---/ MODAL STYLES /--- ***/
+
+/*** Multiple modals ***/
+.modal:nth-of-type(even) {
+  z-index: 1052 !important;
+}
+
+.modal-backdrop.in:nth-of-type(even) {
+  z-index: 1051 !important;
+}
+
+.modal .app-result-item {
+  box-shadow: none !important;
+}
+
+/*** File viewer ***/
+.app-modal-file-viewer hr {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.app-modal-file-viewer .close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.app-modal-detail-viewer .app-btn.collapsed {
+  display: none;
+}
+
+.app-modal-detail-viewer .app-result-item > .collapse,
+.app-modal-detail-viewer .app-btn-modal-dismiss {
+  display: block;
+}
+
+.app-modal-file-viewer .tab-pane .pull-left > .form-control {
+  width: 40px;
+  height: 30px;
+  padding: 3px 9px;
+  display: inline-block;
+  font-weight: bold;
+}

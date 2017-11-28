@@ -1,0 +1,143 @@
+<!-- Jumbotron -->
+<div class="jumbotron app-jumbotron app-clean-mg">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-7">
+        <form class="form-inline">
+          <div class="input-group">
+            <input type="text" [placeholder]="'q.placeholder' | translate" class="form-control app-border-radius-l" 
+                   name="q" id="q"
+                   (keyup.enter)="search()"
+                   [(ngModel)]="solrService.q" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default app-color-blue app-border-radius-r app-color-blue-pastel" (click)="search()">
+                <i class="fa fa-search"></i>
+              </button>
+            </span>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-5">
+        <form class="form-inline">
+          <button type="button" class="btn app-btn app-btn-search-collapse app-color-white app-border-radius"
+						[class.collapsed]="isAdvancedCollapsed"
+            (click)="openAdvanced()"
+						data-toggle="collapse" data-target="#app-search-collapse-advanced-search">
+						<span *ngIf="isAdvancedCollapsed">{{'advanced search' | translate}}</span>
+						<span *ngIf="!isAdvancedCollapsed">{{'close search' | translate}}</span>
+          </button>
+          <button type="button" class="btn app-btn app-btn-search-collapse app-color-white app-border-radius"
+					 	[class.collapsed]="isMapaCollapsed"
+						(click)="openMapa()"
+						data-toggle="collapse" data-target="#app-search-collapse-map">
+            <span *ngIf="isMapaCollapsed">{{'search map' | translate}}</span>
+						<span *ngIf="!isMapaCollapsed">{{'close map' | translate}}</span>
+          </button>
+        </form>
+      </div>
+    </div><!--/.row -->
+  </div><!--/.container -->
+</div><!--/.jumbotron -->
+
+<!-- Search collapse group -->
+<div id="app-search-collapse-group">
+  <!-- Advanced search -->
+  <div id="app-search-collapse-advanced-search2" class="app-search-collapse "
+       [class.collapse]="isAdvancedCollapsed"
+       [attr.aria-expanded]="isAdvancedCollapsed ? 'false' : 'true'" >
+    <div class="container">
+      <form class="form-inline">
+        <!-- Form row -->
+        <div class="app-form-row app-mg-bottom-15 visible-xs visible-sm">
+          <!-- Show only for small devices -->
+          <span class="app-color-gray-light">
+            <i class="fa fa-info" aria-hidden="true"></i>{{'Rozšířené vyhledávání omezeno na' | translate}} <strong>290 800</strong> {{'záznamů' | translate}}
+          </span><!--/.show only for small devices -->
+        </div><!--/.form row -->
+
+        <!-- Ng wrapper -->
+        <div *ngFor="let condition of conditions; let i = index">
+          <!-- Operators -->
+          <div *ngIf="i>0" class="app-form-row app-mg-bottom-15">
+            
+            <label *ngFor="let op of solrService.config['advancedFieldsOperator']; let j = index" class="radio-inline">
+              <input type="radio" [name]="'inlineRadioOptions'+i" 
+                   [id]="'inlineRadioOptions'+i + j" value="option1" 
+                   [checked]="condition.operator === op" 
+                   (click)="setOperator(condition, op)"> 
+              {{'adv.'+op | translate }}
+            </label>
+            
+          </div><!--/.operators -->
+
+          <!-- Form row -->
+          <div  class="app-form-row app-mg-bottom-15">
+            <!-- Btn group -->
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle app-border-radius-r" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{'adv.'+condition.field |translate}} <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu">
+                <li *ngFor="let f of solrService.config['advancedFields']">
+                  <a (click)="setField(condition, f)">{{'adv.'+f.field | translate}}</a>
+                </li>
+              </ul>
+            </div><!--/.btn group -->
+            
+            <span [ngSwitch]="condition.fieldtype">
+              <!-- Btn group -->
+              <div *ngSwitchCase="'text'" class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle app-border-radius-r" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{'adv.' + condition.fieldCondition | translate}} <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu">
+                  <li *ngFor="let f of solrService.config['advancedFieldsCond']"><a (click)="setFieldCond(condition, f)">{{'adv.' + f | translate}}</a></li>
+                </ul>
+              </div><!--/.btn group -->
+              <span *ngSwitchCase="'heslar'"></span>
+            </span>
+            <input *ngIf="condition.fieldtype === 'text'" type="text" placeholder="" class="form-control app-border-radius" [name]="'condval'+i" [(ngModel)]="condition.value" />
+            <div *ngIf="condition.fieldtype === 'heslar'" class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle app-border-radius-r" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">
+                {{condition.dispValue | translate}} <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu">
+                <li *ngFor="let fv of solrService.heslare[condition.heslar]"><a (click)="setFieldValue(condition, fv)">{{fv[condition.heslarDisplay] | translateHeslar}}</a></li>
+              </ul>
+            </div><!--/.btn group -->
+            <div *ngIf="condition.fieldtype === 'date'" class="btn-group">
+              {{'Od roku' | translate}}: <input type="text" placeholder="" class="form-control app-border-radius"
+                     [name]="'od_condval'+i" [(ngModel)]="condition.valueOd" />
+              {{'Do roku' | translate}}: <input type="text" placeholder="" class="form-control app-border-radius"
+                     [name]="'do_condval'+i" [(ngModel)]="condition.valueDo" />
+            </div>
+            
+            <a  *ngIf="i>0" (click)="removeCondition(i)" [title]="'Smazat pole' | translate" rel="tooltip" class="text-danger"><i class="fa fa-times"></i></a>
+            <span *ngIf="i < 0" class="pull-right app-color-gray-light  visible-md visible-lg">
+              <i class="fa fa-info" aria-hidden="true"></i>{{'Rozšířené vyhledávání omezeno na' | translate}} <strong>290 800</strong> {{'záznamů' | translate}}
+            </span>
+          </div><!--/.form row -->
+        </div><!--/.ng wrapper -->
+
+        <!-- Form row -->
+        <div class="app-form-row app-mg-bottom-15 clearfix">
+          <div class="pull-left">
+            <span class="app-cursor-pointer"><i class="fa fa-plus app-color-blue-pastel"></i><a (click)="addCondition()" 
+                [title]="'adv.add.condition' | translate">{{'adv.add.condition' | translate}}</a></span>
+          </div>
+          <button type="button" class="btn app-btn app-bg-gray app-color-white app-border-radius pull-right" (click)="doAdvSearch()">
+            {{'adv.sendQuery' | translate}}
+          </button>
+        </div><!--/.form row -->
+      </form><!--/.form -->
+    </div><!--/.container -->
+  </div><!--/.advanced search -->
+
+  <!-- Search in map -->
+  <app-mapa #mapaViewer></app-mapa>
+  </div>
+  <!--/.search collapse group -->

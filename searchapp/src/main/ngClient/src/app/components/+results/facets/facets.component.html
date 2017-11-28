@@ -1,0 +1,86 @@
+<!-- Facet nav -->
+<ul class="nav  app-facet-nav">
+  <li *ngIf="solrService.facets.length > 0 && solrService.facets[0].field === 'pristupnost'" [class]="'app-facet-pristupnost'" >
+    <div class="app-facet-nav-title app-border-radius app-cursor-pointer " data-toggle="collapse" [attr.data-target]="'#app-collapse-pristupnost'">
+      <span></span><strong>{{'facet.pristupnost' | translate}}</strong>
+    </div>
+    <ul class="app-color-gray list-unstyled " [id]="'app-collapse-pristupnost'">
+      <li class="app-facet-nav-separator"></li>
+      <li *ngFor="let facet of solrService.facets[0].values" >
+        <input *ngIf="solrService.facets[0].isMultiple" type="checkbox" [checked]="facet.isUsed" /> 
+        
+        <a (click)="clickFacet(facet, solrService.facets[0].isMultiple)" class="app-cursor-pointer">
+          {{facet.value | translateHeslar: 'pristupnost'}}
+        </a>
+        <span class="pull-right app-color-gray-light">{{facet.count}}</span>
+      </li>
+      <li class="app-facet-nav-separator"></li>
+    </ul>
+  </li>
+  <li *ngFor="let facetPivot of solrService.facetPivots; let idx = index" [class]="'app-facet-' + facetPivot.field" >
+    <div class="app-facet-nav-title app-border-radius app-cursor-pointer" [class.collapsed]="idx!==0"  data-toggle="collapse" [attr.data-target]="'#app-collapse-'+facetPivot.field">
+      <span></span><strong>{{'facet.'+facetPivot.field | translate}}</strong>
+    </div>
+    <ul class="app-color-gray list-unstyled collapse app-nav-tree" [class.in]="idx===0" [id]="'app-collapse-' + facetPivot.field">
+      <li class="app-facet-nav-separator"></li>
+      <!-- Tree level 1 -->
+      <li *ngFor="let v of facetPivot.values">
+        <span class="app-nav-tree-item"><i class="fa app-cursor-pointer" [class.fa-plus]="!v.visible" [class.fa-minus]="v.visible" (click)="togglePivot(v)"></i>
+          <a (click)="clickPivot(facetPivot.field, v.value)" class="app-cursor-pointer">{{'pivot.'+facetPivot.field+ '.' + v.value | translate}}</a></span>
+        <span class="pull-right app-color-gray-light">{{v.count}}</span>
+        <ul *ngIf="v.visible" class="list-unstyled app-color-gray">
+          <li class="app-facet-nav-separator"></li>
+           <li *ngFor="let pv of v.pivot"><!-- [style.width]="treewidth" -->
+            <a (click)="clickPivot(pv.field, pv.value)">{{pv.value}}</a><span class="pull-right app-color-gray-light">{{pv.count}}</span>
+          </li>
+          <li class="app-facet-nav-separator"></li>
+        </ul> 
+      </li><!--/.tree level 1 -->
+      <li class="app-facet-nav-separator"></li>
+    </ul>
+  </li>
+  
+  <ng-container *ngFor="let facetField of solrService.facets; let idx = index"  >
+  <li *ngIf="facetField.field !== 'pristupnost'" [class]="'app-facet-' + facetField.field" >
+    <div class="app-facet-nav-title app-border-radius app-cursor-pointer collapsed" data-toggle="collapse" [attr.data-target]="'#app-collapse-'+facetField.field">
+      <span></span><strong>{{'facet.'+facetField.field | translate}}</strong>
+    </div>
+    <ul class="app-color-gray list-unstyled collapse" [id]="'app-collapse-' + facetField.field">
+      <li class="app-facet-nav-separator"></li>
+      <li *ngFor="let facet of facetField.values" 
+        [class]="facetField.field === 'space' ? 'app-mark-item app-mark-item-' + facet.value.toLowerCase() : ''" >
+        <input *ngIf="facetField.isMultiple" type="checkbox" [checked]="facet.isUsed" /> 
+        <i *ngIf="facetField.field === 'document_type'" [class]="'fa fa-' + icon(facet.value) + '-o'" aria-hidden="true"></i>
+        <a (click)="clickFacet(facet, facetField.isMultiple)" class="app-cursor-pointer">
+          {{getTranslated(facet.field,facet.value)}}
+        </a>
+        <span class="pull-right app-color-gray-light">{{facet.count}}</span>
+      </li>
+      <li class="app-facet-nav-separator"></li>
+    </ul>
+  </li>
+  </ng-container>
+  <li *ngFor="let fr of solrService.facetRanges" [class]="'app-facet-' + fr.field" >
+    <div class="app-facet-title app-color-black app-cursor-pointer" data-toggle="collapse" [attr.data-target]="'#app-collapse-'+fr.field">
+      <span></span><strong>{{fr.field | translate}}</strong>
+    </div>
+    <ul class="app-color-gray list-unstyled collapse in" [id]="'app-collapse-' + fr.field">
+      <li class="app-facet-nav-separator"></li>
+      <li>
+        <a (click)="clickRangeFacet(fr.field, '*', fr.start)" class="app-cursor-pointer">pred {{asDate(fr.start) | date:'y'}}</a><span class="pull-right app-color-gray-light">{{fr.before}}</span>
+      </li>
+      <li *ngFor="let facet of fr.counts; let i=index" >
+        <ng-template [ngIf]="i < fr.counts.length-1">
+        <a (click)="clickRangeFacet(fr.field, facet.value, fr.counts[i+1].value)" class="app-cursor-pointer">od {{asDate(facet.value) | date:'y'}} - do  {{asDate(fr.counts[i+1].value) | date:'y'}}</a><span class="pull-right app-color-gray-light">{{facet.count}}</span>
+        </ng-template>
+        <ng-template [ngIf]="i === fr.counts.length-1">
+        <a (click)="clickRangeFacet(fr.field, facet.value, fr.end)" class="app-cursor-pointer">od {{asDate(facet.value) | date:'y'}} - do  {{asDate(fr.end) | date:'y'}}</a><span class="pull-right app-color-gray-light">{{facet.count}}</span>
+        </ng-template>
+      </li>
+      <li>
+        <a (click)="clickRangeFacet(facet.field, fr.end, '*')" class="app-cursor-pointer">po {{asDate(fr.end) | date:'y'}}</a><span class="pull-right app-color-gray-light">{{fr.after}}</span>
+      </li>
+      <li class="app-facet-nav-separator"></li>
+    </ul>
+  </li>
+</ul><!--/.facet nav -->

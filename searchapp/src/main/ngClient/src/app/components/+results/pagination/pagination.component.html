@@ -1,0 +1,13 @@
+<ul *ngIf="hasPagination" class="pagination app-pagination">
+  <li [class.disabled]="prevDisabled" (click)="prev()">
+    <a aria-label="Previous" class="app-border-radius-left app-cursor-pointer">
+      <span aria-hidden="true">&laquo;</span>
+    </a>
+  </li>
+  <li *ngFor="let page of range" [class.active]="isActive(page)"><a (click)="goTo(page)" class="app-cursor-pointer">{{page}}</a></li>
+  <li [class.disabled]="nextDisabled" (click)="next()">
+    <a aria-label="Next" class="app-border-radius-right app-cursor-pointer">
+      <span aria-hidden="true">&raquo;</span>
+    </a>
+  </li>
+</ul>

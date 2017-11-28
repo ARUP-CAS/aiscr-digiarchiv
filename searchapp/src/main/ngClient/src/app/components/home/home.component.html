@@ -1,0 +1,55 @@
+<div class="container app-content-wrapper">
+  <div class="clearfix">
+    <div *ngFor="let box of boxes"
+      [class]="'app-cat-box app-border-radius app-color-white app-cat-'+box.index">
+      <!-- App cat box top -->
+      <div class="media app-cat-box-top">
+        <div class="media-left">
+          <i [class]="'fa fa-'+box.ico"></i>
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading app-clean-mg">
+            <a (click)="clickPivot(box.index)"
+              data-popover="true" 
+              data-html="true"  
+              class="app-cursor-pointer app-popover" data-original-title="" title="">{{box.label | translate }}</a>
+            <ul class="list-unstyled popover-content hide" style="color:black">
+              <li *ngFor="let typ of box.typy">
+                
+                <a routerLink="/results" [queryParams]="{'f_typ_dokumentu' : typ.value}"
+                  class="app-cursor-pointer" title="">{{typ.value}}</a> 
+                <span class="app-color-gray">{{typ.count}}</span>
+              </li>
+            </ul>
+          </h4>
+        </div>
+      </div><!--/.app cat box top -->
+      <!-- App cat box bottom -->
+      <div class="app-cat-box-bottom">
+        <div class="app-cat-box-bottom-inner">
+          <span>{{box.count}}</span>&nbsp;&nbsp;{{'záznamů' | translate}}
+        </div>
+      </div><!--/.app cat box bottom -->
+    </div>
+  </div><!--/.clearfix -->
+
+  <div class="row">
+    <!-- About project -->
+    <div class="col-md-6">
+      <div class="app-content-title">
+        <h1 class="app-clean-mg app-clean-pd app-color-gray-light">{{'O projektu' | translate}}</h1>
+      </div>
+      <app-free-text [id]="'about'" ></app-free-text>
+      
+    </div><!--/.about project -->
+    <!--News -->
+    <div class="col-md-6">
+      <div class="app-content-title">
+        <h1 class="app-clean-mg app-clean-pd app-color-gray-light">{{'Novinky' | translate}}</h1>
+      </div>
+      <div class="app-box-news app-border-radius">
+        <div><app-free-text [id]="'news'" ></app-free-text></div>
+      </div>
+    </div><!--/.news -->
+  </div><!--/.row -->
+</div><!--/.app container wrapper -->

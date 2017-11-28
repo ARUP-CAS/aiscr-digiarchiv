@@ -1,0 +1,11 @@
+<!-- Modal -->
+<modal [animation]="true"  #modal class="app-modal-detail-viewer">
+  <div *ngFor="let result of results">
+    <app-result-item [result]="result" (onViewFile)="viewFile($event)" [inModal]="true"></app-result-item>
+  </div>
+</modal><!-- modal -->
+
+
+          
+          
+            

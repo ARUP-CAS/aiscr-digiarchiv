@@ -1,0 +1,59 @@
+/*** ---/ PRINT STYLES /--- ***/
+
+.app-navbar, 
+.app-jumbotron,
+#app-search-collapse-group,
+.app-breadcrumb,
+.app-facet,
+.app-pagination,
+footer,
+.app-result-item > .app-result-btn-group-top,
+.app-result-item-triangle,
+.app-result-item-bar,
+.app-nav-tree-item .fa {
+  display: none !important;
+}
+
+.app-result-item {
+  border: none;
+  box-shadow: none;
+  line-height: 16px;
+}
+
+.app-result-item-nav .app-nav-li-separator {
+  padding-bottom: 5px;
+}
+
+.app-result-item .collapse,
+.media-left,
+.media-body {
+  display: block !important;
+	height: auto !important;
+}
+
+.media-left,
+.media-body {
+  float: left;
+}
+
+.media-body {
+  width: auto;
+}
+
+.list-unstyled {
+  padding-left: 20px;
+}
+
+.app-result-item-nav li .app-result-item-nav-title {
+  padding: 0;
+  background-color: transparent;
+  font-size: 16px;
+}
+
+.app-result-item-nav li .app-result-item-nav-title.collapsed:before {
+	content: "\f107";
+}
+
+.app-result-item-nav .app-nav-tree-item.collapsed:before {
+	content: "\f068";
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="">
+  
+  <Parameter name="def_config_dir" value="/assets/"
+         override="false"/>
+  
+  <Parameter name="app_dir2" value="/var/lib/archeo/amcr"
+         override="false"/>
+  
+</Context>

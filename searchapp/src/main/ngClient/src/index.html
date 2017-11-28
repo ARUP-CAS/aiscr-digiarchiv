@@ -1,0 +1,424 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base href="/">
+
+    <title>Digitální archiv AMČR</title>
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font awesome CSS -->
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- ng2-slim-loading-bar CSS -->
+    <link href="assets/css/ng2-slim-loading-bar.css" rel="stylesheet" type="text/css"/>
+		
+		<!-- ng2-slim-loading-bar CSS -->
+    <link href="assets/css/leaflet.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/leaflet.fullscreen.css" rel="stylesheet" type="text/css"/>
+
+    
+    <!-- App CSS -->
+    <link href="assets/css/app.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/app-navbar.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/app-search-collapse.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/app-jumbotron.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/app-content.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/app-breadcrumb.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/app-nav-tree.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/app-home.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/app-facet.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/app-timeline.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/app-result.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/app-pagination.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/app-footer.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/app-colors.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/app-mq.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/app-modal.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/app-fonts.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/app-print.css" rel="stylesheet" type="text/css" media="print"/>
+    
+    
+    <link href="assets/css/locationfilter.css" rel="stylesheet" type="text/css"/>
+    
+    
+    <script src="assets/js/leaflet-src.js" type="text/javascript"></script>
+    <script src="assets/js/heatmap.min.js" type="text/javascript"></script>
+    <script src="assets/js/leaflet-heatmap.js" type="text/javascript"></script>
+    <script src='assets/js/Leaflet.fullscreen.js'></script>
+    
+    
+    <script src='assets/js/locationfilter.js'></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.png">
+</head>
+	
+<body>
+	
+  <app-root>
+  
+    <!-- Loading -->
+    <div class="text-center app-color-blue-pastel app-loading">
+      <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw app-color-blue-pastel"></i>&#160;&#160;Loading...
+    </div><!--/.loading -->
+		
+		<span class="app-page-home">
+			<div class="app-page-wrapper">
+				<!-- Navbar -->
+				<nav class="navbar app-navbar app-clean-border">
+					<div class="container">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+							<a class="navbar-brand app-clean-pd-top"  linkTo="/home"><img src="assets/img/logo-digitalni-archiv-amcr.png" alt="Digitální archiv AMČR" /></a>
+						</div>
+						<div id="navbar" class="navbar-collapse collapse">
+							<ul class="nav navbar-nav navbar-right app-color-gray app-clean-mg-top app-clean-mg-bottom">
+								<!-- Login -->
+								<li class="dropdown app-navbar-item-login">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										Přihlásit <span class="caret"></span>
+									</a>
+									<ul class="dropdown-menu app-border-radius">
+										<li>
+
+										</li>
+									</ul>
+								</li><!--/.login -->
+								<!-- Help -->
+								<li>
+									<a href="#"><i class="fa fa-question-circle"></i>help</a>
+								</li><!--/.help -->
+								<!-- Lang -->
+								<li>
+									<a class="app-cursor-pointer">Český</a>
+								</li><!--/.lang -->
+							</ul><!--/.nav -->
+						</div><!--/.nav-collapse -->
+					</div><!--/.container -->
+				</nav><!--/.navbar -->
+
+				<!-- Jumbotron -->
+				<div class="jumbotron app-jumbotron app-clean-mg">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-7">
+								<form class="form-inline">
+									<div class="input-group">
+										<input type="text" placeholder="query" class="form-control app-border-radius-l" 
+													 name="q"
+														/>
+										<span class="input-group-btn">
+											<button type="button" class="btn btn-default app-color-blue app-border-radius-r app-color-blue-pastel"><i class="fa fa-search"></i></button>
+										</span>
+									</div>
+								</form>
+							</div>
+							<div class="col-md-5">
+								<form class="form-inline">
+									<button type="button" class="btn app-btn app-btn-search-collapse app-color-white app-border-radius collapsed" 
+										data-toggle="collapse" data-target="#app-search-collapse-advanced-search">
+										advanced search
+									</button>
+									<button type="button" class="btn app-btn app-btn-search-collapse app-color-white app-border-radius collapsed"
+													data-toggle="collapse" data-target="#app-search-collapse-map">search map
+									</button>
+								</form>
+							</div>
+						</div><!--/.row -->
+					</div><!--/.container -->
+				</div><!--/.jumbotron -->
+			</div><!--/.app-page-wrapper -->
+  
+			<footer>
+				<div class="container">
+					<div class="row">
+						<div class="col-md-4">
+							<p class="app-color-silver">Archeologický ústav AV ČR, Praha, v. v. i. © 2015.</p>
+							<p class="app-color-gray-light"><a href="#" title="Kontakt">Kontakt</a>  |  Created by <a href="#" title="INCAD a search technologies company">INCAD a search technologies company</a></p>
+						</div>
+						<div class="col-md-8 app-footer-logo">
+							<a href="http://www.arup.cas.cz/" title="Archeologický ústav AV ČR, Praha, v. v. i." target="_blank">
+								<img src="assets/img/logo-avcr-praha.png" alt="Archeologický ústav AV ČR, Praha, v. v. i." /></a>
+							<a href="http://arub.avcr.cz/archiv/" title="Archeologický ústav AV ČR, Brno, v. v. i." target="_blank">
+								<img src="assets/img/logo-avcr-brno.png" alt="Archeologický ústav AV ČR, Brno, v. v. i." /></a>
+							<a href="http://www.msmt.cz/" title="Ministerstvo školství, mládeže a tělovýchovy České republiky" target="_blank">
+								<img src="assets/img/logo-msmt.png" alt="Ministerstvo školství, mládeže a tělovýchovy České republiky" /></a>
+							<a href="http://www.aiscr.cz/" title="Archeologický informační systém České republiky" target="_blank">
+								<img src="assets/img/logo-ais.png" alt="Archeologický informační systém České republiky" /></a>
+							<a href="http://www.ariadne-infrastructure.eu/" title="Ariadne" target="_blank">
+								<img src="assets/img/logo-ariadne.png" alt="Ariadne" /></a>
+							<a href="http://www.searchtechnologies.com" title="Enterprise Search and Big Data Experts" target="_blank">
+								<img src="assets/img/logo-st.png" alt="Enterprise Search and Big Data Experts" /></a>
+						</div>
+					</div><!--/.row -->
+				</div><!--/.container -->
+			</footer><!--/.footer -->
+		</span><!--/.app-home-wrapper -->
+    
+    
+    <div _ngcontent-eor-8="" class="container app-content-wrapper">
+  		<div _ngcontent-eor-8="" class="clearfix">
+				<!--template bindings={
+			"ng-reflect-ng-for-of": "[object Object],[object Object],[object Object],[object Object],[object Object]"
+		}--><div _ngcontent-eor-8="" ng-reflect-class-name="app-cat-box app-border-radius app-color-white app-cat-texty" class="app-cat-box app-border-radius app-color-white app-cat-texty">
+					<div _ngcontent-eor-8="" class="media app-cat-box-top">
+						<div _ngcontent-eor-8="" class="media-left">
+							<i _ngcontent-eor-8="" ng-reflect-class-name="fa fa-file-text" class="fa fa-file-text"></i>
+						</div>
+						<div _ngcontent-eor-8="" class="media-body">
+							<h4 _ngcontent-eor-8="" class="media-heading app-clean-mg">
+								<a _ngcontent-eor-8="" class="app-cursor-pointer app-popover" data-html="true" data-original-title="" data-popover="true" title="">Texty</a>
+								<ul _ngcontent-eor-8="" class="list-unstyled popover-content hide" style="color:black">
+									<!--template bindings={
+			"ng-reflect-ng-for-of": null
+		}-->
+								</ul>
+							</h4>
+						</div>
+					</div>
+					<div _ngcontent-eor-8="" class="app-cat-box-bottom">
+						<div _ngcontent-eor-8="" class="app-cat-box-bottom-inner">
+							<span _ngcontent-eor-8=""></span>&nbsp;&nbsp;záznamů
+						</div>
+					</div>
+				</div><!--/.app-cat-box -->
+			
+				<div _ngcontent-eor-8="" ng-reflect-class-name="app-cat-box app-border-radius app-color-white app-cat-foto" class="app-cat-box app-border-radius app-color-white app-cat-foto">
+      		<div _ngcontent-eor-8="" class="media app-cat-box-top">
+						<div _ngcontent-eor-8="" class="media-left">
+							<i _ngcontent-eor-8="" ng-reflect-class-name="fa fa-camera" class="fa fa-camera"></i>
+						</div>
+						<div _ngcontent-eor-8="" class="media-body">
+							<h4 _ngcontent-eor-8="" class="media-heading app-clean-mg">
+								<a _ngcontent-eor-8="" class="app-cursor-pointer app-popover" data-html="true" data-original-title="" data-popover="true" title="">Fotografie</a>
+								<ul _ngcontent-eor-8="" class="list-unstyled popover-content hide" style="color:black">
+									<!--template bindings={
+			"ng-reflect-ng-for-of": null
+		}-->
+								</ul>
+							</h4>
+						</div>
+					</div>
+					<div _ngcontent-eor-8="" class="app-cat-box-bottom">
+						<div _ngcontent-eor-8="" class="app-cat-box-bottom-inner">
+							<span _ngcontent-eor-8=""></span>&nbsp;&nbsp;záznamů
+						</div>
+					</div>
+    		</div><!--/.app-cat-box -->
+				
+				<div _ngcontent-eor-8="" ng-reflect-class-name="app-cat-box app-border-radius app-color-white app-cat-lfoto" class="app-cat-box app-border-radius app-color-white app-cat-lfoto">
+      		<div _ngcontent-eor-8="" class="media app-cat-box-top">
+						<div _ngcontent-eor-8="" class="media-left">
+							<i _ngcontent-eor-8="" ng-reflect-class-name="fa fa-plane" class="fa fa-plane"></i>
+						</div>
+						<div _ngcontent-eor-8="" class="media-body">
+							<h4 _ngcontent-eor-8="" class="media-heading app-clean-mg">
+								<a _ngcontent-eor-8="" class="app-cursor-pointer app-popover" data-html="true" data-original-title="" data-popover="true" title="">Letecké fotografie</a>
+								<ul _ngcontent-eor-8="" class="list-unstyled popover-content hide" style="color:black">
+									<!--template bindings={
+			"ng-reflect-ng-for-of": null
+		}-->
+								</ul>
+							</h4>
+						</div>
+					</div>
+					<div _ngcontent-eor-8="" class="app-cat-box-bottom">
+						<div _ngcontent-eor-8="" class="app-cat-box-bottom-inner">
+							<span _ngcontent-eor-8=""></span>&nbsp;&nbsp;záznamů
+						</div>
+					</div>
+				</div><!--/.app-cat-box -->
+				
+				<div _ngcontent-eor-8="" ng-reflect-class-name="app-cat-box app-border-radius app-color-white app-cat-mplany" class="app-cat-box app-border-radius app-color-white app-cat-mplany">
+      		<div _ngcontent-eor-8="" class="media app-cat-box-top">
+						<div _ngcontent-eor-8="" class="media-left">
+							<i _ngcontent-eor-8="" ng-reflect-class-name="fa fa-map" class="fa fa-map"></i>
+						</div>
+						<div _ngcontent-eor-8="" class="media-body">
+							<h4 _ngcontent-eor-8="" class="media-heading app-clean-mg">
+								<a _ngcontent-eor-8="" class="app-cursor-pointer app-popover" data-html="true" data-original-title="" data-popover="true" title="">Plány a mapy</a>
+								<ul _ngcontent-eor-8="" class="list-unstyled popover-content hide" style="color:black">
+									<!--template bindings={
+			"ng-reflect-ng-for-of": null
+		}-->
+								</ul>
+							</h4>
+						</div>
+					</div>
+					<div _ngcontent-eor-8="" class="app-cat-box-bottom">
+						<div _ngcontent-eor-8="" class="app-cat-box-bottom-inner">
+							<span _ngcontent-eor-8=""></span>&nbsp;&nbsp;záznamů
+						</div>
+					</div>
+				</div><!--/.app-cat-box -->
+				
+				<div _ngcontent-eor-8="" ng-reflect-class-name="app-cat-box app-border-radius app-color-white app-cat-ddata" class="app-cat-box app-border-radius app-color-white app-cat-ddata">
+      		<div _ngcontent-eor-8="" class="media app-cat-box-top">
+						<div _ngcontent-eor-8="" class="media-left">
+							<i _ngcontent-eor-8="" ng-reflect-class-name="fa fa-database" class="fa fa-database"></i>
+						</div>
+						<div _ngcontent-eor-8="" class="media-body">
+							<h4 _ngcontent-eor-8="" class="media-heading app-clean-mg">
+								<a _ngcontent-eor-8="" class="app-cursor-pointer app-popover" data-html="true" data-original-title="" data-popover="true" title="">Digitální data</a>
+								<ul _ngcontent-eor-8="" class="list-unstyled popover-content hide" style="color:black">
+									<!--template bindings={
+			"ng-reflect-ng-for-of": null
+		}-->
+								</ul>
+							</h4>
+						</div>
+					</div>
+					<div _ngcontent-eor-8="" class="app-cat-box-bottom">
+						<div _ngcontent-eor-8="" class="app-cat-box-bottom-inner">
+							<span _ngcontent-eor-8=""></span>&nbsp;&nbsp;záznamů
+						</div>
+					</div>
+				</div><!--/.app-cat-box -->
+  		</div><!--/.clerfix -->
+
+  		<div _ngcontent-eor-8="" class="row">
+    		<div _ngcontent-eor-8="" class="col-md-6">
+					<div _ngcontent-eor-8="" class="app-content-title">
+						<h1 _ngcontent-eor-8="" class="app-clean-mg app-clean-pd app-color-gray-light">O projektu</h1>
+					</div>
+					<p _ngcontent-eor-8="">
+						Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean vel massa quis 
+						mauris vehicula lacinia. Excepteur sint occaecat cupidatat non proident, sunt in culpa 
+						qui officia deserunt mollit anim id est laborum. Integer malesuada. Nam sed tellus id 
+						magna elementum tincidunt. Pellentesque sapien. Aliquam erat volutpat. Nullam at 
+						arcu a est sollicitudin euismod.
+					</p>
+					<p _ngcontent-eor-8="">
+						Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia 
+						consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Aenean 
+						placerat. Duis ante orci, molestie vitae vehicula venenatis, tincidunt ac pede. Mauris 
+						suscipit, ligula sit amet pharetra semper, nibh ante cursus purus, vel sagittis velit 
+						mauris vel metus. Integer malesuada. Nulla non arcu lacinia neque faucibus fringilla.
+						Et harum quidem rerum facilis est et expedita distinctio. Duis ante orci, molestie vitae 
+						vehicula venenatis, tincidunt ac pede.
+					</p>
+				</div><!--/.col-md-6 -->
+
+				<div _ngcontent-eor-8="" class="col-md-6">
+					<div _ngcontent-eor-8="" class="app-content-title">
+						<h1 _ngcontent-eor-8="" class="app-clean-mg app-clean-pd app-color-gray-light">Novinky</h1>
+					</div>
+					<div _ngcontent-eor-8="" class="app-box-news app-border-radius">
+						<div _ngcontent-eor-8="">
+							<h4 _ngcontent-eor-8="" class="app-clean-mg-top">Lorem ipsum dolor sit amet</h4>
+							<p _ngcontent-eor-8="" class="app-color-gray">
+								<span _ngcontent-eor-8="" class="app-color-gray-light">23.08.2016 | </span> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean vel massa quis mauris vehicula lacinia ...
+							</p>
+							<h4 _ngcontent-eor-8="" class="app-clean-mg-top">Aenean vel massa quis mauris vehicula lacini</h4>
+							<p _ngcontent-eor-8="" class="app-color-gray">
+								<span _ngcontent-eor-8="" class="app-color-gray-light">12.07.2016 | </span> Aenean vel massa quis mauris vehicula lacinia. Excepteur sint occaecat cupidatat non proiden ...
+							</p>
+							<h4 _ngcontent-eor-8="" class="app-clean-mg-top">Excepteur sint occaecat cupidatat non</h4>
+							<p _ngcontent-eor-8="" class="app-color-gray">
+								<span _ngcontent-eor-8="" class="app-color-gray-light">30.05.2016 | </span> Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit  ...
+							</p>
+						</div>
+					</div>
+				</div><!--/.col-md-6 -->
+  		</div><!--/.row -->
+		</div><!--/.app-content-wrapper -->
+  </app-root>
+  
+  <!-- Bootstrap core JavaScript
+      ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+
+  <!-- Custom js -->
+  <script>
+    // tooltip
+    jQuery(function($) {
+        $(document).tooltip({
+            selector: '[rel="tooltip"]',
+            placement: 'top',
+            container: 'body'
+        });
+    });
+    
+    // --- popover ---
+      var originalLeave = $.fn.popover.Constructor.prototype.leave;
+      $.fn.popover.Constructor.prototype.leave = function(obj){
+        var self = obj instanceof this.constructor ?
+          obj : $(obj.currentTarget)[this.type](this.getDelegateOptions()).data('bs.' + this.type)
+        var container, timeout;
+
+        originalLeave.call(this, obj);
+
+        if(obj.currentTarget) {
+          container = $(obj.currentTarget).siblings('.popover')
+          timeout = self.timeout;
+          container.one('mouseenter', function(){
+            //We entered the actual popover – call off the dogs
+            clearTimeout(timeout);
+            //Let's monitor popover content instead
+            container.one('mouseleave', function(){
+              $.fn.popover.Constructor.prototype.leave.call(self, self);
+            });
+          })
+        }
+      };
+/*
+
+      $('body').popover({ 
+        html: true,
+       // content: function () {
+       //   return $('.popover-content').html();
+       // },
+        content: function () {
+          return $(this).next('.popover-content').html();
+        },
+        selector: '[data-popover]', 
+        trigger: 'hover', 
+        placement: 'bottom', 
+        delay: {show: 50, hide: 400}
+      });
+ */
+      
+      // --- facet nav tree ---
+      $(function () {
+        $('.app-nav-tree li:has(ul)').addClass('parent_li').find(' > span.app-nav-tree-item').attr('title', 'Collapse this branch');
+        $('.app-nav-tree li.parent_li > span.app-nav-tree-item').on('click', function (e) {
+          var children = $(this).parent('li.parent_li').find(' > ul > li');
+          if (children.is(":visible")) {
+            children.hide('fast');
+            $(this).attr('title', 'Expand this branch').find(' > i').addClass('fa-plus').removeClass('fa-minus');
+          } else {
+            children.show('fast');
+            $(this).attr('title', 'Collapse this branch').find(' > i').addClass('fa-minus').removeClass('fa-plus');
+          }
+          e.stopPropagation();
+        });
+      });
+      
+      
+      // --- search collapse group ---
+      var $appSearchCollapseGroup = $('#app-search-collapse-group');
+        $appSearchCollapseGroup.on('show.bs.collapse','.collapse', function() {
+        $appSearchCollapseGroup.find('.collapse.in').collapse('hide');
+      });
+  </script><!--/.custom js -->
+  
+  <!-- Google Analitycs -->
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); 
+    ga('create', 'UA-79200582-3', 'auto'); 
+    //ga('send', 'pageview'); 
+  </script>
+  
+</body>
+</html>

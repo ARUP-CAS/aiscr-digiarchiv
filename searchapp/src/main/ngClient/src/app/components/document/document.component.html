@@ -1,0 +1,16 @@
+<div class="container app-content-wrapper">
+  <div class="row">
+    <!-- Result -->
+    <div class="col-md-12 app-result clearfix"
+          [class.app-result-view-row]="solrService.itemView === 'row'"
+          [class.app-result-view-col]="solrService.itemView === 'col'">
+      <!-- Result item container -->
+      <div class="app-result-item-container" *ngFor="let result of solrService.docs" >
+        <div class="alert alert-info app-persistent-url app-color-blue-pastel" role="alert"><strong>{{'Persistentní odkaz' | translate}}:</strong> {{link}}</div>
+        <app-result-item [result]="result" (onViewFile)="onViewFile($event)"></app-result-item>
+      </div><!--/.result item container -->
+    </div><!--/.result -->
+  </div><!--/.row -->
+</div><!--/.app content wrapper -->
+
+<app-file-viewer #fileViewer></app-file-viewer>

@@ -1,0 +1,40 @@
+/*** ---/ BREADCRUMB STYLES /--- ***/
+
+.app-breadcrumb {
+  border-bottom: 3px solid #f4f4f4;
+  padding: 15px 0;
+}
+
+.app-breadcrumb > li.pull-right::before,
+.app-breadcrumb > li.pull-right::after {
+  content: ' ' !important;
+}
+
+.app-breadcrumb > li:not(.pull-right) > a::after {
+  font-family: FontAwesome;
+  content: '\f00d';
+  padding-left: 6px;
+  color: #C9302C;
+}
+
+.app-breadcrumb .open > .dropdown-menu {
+  z-index: 1045;
+}
+
+.app-breadcrumb .app-pipe {
+  padding: 0 3px;
+}
+
+.app-dropdown-display {
+  min-width: 60px;
+}
+
+.app-btn-timeline {
+  display: inline-block;
+  padding: 2px 5px;
+  border-radius: 3px !important;
+}
+
+.app-btn-timeline .fa {
+  padding-right: 0;
+}

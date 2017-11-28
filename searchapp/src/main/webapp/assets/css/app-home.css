@@ -1,0 +1,106 @@
+/*** ---/ HOME PAGE STYLES /--- ***/
+
+/*** Page ***/
+.app-page-home {
+  background: transparent url('../img/bg-vrstevnice.png') center 248px no-repeat;
+}
+
+/*** Category ***/
+.app-cat-box {
+  background-color: #6f6f6f;
+  margin-bottom: 30px;
+}
+
+.app-cat-box .media-body {
+  overflow: auto;
+}
+
+.app-cat-box-top,
+.app-cat-box-bottom-inner {
+  padding: 20px;
+}
+
+.app-cat-box-top .fa {
+  font-size: 30px;
+}
+
+.app-cat-box-bottom {
+  background-color: #8a8a8a;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  font-family: 'Conv_RobotoCondensed-Light';
+}
+
+.app-cat-box-bottom span {
+  font-size: 22px;
+}
+
+
+/*** Popover dialog ***/
+.app-cat-box-top .popover-content {
+  display: table;
+  width: 100%;
+}
+
+.app-cat-box-top .popover-content li {
+  display: table-row;
+}
+
+.app-cat-box-top .popover-content a,
+.app-cat-box-top .popover-content span {
+  display: table-cell;
+}
+
+.app-cat-box-top .popover-content a {
+  color: black !important;
+  width: 70%;
+}
+
+.app-cat-box-top .popover-content span {
+  width: 30%;
+  text-align: right;
+}
+
+
+/*** Box title ***/
+.app-content-title {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.app-content-title h1 {
+  background: #fff none repeat scroll 0 0;
+  display: inline-block;
+  margin-left: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+  z-index: 1024;
+}
+
+.app-content-title::before {
+  background: #e5e5e5 none repeat scroll 0 0;
+  content: '';
+  height: 1px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: calc(50%);
+  z-index: -1;
+}
+
+
+/*** Box news ***/
+.app-box-news {
+  /*height: 298px; docasne zakomentovano pro spusteni aplikace, az bude vice novinek, tak se to odkomentuje*/
+  overflow: auto;
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0px 0px 7px -2px #DCDCDC;
+  -webkit-box-shadow: 0px 0px 7px -2px #DCDCDC;
+  -moz-box-shadow: 0px 0px 7px -2px #DCDCDC;
+  -o-box-shadow: 0px 0px 7px -2px #DCDCDC;
+}
+
+.app-box-news > div {
+  padding: 25px;
+}

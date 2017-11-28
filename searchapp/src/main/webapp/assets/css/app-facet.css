@@ -1,0 +1,54 @@
+/*** ---/ FACET STYLES /--- ***/
+
+.app-facet {
+	margin-bottom: 28px;
+}
+
+.app-facet-nav > li {
+  border-bottom: 1px solid #f4f4f4;
+}
+
+.app-facet-nav > li input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.app-facet-nav > li > ul {
+  margin: 0 15px;
+}
+
+.app-facet-nav > li > ul > .app-facet-nav-separator {
+  padding-bottom: 10px;
+}
+
+.app-facet-nav > li > .app-facet-nav-title > span:after {
+  font-family: FontAwesome;
+  content: "\f107";
+  float: right;
+  line-height: 20px;
+  font-size: 20px;
+}
+
+.app-facet-nav > li > .app-facet-nav-title.collapsed > span:after {
+  content: "\f104";
+}
+
+.app-facet-nav li > ul > .active > a {
+  color: #ff6b0c !important;
+  font-weight: bold;
+}
+
+.app-facet-nav li > ul > .active > a:after {
+  font-family: FontAwesome;
+  content: '\f00c';
+  padding-left: 5px;
+}
+
+.app-facet-nav-title {
+  padding: 10px 15px;
+  background-color: #f4f4f4;
+  position: relative;
+}
+
+.app-facet-nav-title.collapsed {
+  background-color: transparent;
+}

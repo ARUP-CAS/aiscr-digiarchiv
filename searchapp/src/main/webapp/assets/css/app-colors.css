@@ -1,0 +1,102 @@
+/*** ---/ COLORS STYLES /--- ***/
+
+/*** Colors ***/
+.app-color-white,
+.app-color-white a,
+.app-btn.app-color-white:hover,
+.app-btn.app-color-white:focus,
+.nav-pills > .active > a,
+.app-btn-timeline.collapsed {
+  color: #fff !important;
+}
+
+.app-color-gray-light,
+.app-color-gray-light a,
+.app-btn-timeline:hover,
+.app-color-gray:hover {
+  color: #8a8a8a !important;
+}
+
+.app-color-silver,
+.app-color-silver a,
+footer div:first-child > p + p > span:not(.collapsed) {
+  color: #e6e6e6 !important;
+}
+
+.app-color-blue,
+.app-color-blue a,
+.app-navbar li > a:hover {
+  color: #2c5ca8 !important;
+}
+
+a,
+.app-color-blue-pastel,
+.app-color-blue-pastel a,
+.app-btn-timeline:hover {
+  color: #5882c4 !important;
+}
+
+.app-color-black,
+.app-color-black a {
+  color: #333 !important;
+}
+
+.app-color-gray,
+.app-color-gray a {
+  color: #6f6f6f !important;
+}
+
+.app-color-yellow {
+  color: #feb228 !important;
+}
+
+/*** Bg colors ***/
+.app-bg-blue-pastel,
+.app-btn.collapsed,
+.app-btn.app-bg-blue-pastel,
+.nav-pills > .active > a,
+.app-btn-timeline.collapsed {
+  background-color: #5882c4 !important;
+}
+
+.app-bg-gray {
+  background-color: #6f6f6f !important;
+}
+
+.app-bg-gray-light,
+.app-btn,
+.app-btn:hover {
+  background-color: #8a8a8a !important;
+}
+
+.app-bg-silver-light,
+.app-result-btn-group-top span,
+.app-btn-timeline,
+.app-btn-timeline.collapsed:hover, 
+.app-persistent-url {
+  background-color: #f4f4f4 !important;
+}
+
+/*** Border colors ***/
+.app-border-color-silver,
+.app-persistent-url {
+  border-color: #e6e6e6 !important;
+}
+
+/*** Mark colors ***/
+.app-cat-texty {background-color: #63307f !important}
+.app-cat-texty .app-cat-box-bottom {background-color: #823fa6 !important}
+.app-cat-foto {background-color: #af711c !important}
+.app-cat-foto .app-cat-box-bottom {background-color: #d68b22 !important}
+.app-cat-lfoto {background-color: #247e4b !important}
+.app-cat-lfoto .app-cat-box-bottom {background-color: #2fa362 !important}
+.app-cat-mplany {background-color: #7b0817 !important}
+.app-cat-mplany .app-cat-box-bottom {background-color: #a10a1e !important}
+.app-cat-ddata {background-color: #15968c !important}
+.app-cat-ddata .app-cat-box-bottom {background-color: #19b1a4 !important}
+
+.app-cat-texty-border {border-color: #823fa6 transparent transparent !important}
+.app-cat-foto-border {border-color: #d68b22 transparent transparent !important}
+.app-cat-lfoto-border {border-color: #2fa362 transparent transparent !important}
+.app-cat-mplany-border {border-color: #a10a1e transparent transparent !important}
+.app-cat-ddata-border {border-color: #19b1a4 transparent transparent !important}

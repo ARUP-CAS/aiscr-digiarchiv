@@ -1,0 +1,71 @@
+<!-- Navbar -->
+<nav class="navbar app-navbar app-clean-border">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand app-clean-pd-top" (click)="logoClicked()" routerLink="home" [title]="'logo_desc' | translate"><img [src]="'logo_src' | translate" [alt]="'logo_desc' | translate" /></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right app-color-gray app-clean-mg-top app-clean-mg-bottom">
+        <!-- Login -->
+        <li class="dropdown app-navbar-item-login">
+          <a *ngIf="!solrService.config  || !solrService.config.logged" 
+            (click)="focusu()"
+            href="#" class="dropdown-toggle" data-toggle="dropdown">
+            {{'Přihlásit' | translate}} <span class="caret"></span>
+          </a>
+          <a *ngIf="solrService.config && solrService.config.logged" href="#" class="dropdown-toggle" data-toggle="dropdown">
+            {{solrService.config.user.jmeno}} {{solrService.config.user.prijmeni}}<span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu app-border-radius">
+            <li>
+              <form class="form" role="form" >
+                <div *ngIf="solrService.config && !solrService.config.logged">
+                  <div class="input-group form-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input #loginuser id="loginuser" type="text" class="form-control" name="loginuser" value="" 
+                           placeholder="Přihlašovací jméno"
+                           (keyup.enter)="focusp($event, loginpwd)"
+                           [(ngModel)]="solrService.loginuser" />                                        
+                  </div>
+                  <div class="input-group form-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    <input id="loginpwd" type="password" class="form-control" name="loginpwd" placeholder="Heslo" #loginpwd
+                           (keyup.enter)="solrService.login()"
+                           [(ngModel)]="solrService.loginpwd" />
+                  </div>
+                  <!-- Pokud budou prihlasovaci udaje spatne, odstran class 'hidden' -->
+                  <div class="alert alert-warning" [class.hidden]="!solrService.loginError">
+                    {{'Špatné přihlašovací údaje' | translate}}.
+                  </div>
+                  <div>
+                    <button type="button" class="btn btn-success btn-block app-border-radius" (click)="solrService.login()">{{'Přihlásit uživatele' | translate}}</button>
+                    <button type="button" class="btn btn-primary btn-block app-border-radius" onclick="window.open('http://api.archeologickamapa.cz/registrace/0/')">{{'Registrovat uživatele' | translate}}</button>
+                  </div>
+                </div>
+                <div *ngIf="solrService.config && solrService.config.logged">
+                  <button type="button" class="btn btn-block app-border-radius" data-toggle="dropdown" (click)="showFav()">{{'Favorites' | translate}}</button>
+                	<button type="button" class="btn btn-danger btn-block app-border-radius" (click)="solrService.logout()">{{'Odhlásit' | translate}}</button>
+                </div>
+             </form>
+            </li>
+          </ul>
+        </li><!--/.login -->
+        <!-- Help -->
+        <li>
+          <a href="#"><i class="fa fa-question-circle"></i>{{'help' | translate}}</a>
+        </li><!--/.help -->
+        <!-- Lang -->
+        <li>
+          <a *ngIf="currentLang !== 'en'" (click)="changeLang('en')" class="app-cursor-pointer">English</a>
+          <a *ngIf="currentLang !== 'cs'" (click)="changeLang('cs')" class="app-cursor-pointer">Čeština</a>
+        </li><!--/.lang -->
+      </ul><!--/.nav -->
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</nav><!--/.navbar -->

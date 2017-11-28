@@ -1,0 +1,22 @@
+<!-- Title collapse -->
+<span *ngIf="komponenty.length > 0" class="app-nav-tree-item  app-cursor-pointer collapsed" data-toggle="collapse" [attr.data-target]="'#'+ id()">
+	{{idShort()}}: {{dok.	nazev}} <span *ngIf="hasValue('typ')">({{dok.typ | translateHeslar: 'typ_dj'}})</span><span *ngIf="hasValue('pian')"> - PIAN: {{dok.pian}}</span>
+	<!-- ID je tam zatim natvrdo -->
+	<!-- presny tvar u zaznamu "M-TX-201600013" by mel byt: D02: Test název D02 (Část akce) - PIAN: P-2414-000002 -->
+</span><!--/.title collapse -->
+
+<!-- Title -->
+<span *ngIf="komponenty.length === 0"  class="app-color-blue-pastel app-weight-bold">
+	{{idShort()}}: {{dok.	nazev}} <span *ngIf="hasValue('typ')">({{dok.typ | translateHeslar: 'typ_dj'}})</span><span *ngIf="hasValue('pian')"> - PIAN: {{dok.pian}}</span>
+	<!-- presny tvar u zaznamu "M-TX-201600013" by mel byt: D02: Test název D02 (Část akce) - PIAN: P-2414-000002 -->
+</span><!--/.title -->
+
+<!--Collapse -->
+<ul class="list-unstyled app-color-black collapse" [id]="id()">
+  <!-- Komponenta -->
+  <span *ngIf="komponenty.length > 0">
+    <li *ngFor="let k of komponenty">
+      <app-komponenta [data]="k" [docId]="id()"></app-komponenta>
+    </li>
+  </span><!--/.komponenta -->
+</ul><!--/.collapse -->

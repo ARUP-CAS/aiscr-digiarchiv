@@ -1,0 +1,7 @@
+/*** ---/ CONTENT WRAPPER STYLES /--- ***/
+
+.app-content-wrapper {
+  min-height: 400px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}

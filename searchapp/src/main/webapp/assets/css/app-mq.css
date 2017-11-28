@@ -1,0 +1,130 @@
+/*** ---/ MEDIA QUERIES STYLES /--- ***/
+
+/*==========  Mobile First Method  ==========*/
+ 
+/*** Custom, iPhone Retina ***/
+@media only screen and (min-width : 320px) {
+ 
+}
+
+/*** Extra Small Devices, Phones ***/
+@media only screen and (min-width : 480px) {
+  /*** Cat box ***/
+  .app-cat-box {
+    width: 204px;
+    float: left;
+  }
+  .app-cat-box:not(:last-child) {
+    margin-right: 30px;
+  }
+  .app-cat-box .media-body {
+    height: 45px;
+  }
+}
+
+/*** Small Devices, Tablets ***/
+@media only screen and (min-width : 768px) {
+   /* Navbar */
+  .app-navbar .navbar-nav li a {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .app-navbar .navbar-nav li:not(:first-child) a {
+    border-left: 1px solid #e6e6e6;
+  }
+  .app-navbar .navbar-nav li a:hover {
+    background: none;
+  }
+  .app-navbar .navbar-nav {
+    margin-top: 58px;
+  }
+  .app-navbar .app-navbar-item-login .dropdown-menu {
+    margin-top: 10px;
+  }
+  /* File viewer */
+  .app-modal-file-viewer .modal-dialog {
+    width: inherit;
+    padding: 0 15px;
+  }
+}
+
+/*** Medium Devices, Desktops ***/
+@media only screen and (min-width : 992px) {
+  /* Jumbotron */
+  .app-jumbotron .col-md-7 .input-group {
+    margin-bottom: 0;
+  }
+  .app-jumbotron {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+	
+  /* Facet */
+  .app-facet {
+    padding-right: 30px;
+    margin-bottom: 0;
+    border-right: 3px solid #f4f4f4;
+  }
+	
+  /* Result */
+  .app-result {
+    padding-left: 30px;
+  }
+  
+  /* Footer */
+  footer .app-footer-logo {
+    text-align: right;
+  }
+  /* File viewer */
+  .app-modal-file-viewer .modal-dialog {
+    width: 900px;
+  }
+}
+
+/*** Large Devices, Wide Screens ***/
+@media only screen and (min-width : 1200px) {
+  /* File viewer */
+  .app-modal-file-viewer .modal-dialog {
+    width: 1030px;
+  }
+}
+
+
+
+/*==========  Non-Mobile First Method  ==========*/
+ 
+/*** Large Devices, Wide Screens ***/
+@media only screen and (max-width : 1200px) {
+ 
+}
+
+/*** Medium Devices, Desktops ***/
+@media only screen and (max-width : 992px) {
+  
+}
+
+/*** Small Devices, Tablets ***/
+@media only screen and (max-width : 768px) {
+ 
+}
+
+/*** Extra Small Devices, Phones ***/
+@media only screen and (max-width : 480px) {
+  .app-advanced-search .form-control {
+    margin-top: 15px;
+  }
+}
+
+/*** Custom, iPhone Retina ***/
+@media only screen and (max-width : 320px) {
+
+}
+
+/*** Custom ***/
+@media only screen and (max-width : 767px) {
+ .app-navbar .navbar-collapse {
+    border-top-color: #e6e6e6;
+    margin-top: 45px;
+	 	margin-bottom: -30px;
+  }
+}

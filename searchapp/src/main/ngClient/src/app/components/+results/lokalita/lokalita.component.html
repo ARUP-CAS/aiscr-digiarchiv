@@ -1,0 +1,63 @@
+<!-- Title -->
+<div class="app-result-item-nav-title app-border-radius app-cursor-pointer app-color-blue-pastel collapsed"
+     data-toggle="collapse" 
+     [attr.data-target]="'#'+id()"
+     (click)="getDokJednotky()">
+  <strong>{{'Lokalita' | translate}} {{idShort()}}</strong> ({{data.nazev}}):
+</div><!--/.title -->
+
+<!-- Collapse -->
+<ul class="list-unstyled app-color-black collapse" [id]="id()">
+  <li class="app-nav-li-separator"></li>
+  <li *ngIf="hasValue('katastr') || hasValue('dalsi_katastry') || hasValue('data.okres')">
+    <label>{{'Katastr (okres)' | translate}}:</label> {{okres()}}
+    <!--<span *ngIf="hasValue('katastr')">{{data.katastr}};</span>
+		<span *ngIf="hasValue('dalsi_katastry')">{{data.dalsi_katastry}}</span>
+		<span *ngIf="hasValue('okres')">({{data.okres}})</span>-->
+  </li>
+  <li *ngIf="hasValue('vedouci_akce') || hasValue('vedlejsi_typ') || hasValue('vedouci_akce_ostatni') || hasValue('organizace_ostatni')">
+    <label>{{'Vedoucí výzkumu' | translate}}:</label> 
+    <span *ngIf="hasValue('vedouci_akce')">{{data.vedouci_akce}};</span>
+		<span *ngIf="hasValue('vedlejsi_typ')">{{data.vedlejsi_typ}}),</span>
+		<span *ngIf="hasValue('vedouci_akce_ostatni')">{{data.vedouci_akce_ostatni}}</span>
+		<span *ngIf="hasValue('data.organizace_ostatni')">({{data.organizace_ostatni}})</span>
+  </li>
+  <li *ngIf="hasValue('typ_lokality')">
+    <label>{{'Typ' | translate}}:</label> 
+    <span>{{data.typ_lokality[0] | translateHeslar: 'typ_lokality'}}</span>
+  </li>
+	<li *ngIf="hasValue('druh')">
+    <label>{{'Druh lokality' | translate}}:</label> 
+    <span>{{data.druh[0] | translateHeslar: 'druh_lokality_druha'}}</span>
+  </li>
+  <li *ngIf="hasValue('nazev')">
+    <label>{{'Název lokality' | translate}}:</label> 
+    <span>{{data.nazev}}</span>
+  </li>
+  <li *ngIf="hasValue('popis')">
+    <label>{{'Popis' | translate}}:</label> 
+    <span>{{data.popis}}</span>
+  </li>
+  <li *ngIf="hasValue('poznamka')">
+    <label>{{'Poznámka' | translate}}:</label>
+    <span>{{data.poznamka}}</span>
+  </li>
+  
+  <!-- Komponenty -->
+  <span *ngIf="dokJednotky.length > 0">
+    <li *ngFor="let k of dokJednotky">
+      <app-dok-jednotka [dok]="k" [docId]="id()"></app-dok-jednotka>
+    </li>
+  </span><!--/.komponenty -->
+  
+  
+  <!-- Externi zdroje -->
+  <span *ngIf="extZdroj.length > 0">
+    <li *ngFor="let k of extZdroj">
+      <app-externi-zdroj [data]="k" [docId]="id()"></app-externi-zdroj>
+    </li>
+  </span><!--/.Externi zdroje -->
+  
+  
+  <li class="app-nav-li-separator"></li>
+</ul><!--/.collapse -->
