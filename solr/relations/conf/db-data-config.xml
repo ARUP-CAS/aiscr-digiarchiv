@@ -1,0 +1,96 @@
+<dataConfig>
+  <script><![CDATA[
+    
+
+	
+      ]]></script>
+  
+  
+  
+  <dataSource name="relief" 
+	driver="oracle.jdbc.OracleDriver" url="jdbc:oracle:thin:@oratest.incad.cz:1521:orcl"  convertType="true"
+	user="TEST_SPISOVNA"
+	password="SPISOVNA" />
+  
+    <dataSource name="rejstrikdb" 
+	driver="oracle.jdbc.OracleDriver" url="jdbc:oracle:thin:@//194.108.215.195:1521/ORCL "  convertType="true"
+	user="LP_CSMS"
+	password="CSMS" />
+  
+    <document>
+      
+        <entity name="rejstrik" 
+                dataSource="rejstrikdb"
+		query="select S.ID, R.*, 
+		'IS CSMS' as S, 'rejstrik' as typ,
+		to_char(S.UPDATE_TIMESTAMP, 'YYYY-MM-DD&quot;T&quot;HH24:MI:SS&quot;Z&quot;') as last_modified,
+		S.OCRTEXT, S.PORADI
+		from SKEN S, REJSTRIK R where S.FK_REJSTRIK=R.ID"
+                deltaQuery="select id from REJSTRIK where UPDATE_TIMESTAMP > '${dataimporter.last_index_time}'">
+            
+        </entity>
+	
+	<entity name="rlf"
+                dataSource="relief"
+		query="select concat('rlf_ucastnik_', UCASTNIK.id) as id, roleosoby, prijmeni, 
+                      jmeno, celejmeno, to_char(DATUMNAROZENI, 'YYYY/MM/DD') as datumnarozeni, 
+                      to_char(DATUMUMRTI, 'YYYY/MM/DD') as datumumrti, ulice, psc, ico, 'IS CSMS' as system, 'ucastnik' as typ, RSPIS_UCASTNIK,
+                      concat('rlf_',SPIS.id) as idspisu, spisznacka, rok, soud, predcisli, cislospisu, cislospisuint,
+                      budova, mistnost, blok, regal, police, corganization, carkod, stav, 
+                      UPPER(agenda) as agenda,
+                      REGEXP_REPLACE(LOWER(prijmeni || ' ' || jmeno),'[[:cntrl:]]|[[:punct:]]') as title_sort_ucas,
+                      COALESCE (ico, celejmeno ) as uc_group,
+                      to_char(UCASTNIK.EDIDATE, 'YYYY-MM-DD&quot;T&quot;HH24:MI:SS&quot;Z&quot;') as last_modified 
+                      from UCASTNIK, SPIS where  SPIS.id=UCASTNIK.RSPIS_UCASTNIK AND RSPIS_UCASTNIK is not NULL"
+		deltaQuery="select id from UCASTNIK where recEdiDate > '${dataimporter.last_index_time}'">
+	   
+	</entity>
+        
+        <entity name="isas"  
+                dataSource="isasGeneric"
+                query="select concat('${dataimporter.request.soudPrefix}_', T.id) as id, 
+                      concat('${dataimporter.request.soudPrefix}_',ID_SKUPINY_ZAZNAMU) as idspisu,
+                      T.*, '${dataimporter.request.soud}' as soud, 
+                      'ISAS' as S, 'ucastnik' as typ,
+                      UPPER(DRUH_VEC) as agenda,
+                      REGEXP_REPLACE(LOWER(NAZEV_OSOBY_PRESNY || ' ' || JMENO),'[[:cntrl:]]|[[:punct:]]') as title_sort_ucas,
+                      NAZEV_OSOBY_PRESNY || JMENO as celejmeno,
+                      COALESCE (ico, NAZEV_OSOBY_PRESNY || JMENO || MESTO) as uc_group,
+                      CISLO_SENATU || ' ' || DRUH_VEC || ' ' || BC_VEC || '/' || ROCNIK || ' (${dataimporter.request.soud})' as spisznacka 
+                      from CCAA_DATA_PRO_CSMS_VIE T"
+                deltaQuery="select id from select * from CCAA_DATA_PRO_CSMS_VIE"
+        transformer="script:deleteChanged">
+				
+			<field column="id" name="id" />
+
+			<field column="spisznacka" name="spisznacka" />
+
+			<field column="S" name="system" />
+			<field column="typ" name="typ" />
+
+			<field name="rok" column="ROCNIK" />				
+			<field name="agenda" column="agenda" />				
+			<field name="soud" column="soud" />
+			<field column="CISLO_SENATU" name="predcisli" />				  
+			<field column="BC_VEC" name="cislospisu" />
+
+			<field name="roleosoby" column="DRUH_ROLE_V_RIZENI" />
+			<field name="prijmeni" column="NAZEV_OSOBY_PRESNY" />
+			<field name="jmeno" column="JMENO" />
+			<field name="celejmeno" column="celejmeno" />
+			<field name="datumnarozeni" column="DATUM_NAROZENI" indexed="false" stored="true" />
+			<field name="datumumrti" column="DATUM_UMRTI" indexed="false" stored="true" />
+			<field name="ulice" column="ULICE" indexed="false" stored="true" />
+			<field name="psc" column="MESTO" indexed="false" stored="true" />
+			<field name="ico" column="ICO" />
+			
+        </entity>
+	
+    </document>
+</dataConfig>
+
+
+
+
+
+
