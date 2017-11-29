@@ -469,8 +469,7 @@ public class Indexer {
       }
 
       Date end = new Date();
-
-      String msg = String.format("Generate thumbs finished. Thumbs: %1$d. %2$t", total, end);
+      String msg = String.format("Generate thumbs finished. Thumbs: %1$d. %2$tF", total, end);
       FileUtils.writeStringToFile(file, msg + System.getProperty("line.separator"), true);
       LOGGER.log(Level.INFO, msg);
       JSONObject jo = new JSONObject();
