@@ -78,6 +78,9 @@ public class Indexer {
       dokumentClient.deleteByQuery("*:*", 100);
       exportClient.deleteByQuery("*:*", 100);
       relationsClient.deleteByQuery("*:*", 100);
+      dokumentClient.close();
+      exportClient.close();
+      relationsClient.close();
       return new JSONObject().put("message", "Index cleaned");
     } catch (IOException | JSONException | SolrServerException ex) {
       LOGGER.log(Level.SEVERE, null, ex);
@@ -497,7 +500,7 @@ public class Indexer {
     }
   }
 
-  public String createThumb(String nazev) {
+  public String createThumb(String nazev, boolean onlySmall) {
     try {
 
       relationsClient = SolrIndex.getClient(opts.getString("csvRelationsCore", "relations/"));
@@ -526,7 +529,9 @@ public class Indexer {
       } else {
         LOGGER.log(Level.INFO, "processing file {0}", f);
         if ("application/pdf".equals(mimetype)) {
-          ImageSupport.mediumPdf(f, nazev);
+          if(!onlySmall){
+            ImageSupport.mediumPdf(f, nazev);
+          }
           return ImageSupport.thumbnailPdfPage(f, 0, nazev);
         } else {
           return ImageSupport.thumbnailImg(f, nazev);
@@ -741,7 +746,7 @@ public class Indexer {
           getChilds(idoc, childid, "odkaz");
         }
       }
-    } catch (SolrServerException ex) {
+    } catch (IOException | SolrServerException ex) {
       LOGGER.log(Level.SEVERE, null, ex);
     }
   }
@@ -761,7 +766,7 @@ public class Indexer {
           getChilds(idoc, childid, "jednotka_dokument");
         }
       }
-    } catch (SolrServerException ex) {
+    } catch (IOException | SolrServerException ex) {
       LOGGER.log(Level.SEVERE, null, ex);
     }
   }

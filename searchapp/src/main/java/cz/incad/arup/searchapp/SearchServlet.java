@@ -71,7 +71,7 @@ public class SearchServlet extends HttpServlet {
         String pristupnost = LoginServlet.pristupnost(request.getSession());
         
 
-        LOGGER.log(Level.INFO, "requesting url {0}", solrhost + userFilter);
+        LOGGER.log(Level.FINE, "requesting url {0}", solrhost + userFilter);
         InputStream inputStream = RESTHelper.inputStream(solrhost + userFilter);
         String solrResp = org.apache.commons.io.IOUtils.toString(inputStream, "UTF-8");
         JSONObject jo =  new JSONObject();

@@ -56,23 +56,9 @@ public class SolrIndex {
     }
 
     public static SolrClient getClient(String core) throws IOException {
-        HttpSolrClient server = new HttpSolrClient(String.format("%s%s",
+        SolrClient server = new HttpSolrClient.Builder(String.format("%s%s",
                 host(),
-                core));
-        server.setMaxRetries(1); // defaults to 0.  > 1 not recommended.
-        server.setConnectionTimeout(5000); // 5 seconds to establish TCP
-
-        // The following settings are provided here for completeness.
-        // They will not normally be required, and should only be used 
-        // after consulting javadocs to know whether they are truly required.
-        server.setSoTimeout(30000);  // socket read timeout
-        server.setDefaultMaxConnectionsPerHost(100);
-        server.setMaxTotalConnections(100);
-        server.setFollowRedirects(false);  // defaults to false
-
-        // allowCompression defaults to false.
-        // Server side must support gzip or deflate for this to have any effect.
-        server.setAllowCompression(true);
+                core)).build();
         return server;
     }
 
@@ -91,7 +77,7 @@ public class SolrIndex {
 
     private static String doQuery(SolrQuery query, String core) throws MalformedURLException, IOException, ProtocolException {
 
-        String urlQueryString = ClientUtils.toQueryString(query, false);
+        String urlQueryString = query.toQueryString();
         Options opts = Options.getInstance();
         String solrURL = String.format("%s/%s/select",
                 host(),
@@ -169,7 +155,7 @@ public class SolrIndex {
         String solrURL = String.format("%s%sselect",
                 host(),
                 core);
-        URL url = new URL(solrURL + ClientUtils.toQueryString(query, false));
+        URL url = new URL(solrURL + query.toQueryString());
         return new JSONObject(IOUtils.toString(url, "UTF-8"));
         
         //return doQuery(query, core);

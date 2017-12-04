@@ -75,7 +75,7 @@ public class ImageServlet extends HttpServlet {
             ImageIO.write(bi, "jpg", out);
           } else {
             Indexer indexer = new Indexer();
-            String t = indexer.createThumb(id);
+            String t = indexer.createThumb(id, "thumb".equals(size));
             //String t = ImageSupport.thumbnail(id);
             if (t != null) {
               response.setContentType("image/jpeg");
