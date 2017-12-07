@@ -30,6 +30,7 @@ public class PDFImageExtractor {
   public static void main(String[] args) {
 
     String source = "/home/alberto/.amcr/soubory/1496304376657_MTX201400253.pdf";
+    source = "c:\\Users\\alberto.a.hernandez\\Projects\\ARUP\\1496847831585_CTX201202277.pdf";
     try (PDDocument document = PDDocument.load(new File(source))) {
       PDFRenderer pdfRenderer = new PDFRenderer(document);
 
@@ -37,9 +38,9 @@ public class PDFImageExtractor {
       int i = 0;
       for (PDPage page : document.getPages()) {
         System.out.println("page: " + i++);
-        if(i == 40){
+//        if(i == 40){
         images.addAll(getImagesFromResources(page.getResources()));
-        }
+//        }
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -61,7 +62,8 @@ public class PDFImageExtractor {
         RenderedImage rimg = ((PDImageXObject) xObject).getImage();
                 
         System.out.println(((PDImageXObject) xObject).getSuffix()); 
-        ImageIO.write(rimg, "PNG", new File("/home/alberto/Projects/ARUP/test/" + xObjectName.getName()));
+//        ImageIO.write(rimg, "PNG", new File("/home/alberto/Projects/ARUP/test/" + xObjectName.getName()));
+        ImageIO.write(rimg, "PNG", new File("c:\\Users\\alberto.a.hernandez\\Projects\\ARUP\\test\\" + xObjectName.getName()));
 //        System.out.print(rimg.getPropertyNames()); 
 //        System.out.print("\t"); 
 //        System.out.println(rimg.getSampleModel().getDataType()); 

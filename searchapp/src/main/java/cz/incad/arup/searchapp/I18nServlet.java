@@ -51,9 +51,8 @@ public class I18nServlet extends HttpServlet {
     try {
 
       response.setContentType("application/json;charset=UTF-8");
-      HttpSession session = request.getSession();
-
-      Options.resetInstance();
+//      HttpSession session = request.getSession();
+//      Options.resetInstance();
       PrintWriter out = response.getWriter();
       String url = request.getRequestURI();
       LOGGER.log(Level.INFO, "url is {0}", url);
