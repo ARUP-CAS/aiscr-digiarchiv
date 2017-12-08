@@ -35,6 +35,7 @@ public class Indexer {
     Options opts;
     PDFThumbsGenerator pdfGen;
     int imgGenerated;
+    int totalDocs = 0;
 
     SolrClient dokumentClient;
     SolrClient exportClient;
@@ -71,7 +72,7 @@ public class Indexer {
 
     public JSONObject createThumbs(boolean overwrite) throws IOException {
         Date start = new Date();
-        int total = 0;
+        totalDocs = 0;
 
         try {
             File file = new File(Options.getInstance().getString("thumbsDir") + File.separator + "skipped.txt");
@@ -102,21 +103,21 @@ public class Indexer {
 
                     Date end = new Date();
 
-                    String msg = String.format("Generate thumbs finished with error. Thumbs :%1$d", total);
+                    String msg = String.format("Generate thumbs finished with error. Thumbs :%1$d", totalDocs);
                     LOGGER.log(Level.INFO, msg);
 
                     JSONObject jo = new JSONObject();
                     jo.put("result", "error");
                     jo.put("error", e.toString());
-                    jo.put("total docs", total);
+                    jo.put("total docs", totalDocs);
                     jo.put("ellapsed time", FormatUtils.formatInterval(end.getTime() - start.getTime()));
                     return jo;
 
                 }
 
                 createThumbs(rsp.getResults(), overwrite);
-                total += rsp.getResults().size();
-                LOGGER.log(Level.INFO, "Currently {0} files processed", total);
+                totalDocs += rsp.getResults().size();
+                LOGGER.log(Level.INFO, "Currently {0} files processed", totalDocs);
 
                 String nextCursorMark = rsp.getNextCursorMark();
                 if (cursorMark.equals(nextCursorMark) || rsp.getResults().size() < rows) {
@@ -127,13 +128,13 @@ public class Indexer {
             }
 
             Date end = new Date();
-            String msg = String.format("Generate thumbs finished. Files processed: %1$d. Pdf thumbs: %2$d. Image thumbs: %3$d. Time: %4$tF", 
-                    total, pdfGen.generated, imgGenerated, end);
+            String msg = String.format("Generate thumbs finished. Files processed: %1$d. Pdf thumbs: %2$d. Image thumbs: %3$d. Time: %4$tF",
+                    totalDocs, pdfGen.generated, imgGenerated, end);
             FileUtils.writeStringToFile(file, msg + System.getProperty("line.separator"), "UTF-8", true);
             LOGGER.log(Level.INFO, msg);
             JSONObject jo = new JSONObject();
             jo.put("result", "Update success");
-            jo.put("total thumbs", total);
+            jo.put("total thumbs", totalDocs);
             jo.put("ellapsed time", FormatUtils.formatInterval(end.getTime() - start.getTime()));
             relationsClient.close();
             return jo;
@@ -143,7 +144,7 @@ public class Indexer {
 
             Date end = new Date();
 
-            String msg = String.format("Generate thumbs finished with errors. Thumbs: %1$d", total);
+            String msg = String.format("Generate thumbs finished with errors. Thumbs: %1$d", totalDocs);
             File file = new File(Options.getInstance().getString("thumbsDir") + File.separator + "skipped.txt");
             FileUtils.writeStringToFile(file, msg + System.getProperty("line.separator"), "UTF-8", true);
             LOGGER.log(Level.INFO, msg);
@@ -151,7 +152,7 @@ public class Indexer {
             JSONObject jo = new JSONObject();
             jo.put("result", "error");
             jo.put("error", ex.toString());
-            jo.put("total docs", total);
+            jo.put("total docs", totalDocs);
             jo.put("ellapsed time", FormatUtils.formatInterval(end.getTime() - start.getTime()));
             return jo;
         }
@@ -189,7 +190,7 @@ public class Indexer {
                 LOGGER.log(Level.INFO, "processing file {0}", f);
                 if ("application/pdf".equals(mimetype)) {
                     pdfGen.processFile(f);
-                    
+
                 } else {
                     ImageSupport.thumbnailImg(f, nazev);
                 }
@@ -216,7 +217,9 @@ public class Indexer {
                     if (!f.exists()) {
                         LOGGER.log(Level.FINE, "File {0} doesn't exists", f);
                     } else {
-                        LOGGER.log(Level.INFO, "processing file {0}. Currently generated {1}", new Object[]{f, pdfGen.generated});
+                        String msg = String.format("Currently Files processed: %1$d. Pdf thumbs: %2$d. Image thumbs: %3$d.",
+                                totalDocs, pdfGen.generated, imgGenerated);
+                        LOGGER.log(Level.INFO, "processing file {0}. {1}", new Object[]{f, msg});
                         if ("application/pdf".equals(mimetype)) {
                             pdfGen.processFile(f);
 //                            ImageSupport.thumbnailPdfPage(f, 0, nazev);

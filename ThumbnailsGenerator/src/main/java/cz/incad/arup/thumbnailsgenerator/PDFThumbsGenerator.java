@@ -66,7 +66,7 @@ public class PDFThumbsGenerator {
             
         //Test if the file was last processed before crash;
             String lastProcessed = readProcessing();
-            if (!unprocessables.contains(lastProcessed)) {
+            if (!"".equals(lastProcessed) && !unprocessables.contains(lastProcessed)) {
                 LOGGER.log(Level.INFO, "Last attemp to generate file {0} failed. Writing to unpracessables.txt", lastProcessed);
                 writeUnprocessable(lastProcessed);
                 writeProcessing("");
@@ -102,7 +102,7 @@ public class PDFThumbsGenerator {
             try (PDDocument document = PDDocument.load(f)) {
                 PDFRenderer pdfRenderer = new PDFRenderer(document);
                 for (PDPage page : document.getPages()) {
-                    LOGGER.log(Level.INFO, "page {0}", pageCounter + 1);
+                    LOGGER.log(Level.FINE, "page {0}", pageCounter + 1);
 
 //                        getImagesFromResources(page.getResources());
                     BufferedImage bim = getImageFromPage(pdfRenderer, pageCounter);
@@ -128,7 +128,7 @@ public class PDFThumbsGenerator {
         }
     }
 
-    private BufferedImage getImageFromPage(PDFRenderer pdfRenderer, int page) throws IOException {
+    private BufferedImage getImageFromPage(PDFRenderer pdfRenderer, int page) throws Exception {
         return pdfRenderer.renderImageWithDPI(page, 72, ImageType.RGB);
     }
 

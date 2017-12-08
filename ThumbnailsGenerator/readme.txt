@@ -9,11 +9,11 @@ In that file is the list of pdf files the program will skip.
 
 Examples of use:
 
-Generate all thumbs from index
+Generate all thumbs from index, without overwriting exiting ones. If folder exists skip.
 java -Xmx3g -Damcr_app_dir=/var/lib/archeo/amcr/ -jar ThumbnailsGenerator.jar 
 
-Generate all thumbs from index, without overwriting exiting ones. If folder exists skip.
-java -Xmx3g -Damcr_app_dir=/var/lib/archeo/amcr/ -jar ThumbnailsGenerator.jar -nooverwrite
+Generate all thumbs from index overwriting exiting ones
+java -Xmx3g -Damcr_app_dir=/var/lib/archeo/amcr/ -jar ThumbnailsGenerator.jar -o 
 
 Generate thumbs for file, pasing the full path in disk
 java -Xmx3g -Damcr_app_dir=/var/lib/archeo/amcr/ -jar ThumbnailsGenerator.jar -f /var/lib/amcr/data/1496847831585_CTX201202277.pdf

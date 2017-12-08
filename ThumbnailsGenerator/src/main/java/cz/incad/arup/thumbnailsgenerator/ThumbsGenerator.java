@@ -22,7 +22,6 @@ public class ThumbsGenerator {
     public static void main(String[] args) {
 
 //    try {
-//      System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
 //      //"sun.java2d.cmm.kcms.CMM"
 //      Class.forName("sun.java2d.cmm.kcms.CMM");
 //      Class.forName("sun.java2d.cmm.kcms.KcmsServiceProvider");
@@ -34,15 +33,14 @@ public class ThumbsGenerator {
         System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
         System.setProperty("org.apache.pdfbox.rendering.UsePureJavaCMYKConversion", "true");
         
-        boolean overwrite = true;
+        boolean overwrite = false;
 
         if (args.length > 0) {
             String action = args[0];
-            System.out.println(action);
             switch(action){
-                case "-nooverwrite":
+                case "-o":
                 {
-                    overwrite = false;
+                    overwrite = true;
                 }
                 case "-f":
                 {
