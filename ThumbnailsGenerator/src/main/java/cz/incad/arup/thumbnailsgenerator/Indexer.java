@@ -116,7 +116,7 @@ public class Indexer {
                 }
 
                 createThumbs(rsp.getResults(), overwrite);
-                totalDocs += rsp.getResults().size();
+                //totalDocs += rsp.getResults().size();
                 LOGGER.log(Level.INFO, "Currently {0} files processed", totalDocs);
 
                 String nextCursorMark = rsp.getNextCursorMark();
@@ -230,6 +230,7 @@ public class Indexer {
                         }
                     }
                 }
+                totalDocs++;
             }
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, null, ex);

@@ -5,10 +5,7 @@
  */
 package cz.incad.arup.thumbnailsgenerator;
 
-import java.awt.color.ColorSpace;
-import java.awt.color.ICC_ColorSpace;
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONObject;
