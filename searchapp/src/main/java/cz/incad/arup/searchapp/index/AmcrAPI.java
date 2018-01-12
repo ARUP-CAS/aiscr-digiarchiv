@@ -119,7 +119,7 @@ public class AmcrAPI {
   }
 
   private Integer login() throws Exception {
-    int resp = (Integer) sendRequest("login", new Object[]{sid, USER, sha1(PWD), "deprecated"});
+    int resp = (Integer) sendRequest("login", new Object[]{sid, USER, sha1(PWD), "deprecated", false, "{\"api\":1}"});
     if (resp == 1) {
       LOGGER.log(Level.INFO, "login success");
     } else {
@@ -129,9 +129,9 @@ public class AmcrAPI {
   }
 
   public JSONObject login(String user, String pwd) throws Exception {
- LOGGER.log(Level.INFO, "logining " +user);
+    LOGGER.log(Level.INFO, "logining " +user);
     if (connect()) {
-      int resp = (Integer) sendRequest("login", new Object[]{sid, user, sha1(pwd), "deprecated"});
+      int resp = (Integer) sendRequest("login", new Object[]{sid, user, sha1(pwd), "deprecated", false, "{\"api\":1}"});
       if (resp == 1) {
         LOGGER.log(Level.INFO, "login success");
         return getUserInfo();
