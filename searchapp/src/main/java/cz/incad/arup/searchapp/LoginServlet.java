@@ -91,7 +91,6 @@ public class LoginServlet extends HttpServlet {
           if (user != null) {
             AmcrAPI amcr = new AmcrAPI();
             jo = amcr.login(user, req.getParameter("pwd"));
-            //LOGGER.log(Level.INFO, jo.toString());
             Iterator it = jo.keys();
             if(it.hasNext()){
               String userid = (String) it.next();
@@ -117,6 +116,7 @@ public class LoginServlet extends HttpServlet {
                 jo.getJSONObject(userid).put("pristupnost", "A");
               }
               
+            LOGGER.log(Level.FINE, jo.toString(2));
               req.getSession().setAttribute("user", jo);
               req.getSession().setAttribute("userid", userid);
             }

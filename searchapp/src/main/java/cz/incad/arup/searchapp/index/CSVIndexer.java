@@ -144,7 +144,8 @@ public class CSVIndexer {
                 int terrors = 0;
                 JSONObject typeJson = new JSONObject();
 
-                CSVFormat f = CSVFormat.newFormat('#').withEscape('\\').withQuote('\"').withFirstRecordAsHeader();
+                //CSVFormat f = CSVFormat.newFormat('#').withEscape('\\').withQuote('\"').withFirstRecordAsHeader();
+                CSVFormat f = CSVFormat.newFormat('#').withEscape('\\').withFirstRecordAsHeader();
                 CSVParser parser = new CSVParser(in, f);
                 Map<String, Integer> header = parser.getHeaderMap();
                 try {
@@ -181,7 +182,6 @@ public class CSVIndexer {
 
                     typeJson.put("ellapsed time", FormatUtils.formatInterval(tend.getTime() - tstart.getTime()));
                     ret.put(file.getName(), typeJson).put("docs indexed", success);
-                    closeClients();
                 } finally {
 
                     parser.close();
@@ -535,7 +535,7 @@ public class CSVIndexer {
             query.setRows(100);
             JSONObject resp = SolrIndex.json(query, "relations/");
             if (resp.getJSONObject("response").getJSONArray("docs").length() > 0) {
-                idoc.addField("soubor", resp.getJSONObject("response").getJSONArray("docs"));
+                idoc.addField("soubor", resp.getJSONObject("response").getJSONArray("docs").toString());
             }
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
@@ -605,7 +605,7 @@ public class CSVIndexer {
         JSONObject typeJson = new JSONObject();
 //    CSVReader reader = new CSVReader(new InputStreamReader(new URL(url).openStream(), "UTF-8"), '#', '\"', false);
 
-        CSVFormat f = CSVFormat.newFormat('#').withEscape('\\').withQuote('\"').withFirstRecordAsHeader();
+        CSVFormat f = CSVFormat.newFormat('#').withEscape('\\').withQuote(null).withFirstRecordAsHeader();
         CSVParser parser = new CSVParser(in, f);
         Map<String, Integer> header = parser.getHeaderMap();
         try {

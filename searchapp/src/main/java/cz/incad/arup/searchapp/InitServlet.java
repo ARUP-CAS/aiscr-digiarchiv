@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author alberto
  */
 public class InitServlet extends HttpServlet {
+  public static final Logger LOGGER = Logger.getLogger(InitServlet.class.getName());
 
   //Directory where cant override configuration  
   public static String CONFIG_DIR = ".amcr";
@@ -65,7 +66,7 @@ public class InitServlet extends HttpServlet {
       CONFIG_DIR = System.getProperty("user.home") + File.separator + CONFIG_DIR;
     }
     
-    
+    LOGGER.log(Level.INFO, "CONFIG_DIR is -> {0}", CONFIG_DIR);
   }
 
   // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
