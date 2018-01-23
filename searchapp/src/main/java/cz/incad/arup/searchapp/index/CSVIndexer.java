@@ -12,6 +12,7 @@ import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -625,7 +626,8 @@ public class CSVIndexer {
                     terrors++;
                     errors++;
                     ret.getJSONArray("errors msgs").put(record);
-                    LOGGER.log(Level.SEVERE, "Error indexing doc {0}", record);
+                    LOGGER.log(Level.SEVERE, "Error indexing doc in line {0}", parser.getCurrentLineNumber());
+                    LOGGER.log(Level.SEVERE, "Error indexing doc {0} in line {1}", record);
                     LOGGER.log(Level.SEVERE, null, ex);
                 }
             }
@@ -646,27 +648,17 @@ public class CSVIndexer {
     private SolrInputDocument parseCsvLine(Map<String, Integer> header, CSVRecord record, String uniqueField, String doctype, boolean hasRelations) {
 
         SolrInputDocument doc = new SolrInputDocument();
-//      JSONArray jafields = opts.getJSONObject("indexFieldsByType").optJSONArray(doctype);
-//      ArrayList<String> fields;
-//      if (jafields != null) {
-//        fields = new ArrayList<String>();
-//        for (int i = 0; i < jafields.length(); i++) {
-//          if(header.containsKey(jafields.getString(i))){
-//            fields.add(jafields.getString(i));
-//          } else {
-//            LOGGER.log(Level.WARNING, "{0} not contains field {1}. Ignoring", new String[]{doctype, jafields.getString(i)});
-//          }
-//        }
-//      } else {
-//        fields = new ArrayList<String>(Arrays.asList((String[]) header.keySet().toArray()));
-//      }
-//      
-//      for (String field :fields){
-//          doc.addField(field, record.get(field));
-//      }
+        
 
         for (Map.Entry<String, Integer> entry : header.entrySet()) {
+          //Vyjimka pro autoru. Muze mit oddelovac ;
+          if(entry.getKey().equals("autor")){
+            ArrayList<String> values = new ArrayList<String>(Arrays.asList(record.get(entry.getKey()).split(";")));
+            doc.addField("autor", values);
+            doc.addField("autor_sort", values.get(0));
+          } else {
             doc.addField(entry.getKey(), record.get(entry.getKey()));
+          }
         }
 
         String uniqueid;

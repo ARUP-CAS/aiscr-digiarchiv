@@ -93,7 +93,8 @@ export class ResultItemComponent implements OnInit {
   }
   formatAutor(){
     if(this.result){
-      this.autor = this.result['autor'].replace(/;/g, "; ")
+      let autors : string[] = this.result['autor']
+      this.autor = autors.join("; ");
     }
   }
   
