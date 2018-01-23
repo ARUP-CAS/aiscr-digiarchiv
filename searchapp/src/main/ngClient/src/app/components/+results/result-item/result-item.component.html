@@ -50,10 +50,6 @@
           </div>
           <ul class="list-unstyled app-nav-tree app-color-black collapse" [id]="'popis_'+ id()">
             <li class="app-nav-li-separator"></li>
-            <li *ngIf="hasValue('pristupnost')">
-              <label>{{'Přístupnost záznamu' | translate}}:</label>
-              <span>{{result.pristupnost | translateHeslar: 'pristupnost'}}</span>
-            </li>
             <li *ngIf="hasValue('jazyk_dokumentu')">
               <label>{{'Jazyk' | translate}}:</label>
               <span>{{result.jazyk_dokumentu | translateHeslar: 'jazyk_dokumentu'}}</span>

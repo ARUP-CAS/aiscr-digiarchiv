@@ -30,10 +30,6 @@
     <label>{{'Druh lokality' | translate}}:</label> 
     <span>{{data.druh[0] | translateHeslar: 'druh_lokality_druha'}}</span>
   </li>
-  <li *ngIf="hasValue('nazev')">
-    <label>{{'Název lokality' | translate}}:</label> 
-    <span>{{data.nazev}}</span>
-  </li>
   <li *ngIf="hasValue('popis')">
     <label>{{'Popis' | translate}}:</label> 
     <span>{{data.popis}}</span>
