@@ -10,11 +10,61 @@
     "secure": false
   },
   "/assets/i18n/**": {
-    "target": "http://localhost:8084/assets/i18n/",
+    "target": "http://localhost:8082/assets/i18n/",
     "ignorePath": false,
     "logLevel": "debug",
     "pathRewrite": {
       "^/assets/i18n":""
+    },
+    "changeOrigin": false,
+    "secure": false
+  },
+  "/texts": {
+    "target": "http://localhost:8082/texts",
+    "ignorePath": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/texts":""
+    },
+    "changeOrigin": false,
+    "secure": false
+  },
+  "/fav": {
+    "target": "http://localhost:8082/fav",
+    "ignorePath": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/fav":""
+    },
+    "changeOrigin": false,
+    "secure": false
+  },
+  "/img": {
+    "target": "http://localhost:8082/img",
+    "ignorePath": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/img":""
+    },
+    "changeOrigin": false,
+    "secure": false
+  },
+  "/pdf": {
+    "target": "http://localhost:8082/pdf",
+    "ignorePath": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/pdf":""
+    },
+    "changeOrigin": false,
+    "secure": false
+  },
+  "/login": {
+    "target": "http://localhost:8082/login",
+    "ignorePath": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/login":""
     },
     "changeOrigin": false,
     "secure": false
