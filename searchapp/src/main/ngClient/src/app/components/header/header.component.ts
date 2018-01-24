@@ -39,6 +39,7 @@ export class HeaderComponent implements OnInit {
   }
 
   changeLang(lang: string){
+    this.solrService.currentLang = lang;
     this.translate.use(lang);
   }
 

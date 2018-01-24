@@ -27,6 +27,9 @@ export class SolrService implements OnDestroy {
   public config: any;
   public _configSubject = new Subject();
   public configObservable: Observable<any> = this._configSubject.asObservable();
+  
+  public currentLang: string = 'cs';
+  
   public _logginChanged = new Subject();
   public logginChanged: Observable<any> = this._logginChanged.asObservable();
 
@@ -151,17 +154,19 @@ export class SolrService implements OnDestroy {
         this.rows = this.config['searchParams']['rows'];
         this.currentSort = this.sorts[0];
 
-        var userLang = navigator.language.split('-')[0]; // use navigator lang if available
+        this.currentLang = navigator.language.split('-')[0]; // use navigator lang if available
 
-        userLang = /(cs|en)/gi.test(userLang) ? userLang : 'cs';
+        this.currentLang = /(cs|en)/gi.test(this.currentLang) ? this.currentLang : 'cs';
 
-        userLang = this.config['defaultLang'];
+        this.currentLang = this.config['defaultLang'];
+        
+        
 
         // this language will be used as a fallback when a translation isn't found in the current language
         this.translate.setDefaultLang(this.config['defaultLang']);
 
         // the lang to use, if the lang isn't available, it will use the current loader to get them
-        this.translate.use(userLang);
+        this.translate.use(this.currentLang);
 
         this.getObdobi().subscribe(res => {
           this.obdobi = res;

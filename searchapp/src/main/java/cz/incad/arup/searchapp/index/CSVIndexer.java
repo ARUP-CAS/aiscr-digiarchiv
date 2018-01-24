@@ -475,7 +475,7 @@ public class CSVIndexer {
             }
 
             if (docs.length() > 0) {
-                idoc.addField("pian", docs);
+                idoc.addField("pian", docs.toString());
             }
 
         } catch (IOException ex) {
@@ -609,17 +609,20 @@ public class CSVIndexer {
         CSVFormat f = CSVFormat.newFormat('#').withEscape('\\').withQuote(null).withFirstRecordAsHeader();
         CSVParser parser = new CSVParser(in, f);
         Map<String, Integer> header = parser.getHeaderMap();
+        ArrayList<SolrInputDocument> docs = new ArrayList<>();
         try {
 
             for (final CSVRecord record : parser) {
                 try {
                     SolrInputDocument doc = parseCsvLine(header, record, uniqueField, doctype, hasRelations);
 
-                    sclient.add(doc);
+                    docs.add(doc);
                     tsuccess++;
                     success++;
                     if (success % 500 == 0) {
+                        sclient.add(docs);
                         sclient.commit();
+                        docs.clear();
                         LOGGER.log(Level.INFO, "Indexed {0} docs", success);
                     }
                 } catch (Exception ex) {
@@ -631,8 +634,9 @@ public class CSVIndexer {
                     LOGGER.log(Level.SEVERE, null, ex);
                 }
             }
-
+            sclient.add(docs);
             sclient.commit();
+            docs.clear();
 
             typeJson.put("docs indexed", tsuccess).put("errors", terrors);
             Date tend = new Date();
@@ -648,9 +652,12 @@ public class CSVIndexer {
     private SolrInputDocument parseCsvLine(Map<String, Integer> header, CSVRecord record, String uniqueField, String doctype, boolean hasRelations) {
 
         SolrInputDocument doc = new SolrInputDocument();
-        
-
         for (Map.Entry<String, Integer> entry : header.entrySet()) {
+          
+          //Vyjimka pro pian, nechceme geom_gml
+          if(entry.getKey().equals("geom_gml")){
+            continue;
+          }
           //Vyjimka pro autoru. Muze mit oddelovac ;
           if(entry.getKey().equals("autor")){
             ArrayList<String> values = new ArrayList<String>(Arrays.asList(record.get(entry.getKey()).split(";")));

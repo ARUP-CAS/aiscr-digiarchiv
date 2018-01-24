@@ -47,23 +47,21 @@ public class ImageServlet extends HttpServlet {
       String id = request.getParameter("id");
       String size = request.getParameter("size");
       boolean full = Boolean.parseBoolean(request.getParameter("full"));
-      if (full) {
-            
-            
       Options opts = Options.getInstance();
-      String imagesDir = opts.getString("imagesDir");
-          String path = request.getParameter("filepath");
-          File f = new File(imagesDir + path);
-          
-          IOUtils.copy(new FileInputStream(f), out);
-          return;
+      boolean dynamicThumbs = opts.getBoolean("dynamicThumbs", false);
+      if (full) {
+        String imagesDir = opts.getString("imagesDir");
+        String path = request.getParameter("filepath");
+        File f = new File(imagesDir + path);
+        IOUtils.copy(new FileInputStream(f), out);
+        return;
       }
-      if(size == null){
+      if (size == null) {
         size = "thumb";
       }
       if (id != null && !id.equals("")) {
         try {
-          
+
           //String fname = Options.getInstance().getString("thumbsDir") + id + ".jpg";
           String dest = ImageSupport.getDestDir(id) + id + ".jpg";
           String fname = ImageSupport.getDestDir(id) + id + "_" + size + ".jpg";
@@ -71,21 +69,24 @@ public class ImageServlet extends HttpServlet {
           if (f.exists()) {
             response.setContentType("image/jpeg");
             BufferedImage bi = ImageIO.read(f);
-            ImageSupport.addWatermark(bi, logoImg(response, out), (float) Options.getInstance().getDouble("watermark.alpha", 0.2f));
+            ImageSupport.addWatermark(bi, logoImg(response, out), (float) opts.getDouble("watermark.alpha", 0.2f));
             ImageIO.write(bi, "jpg", out);
-          } else {
+          } else if (dynamicThumbs) {
             Indexer indexer = new Indexer();
             String t = indexer.createThumb(id, "thumb".equals(size));
             //String t = ImageSupport.thumbnail(id);
             if (t != null) {
               response.setContentType("image/jpeg");
               BufferedImage bi = ImageIO.read(new File(fname));
-              ImageSupport.addWatermark(bi, logoImg(response, out), (float) Options.getInstance().getDouble("watermark.alpha", 0.2f));
+              ImageSupport.addWatermark(bi, logoImg(response, out), (float)opts.getDouble("watermark.alpha", 0.2f));
               ImageIO.write(bi, "jpg", out);
             } else {
               LOGGER.info("no image");
               emptyImg(response, out);
             }
+          } else {
+            LOGGER.info("no image");
+            emptyImg(response, out);
           }
         } catch (Exception ex) {
           LOGGER.log(Level.SEVERE, null, ex);
