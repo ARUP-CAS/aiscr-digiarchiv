@@ -21,7 +21,7 @@
   <div class="app-result-item-inner clearfix">
     <div class="hidden app-id">{{result.ident_cely}}</div>
     <div class="media-left">
-      <img *ngIf="files.length > 0" class="app-result-item-img-thumb app-cursor-pointer" [src]="solrService.config.img + '?id='+files[0].nazev" (click)="viewFile()" />
+      <img *ngIf="files.length > 0" class="app-result-item-img-thumb app-cursor-pointer" [src]="solrService.config.img + '?id='+files[0].filepath" (click)="viewFile()" />
     </div>
     <div class="media-body">
       <h4 class="app-clean-mg-top app-color-blue-pastel">{{autor}} 
