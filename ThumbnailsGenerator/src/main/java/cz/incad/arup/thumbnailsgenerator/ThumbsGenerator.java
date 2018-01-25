@@ -34,10 +34,12 @@ public class ThumbsGenerator {
 
         if (args.length > 0) {
             String action = args[0];
+            Logger.getLogger(ThumbsGenerator.class.getName()).log(Level.INFO, "action: {0}", action);
             switch(action){
                 case "-o":
                 {
                     overwrite = true;
+                    break;
                 }
                 case "-f":
                 {

@@ -225,7 +225,7 @@ public class Indexer {
 //                            ImageSupport.thumbnailPdfPage(f, 0, nazev);
 //                            ImageSupport.mediumPdf(f, nazev);
                         } else {
-                            ImageSupport.thumbnailzeImg(f, nazev);
+                            ImageSupport.thumbnailzeImg(f, path);
                             imgGenerated++;
                         }
                     }
