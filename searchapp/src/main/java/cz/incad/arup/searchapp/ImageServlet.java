@@ -60,18 +60,31 @@ public class ImageServlet extends HttpServlet {
         size = "thumb";
       }
       if (id != null && !id.equals("")) {
+        boolean isPdf = id.toLowerCase().endsWith(".pdf");
         try {
 
           //String fname = Options.getInstance().getString("thumbsDir") + id + ".jpg";
-          String dest = ImageSupport.getDestDir(id) + id + ".jpg";
-          String fname = ImageSupport.getDestDir(id) + id + "_" + size + ".jpg";
+          String dest = ImageSupport.getDestDir(id);
+          if(isPdf){
+            dest += id + File.separator;
+          }
+          String fname = dest + id + "_" + size + ".jpg";
           File f = new File(fname);
+          if(!f.exists() && size.equals("thumb")){
+            //a bug in PDFThumbsGenerator write name of thumb without id
+            // check if exists _thumb.jpg in that directory
+            if(new File(dest + "_thumb.jpg").exists()){
+              fname = dest + "_thumb.jpg";
+              f = new File(fname);
+            }
+          }
           if (f.exists()) {
             response.setContentType("image/jpeg");
             BufferedImage bi = ImageIO.read(f);
             ImageSupport.addWatermark(bi, logoImg(response, out), (float) opts.getDouble("watermark.alpha", 0.2f));
             ImageIO.write(bi, "jpg", out);
           } else if (dynamicThumbs) {
+            LOGGER.log(Level.INFO, "File does not exist in {0}. Trying to generate", fname);
             Indexer indexer = new Indexer();
             String t = indexer.createThumb(id, "thumb".equals(size));
             //String t = ImageSupport.thumbnail(id);
@@ -85,6 +98,7 @@ public class ImageServlet extends HttpServlet {
               emptyImg(response, out);
             }
           } else {
+            LOGGER.log(Level.INFO, "File does not exist in {0}. ",fname);
             LOGGER.info("no image");
             emptyImg(response, out);
           }
