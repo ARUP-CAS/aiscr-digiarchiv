@@ -6,6 +6,7 @@
 package cz.incad.arup.thumbnailsgenerator;
 
 import static cz.incad.arup.thumbnailsgenerator.ImageSupport.LOGGER;
+import static cz.incad.arup.thumbnailsgenerator.ImageSupport.resizeWithThumbnailator;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -147,6 +148,7 @@ public class PDFThumbsGenerator {
         writeSkipped(0, id, width + " x " + height);
         return null;
     }
+    
     try {
       int w = opts.getInt("thumbWidth", 100);
       String destDir = ImageSupport.makeDestDir(id);

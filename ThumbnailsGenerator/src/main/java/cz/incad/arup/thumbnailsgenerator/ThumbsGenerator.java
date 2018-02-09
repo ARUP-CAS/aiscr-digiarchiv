@@ -8,6 +8,7 @@ package cz.incad.arup.thumbnailsgenerator;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import org.json.JSONObject;
 
 /**
@@ -29,7 +30,7 @@ public class ThumbsGenerator {
         System.setProperty("java.awt.headless", "true"); 
         System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
         System.setProperty("org.apache.pdfbox.rendering.UsePureJavaCMYKConversion", "true");
-        
+        ImageIO.scanForPlugins();
         boolean overwrite = false;
 
         if (args.length > 0) {

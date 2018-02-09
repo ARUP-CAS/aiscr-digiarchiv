@@ -124,7 +124,7 @@ public class ImageSupport {
       return destDir;
   }
   
-    public static String thumbnailImg(File f, String id) {
+    public static String thumbnailImgOld(File f, String id) {
 
         String outputFile = getDestDir(id) + id;
         try {

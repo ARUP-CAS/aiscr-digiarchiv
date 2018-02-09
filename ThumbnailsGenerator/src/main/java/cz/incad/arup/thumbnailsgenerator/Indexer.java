@@ -157,6 +157,35 @@ public class Indexer {
             return jo;
         }
     }
+    
+    private void createThumbFromSolrDoc(SolrDocument doc, boolean overwrite){
+      
+            String imagesDir = opts.getString("imagesDir");
+            String nazev = doc.getFirstValue("nazev").toString();
+              String path = doc.getFirstValue("filepath").toString();
+              String mimetype = doc.getFirstValue("mimetype").toString();
+              //if (overwrite || !ImageSupport.thumbExists(nazev)) {
+              if (overwrite || !ImageSupport.folderExists(nazev)) {
+
+                  File f = new File(imagesDir + path);
+                  if (!f.exists()) {
+                      LOGGER.log(Level.FINE, "File {0} doesn't exists", f);
+                  } else {
+                      String msg = String.format("Currently Files processed: %1$d. Pdf thumbs: %2$d. Image thumbs: %3$d.",
+                              totalDocs, pdfGen.generated, imgGenerated);
+                      LOGGER.log(Level.INFO, "processing file {0}. {1}", new Object[]{f, msg});
+                      if ("application/pdf".equals(mimetype)) {
+                          pdfGen.processFile(f);
+//                            ImageSupport.thumbnailPdfPage(f, 0, nazev);
+//                            ImageSupport.mediumPdf(f, nazev);
+                      } else {
+                          ImageSupport.thumbnailzeImg(f, path);
+                          imgGenerated++;
+                      }
+                  }
+              }
+              totalDocs++;
+    }
 
     public void createThumb(String nazev, boolean onlySmall) {
         try {
@@ -168,7 +197,7 @@ public class Indexer {
             query.addFilterQuery("doctype:soubor");
 
             Options opts = Options.getInstance();
-            String imagesDir = opts.getString("imagesDir");
+            
 
             SolrDocumentList docs = relationsClient.query(query).getResults();
             if (docs.getNumFound() == 0) {
@@ -176,25 +205,9 @@ public class Indexer {
                 return;
             }
             SolrDocument doc = docs.get(0);
-
+            createThumbFromSolrDoc(doc, true);
             relationsClient.close();
-            //String nazev = doc.getFirstValue("nazev").toString();
-            String path = doc.getFirstValue("filepath").toString();
-            String mimetype = doc.getFirstValue("mimetype").toString();
-
-            File f = new File(imagesDir + path);
-            if (!f.exists()) {
-                LOGGER.log(Level.WARNING, "File {0} doesn't exists", f);
-                return;
-            } else {
-                LOGGER.log(Level.INFO, "processing file {0}", f);
-                if ("application/pdf".equals(mimetype)) {
-                    pdfGen.processFile(f);
-
-                } else {
-                    ImageSupport.thumbnailImg(f, nazev);
-                }
-            }
+            
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
@@ -207,30 +220,7 @@ public class Indexer {
             //ImageSupport.initCount();
 
             for (SolrDocument doc : docs) {
-                String nazev = doc.getFirstValue("nazev").toString();
-                String path = doc.getFirstValue("filepath").toString();
-                String mimetype = doc.getFirstValue("mimetype").toString();
-                //if (overwrite || !ImageSupport.thumbExists(nazev)) {
-                if (overwrite || !ImageSupport.folderExists(nazev)) {
-
-                    File f = new File(imagesDir + path);
-                    if (!f.exists()) {
-                        LOGGER.log(Level.FINE, "File {0} doesn't exists", f);
-                    } else {
-                        String msg = String.format("Currently Files processed: %1$d. Pdf thumbs: %2$d. Image thumbs: %3$d.",
-                                totalDocs, pdfGen.generated, imgGenerated);
-                        LOGGER.log(Level.INFO, "processing file {0}. {1}", new Object[]{f, msg});
-                        if ("application/pdf".equals(mimetype)) {
-                            pdfGen.processFile(f);
-//                            ImageSupport.thumbnailPdfPage(f, 0, nazev);
-//                            ImageSupport.mediumPdf(f, nazev);
-                        } else {
-                            ImageSupport.thumbnailzeImg(f, path);
-                            imgGenerated++;
-                        }
-                    }
-                }
-                totalDocs++;
+              createThumbFromSolrDoc(doc, overwrite);
             }
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, null, ex);
