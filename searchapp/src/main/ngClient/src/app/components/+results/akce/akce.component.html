@@ -20,7 +20,7 @@
 		<label>{{'Vedoucí výzkumu' | translate}}:</label> 
 		<span *ngIf="hasValue('vedouci_akce')">{{data.vedouci_akce}}</span>
 		<span *ngIf="hasValue('organizace')">({{data.organizace}});</span>
-		<span *ngIf="hasValue('vedouci_akce_ostatni')">{{data.vedouci_akce_ostatni}} </span>
+		<span *ngIf="hasValue('vedouci_akce_ostatni')">{{data.vedouci_akce_ostatni_formated}} </span>
 		<span *ngIf="hasValue('organizace_ostatni')">({{data.organizace_ostatni}})</span>
   </li>
   <li *ngIf="hasValue('hlavni_typ') || hasValue('vedlejsi_typ')">

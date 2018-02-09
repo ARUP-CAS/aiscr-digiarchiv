@@ -91,6 +91,7 @@ export class ResultItemComponent implements OnInit {
 
     this.getIsFav();
   }
+  
   formatAutor(){
     if(this.result){
       let autors : string[] = this.result['autor']

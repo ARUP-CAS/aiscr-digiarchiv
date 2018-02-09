@@ -18,11 +18,26 @@ export class AkceComponent implements OnInit {
   dokJednotky: any[] = [];
   extZdroj: any[] = [];
   opened: boolean = false;
+  
+  
 
   constructor(public solrService: SolrService) { }
 
   ngOnInit() {
+    this.formatAutor();
     this.getDokJednotky();
+  }
+  
+  
+  formatAutor(){
+    if(this.data && this.data.hasOwnProperty('vedouci_akce_ostatni')){
+      this.data['vedouci_akce_ostatni_formated'] = this.data['vedouci_akce_ostatni'].join("; ");
+//      console.log(this.data['vedouci_akce_ostatni']);
+//      this.data['vedouci_akce_ostatni'].forEach(va => {
+//        let autors : string[] = va;
+//        this.data['vedouci_akce_ostatni_formated'] = autors.join("; ");
+//      });
+    }
   }
 
   keys(): Array<string> {
