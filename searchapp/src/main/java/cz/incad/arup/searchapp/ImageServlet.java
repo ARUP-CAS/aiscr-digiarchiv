@@ -65,9 +65,9 @@ public class ImageServlet extends HttpServlet {
 
           //String fname = Options.getInstance().getString("thumbsDir") + id + ".jpg";
           String dest = ImageSupport.getDestDir(id);
-          if(isPdf){
-            dest += id + File.separator;
-          }
+//          if(isPdf){
+//            dest += id + File.separator;
+//          }
           String fname = dest + id + "_" + size + ".jpg";
           File f = new File(fname);
           if(!f.exists() && size.equals("thumb")){

@@ -653,18 +653,21 @@ public class CSVIndexer {
 
         SolrInputDocument doc = new SolrInputDocument();
         for (Map.Entry<String, Integer> entry : header.entrySet()) {
-          
+          String field = entry.getKey();
           //Vyjimka pro pian, nechceme geom_gml
-          if(entry.getKey().equals("geom_gml")){
+          if(field.equals("geom_gml")){
             continue;
           }
           //Vyjimka pro autoru. Muze mit oddelovac ;
-          if(entry.getKey().equals("autor")){
-            ArrayList<String> values = new ArrayList<String>(Arrays.asList(record.get(entry.getKey()).split(";")));
+          if(field.equals("autor")){
+            ArrayList<String> values = new ArrayList<String>(Arrays.asList(record.get(field).split(";")));
             doc.addField("autor", values);
             doc.addField("autor_sort", values.get(0));
+          } else if(field.equals("vedouci_akce") || field.equals("vedouci_akce_ostatni")){
+            ArrayList<String> values = new ArrayList<String>(Arrays.asList(record.get(field).split(";")));
+            doc.addField(field, values);
           } else {
-            doc.addField(entry.getKey(), record.get(entry.getKey()));
+            doc.addField(field, record.get(entry.getKey()));
           }
         }
 
