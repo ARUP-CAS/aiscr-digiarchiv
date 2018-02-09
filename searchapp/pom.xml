@@ -169,7 +169,7 @@
             <phase>generate-sources</phase>
             <configuration>
               <executable>npm</executable>
-              <workingDirectory>${project.basedir}/src/main/ngClient/dist</workingDirectory>  
+              <workingDirectory>${project.basedir}/src/main/ngClient</workingDirectory>  
               <arguments>
                 <argument>run</argument>
                 <argument>build.prod</argument>
