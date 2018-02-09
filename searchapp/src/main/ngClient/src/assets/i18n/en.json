@@ -392,18 +392,21 @@
   "adv.extra_data_zeme": "Event - country",
   "zemědělský pravěk": "Farming prehistory",
   "Událost": "Event",
-  "f_aktivita": {
-    "tezebni": "mining",
-    "jina": "other activity",
-    "pohrebni": "burial",
-    "sidlistni": "residential",
-    "intruze": "find intrusion",
-    "deponovani": "hoarding",
-    "vyrobni": "production",
-    "komunikace": "transport",
-    "boj": "combat",
-    "kultovni": "cult"
-  },
+  
+	"f_aktivita_old": {
+	},  
+		"f_aktivita_sidlistni": "residential",
+		"f_aktivita_pohrebni": "burial",
+		"f_aktivita_vyrobni": "production",
+		"f_aktivita_tezebni": "mining",
+		"f_aktivita_kultovni": "cult",
+		"f_aktivita_komunikace": "transport",
+		"f_aktivita_deponovani": "hoarding",
+		"f_aktivita_boj": "combat",
+		"f_aktivita_jina": "other activity",
+		"f_aktivita_intruze": "find intrusion",
+
+
   "f_areal.areál nezemědělské výroby nesp.": "production area unsp.",
   "Datum": "Date",
   "f_areal.tvrz/hrádek": "fortified manor",

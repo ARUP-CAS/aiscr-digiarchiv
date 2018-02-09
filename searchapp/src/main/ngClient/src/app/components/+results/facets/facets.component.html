@@ -52,7 +52,10 @@
         <input *ngIf="facetField.isMultiple" type="checkbox" [checked]="facet.isUsed" /> 
         <i *ngIf="facetField.field === 'document_type'" [class]="'fa fa-' + icon(facet.value) + '-o'" aria-hidden="true"></i>
         <a (click)="clickFacet(facet, facetField.isMultiple)" class="app-cursor-pointer">
+          {{facet.value | translateHeslar : facet.field}}
+          <!--
           {{getTranslated(facet.field,facet.value)}}
+          -->
         </a>
         <span class="pull-right app-color-gray-light">{{facet.count}}</span>
       </li>

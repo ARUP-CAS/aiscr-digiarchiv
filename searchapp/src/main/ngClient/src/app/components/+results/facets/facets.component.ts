@@ -36,10 +36,10 @@ export class FacetsComponent implements OnInit {
   }
 
   changeWidth(){
-    console.log(this.treewidth);
+//    console.log(this.treewidth);
       this.treewidth = "100%";
 
-    console.log(this.treewidth);
+//    console.log(this.treewidth);
   }
 
   clickPivot(field: string, value: string){
@@ -78,6 +78,14 @@ export class FacetsComponent implements OnInit {
 
   shouldTranslate(field: string){
     return this.solrService.config['facets']['translate'].hasOwnProperty(field);
+  }
+
+  getTranslatePrefix(field: string){
+    if(this.shouldTranslate(field)){
+      return this.solrService.config['facets']['translate'][field]['heslar'];
+    } else {
+      return field;
+    }
   }
 
   getTranslated(field: string, value: string){

@@ -81,10 +81,11 @@ public class I18n {
         String heslar = docs.getJSONObject(i).getString("heslar");
         LOGGER.log(Level.FINE, heslar);
         String pole = heslar;
+        def.put(pole + "_" + docs.getJSONObject(i).getString("heslo"), docs.getJSONObject(i).getString(locale));
         if(opts.getClientConf().getJSONObject("heslarToPole").has(heslar)){
           pole = opts.getClientConf().getJSONObject("heslarToPole").getString(heslar);
+          def.put(pole + "_" + docs.getJSONObject(i).getString("heslo"), docs.getJSONObject(i).getString(locale));
         }
-        def.put(pole + "." + docs.getJSONObject(i).getString("heslo"), docs.getJSONObject(i).getString(locale));
       }
     
     locales.put(locale, def);
