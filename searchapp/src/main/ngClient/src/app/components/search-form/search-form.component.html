@@ -102,11 +102,13 @@
             <div *ngIf="condition.fieldtype === 'heslar'" class="btn-group">
               <button type="button" class="btn btn-default dropdown-toggle app-border-radius-r" data-toggle="dropdown"
                       aria-haspopup="true" aria-expanded="false">
-                {{condition.dispValue | translate}} <span class="caret"></span>
+                {{condition.dispValue | translateHeslar: condition.heslar}} <span class="caret"></span>
                 <span class="sr-only">Toggle Dropdown</span>
               </button>
               <ul class="dropdown-menu">
-                <li *ngFor="let fv of solrService.heslare[condition.heslar]"><a (click)="setFieldValue(condition, fv)">{{fv[condition.heslarDisplay] | translateHeslar}}</a></li>
+                <li *ngFor="let fv of solrService.heslare[condition.heslar]">
+                  <a (click)="setFieldValue(condition, fv)">{{fv[condition.heslarDisplay] | translateHeslar: condition.heslar}}</a>
+                </li>
               </ul>
             </div><!--/.btn group -->
             <div *ngIf="condition.fieldtype === 'date'" class="btn-group">
