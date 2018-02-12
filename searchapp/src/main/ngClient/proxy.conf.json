@@ -9,12 +9,13 @@
     "changeOrigin": false,
     "secure": false
   },
-  "/assets/i18n/**": {
-    "target": "http://localhost:8082/assets/i18n/",
+  
+  "/assets/**": {
+    "target": "http://localhost:8082/assets/",
     "ignorePath": false,
     "logLevel": "debug",
     "pathRewrite": {
-      "^/assets/i18n":""
+      "^/assets":""
     },
     "changeOrigin": false,
     "secure": false

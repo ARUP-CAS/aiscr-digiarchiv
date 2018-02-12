@@ -16,11 +16,10 @@
         <li class="dropdown app-navbar-item-login">
           <a *ngIf="!solrService.config  || !solrService.config.logged" 
             (click)="focusu()"
-            id="login-dropdown-toggle"
-            href="#" class="dropdown-toggle" data-toggle="dropdown">
+            href="#" class="dropdown-toggle login-dropdown-toggle" data-toggle="dropdown">
             {{'Přihlásit' | translate}} <span class="caret"></span>
           </a>
-          <a *ngIf="solrService.config && solrService.config.logged" href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <a *ngIf="solrService.config && solrService.config.logged" href="#" class="dropdown-toggle login-dropdown-toggle" data-toggle="dropdown">
             {{solrService.config.user.jmeno}} {{solrService.config.user.prijmeni}}<span class="caret"></span>
           </a>
           <ul class="dropdown-menu app-border-radius">
@@ -45,7 +44,7 @@
                     {{'Špatné přihlašovací údaje' | translate}}.
                   </div>
                   <div>
-                    <button type="button" class="btn btn-success btn-block app-border-radius" data-toggle="dropdown" (click)="login()">{{'Přihlásit uživatele' | translate}}</button>
+                    <button type="button" class="btn btn-success btn-block app-border-radius" (click)="login()">{{'Přihlásit uživatele' | translate}}</button>
                     <button type="button" class="btn btn-primary btn-block app-border-radius" onclick="window.open('http://api.archeologickamapa.cz/registrace/0/')">{{'Registrovat uživatele' | translate}}</button>
                   </div>
                 </div>

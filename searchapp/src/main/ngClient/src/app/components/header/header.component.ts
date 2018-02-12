@@ -33,8 +33,8 @@ export class HeaderComponent implements OnInit {
 
     this.solrService.logginChanged.subscribe((logged: boolean) => {
       if(logged){
-//        console.log('tady');
-        jQuery('#login-dropdown-toggle').dropdown("toggle");
+        console.log('tady');
+        jQuery('.login-dropdown-toggle').dropdown("toggle");
       }
     });
   }
@@ -57,9 +57,6 @@ export class HeaderComponent implements OnInit {
   
   login(){
     this.solrService.login();
-    setTimeout(() => {
-      this.logout.nativeElement.focus();
-    }, 1000);
   }
   
   logoClicked(){
