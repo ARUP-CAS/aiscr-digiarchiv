@@ -41,12 +41,12 @@ public class Indexer {
     SolrClient exportClient;
     SolrClient relationsClient;
 
-    public Indexer() {
+    public Indexer(boolean forced) {
 
         try {
             opts = Options.getInstance();
 
-            pdfGen = new PDFThumbsGenerator();
+            pdfGen = new PDFThumbsGenerator(forced);
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, null, ex);
         }
@@ -70,7 +70,7 @@ public class Indexer {
         return server;
     }
 
-    public JSONObject createThumbs(boolean overwrite) throws IOException {
+    public JSONObject createThumbs(boolean overwrite, boolean onlyThumbs) throws IOException {
         Date start = new Date();
         totalDocs = 0;
 
@@ -115,7 +115,7 @@ public class Indexer {
 
                 }
 
-                createThumbs(rsp.getResults(), overwrite);
+                createThumbs(rsp.getResults(), overwrite, false, onlyThumbs);
                 //totalDocs += rsp.getResults().size();
                 LOGGER.log(Level.INFO, "Currently {0} files processed", totalDocs);
 
@@ -158,7 +158,7 @@ public class Indexer {
         }
     }
     
-    private void createThumbFromSolrDoc(SolrDocument doc, boolean overwrite){
+    private void createThumbFromSolrDoc(SolrDocument doc, boolean overwrite, boolean force, boolean onlyThumbs){
       
             String imagesDir = opts.getString("imagesDir");
             String nazev = doc.getFirstValue("nazev").toString();
@@ -175,11 +175,11 @@ public class Indexer {
                               totalDocs, pdfGen.generated, imgGenerated);
                       LOGGER.log(Level.INFO, "processing file {0}. {1}", new Object[]{f, msg});
                       if ("application/pdf".equals(mimetype)) {
-                          pdfGen.processFile(f, false);
+                          pdfGen.processFile(f, force, onlyThumbs);
 //                            ImageSupport.thumbnailPdfPage(f, 0, nazev);
 //                            ImageSupport.mediumPdf(f, nazev);
                       } else {
-                          ImageSupport.thumbnailzeImg(f, path);
+                          ImageSupport.thumbnailzeImg(f, path, onlyThumbs);
                           imgGenerated++;
                       }
                   }
@@ -187,7 +187,7 @@ public class Indexer {
               totalDocs++;
     }
 
-    public void createThumb(String nazev, boolean onlySmall) {
+    public void createThumb(String nazev, boolean onlySmall, boolean force, boolean onlyThumbs) {
         try {
 
             relationsClient = getClient(opts.getString("csvRelationsCore", "relations/"));
@@ -205,7 +205,7 @@ public class Indexer {
                 return;
             }
             SolrDocument doc = docs.get(0);
-            createThumbFromSolrDoc(doc, true);
+            createThumbFromSolrDoc(doc, true, force, onlyThumbs);
             relationsClient.close();
             
         } catch (Exception ex) {
@@ -213,14 +213,14 @@ public class Indexer {
         }
     }
 
-    private void createThumbs(SolrDocumentList docs, boolean overwrite) {
+    private void createThumbs(SolrDocumentList docs, boolean overwrite, boolean force, boolean onlyThumbs) {
         try {
             Options opts = Options.getInstance();
             String imagesDir = opts.getString("imagesDir");
             //ImageSupport.initCount();
 
             for (SolrDocument doc : docs) {
-              createThumbFromSolrDoc(doc, overwrite);
+              createThumbFromSolrDoc(doc, overwrite, force, onlyThumbs);
             }
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, null, ex);

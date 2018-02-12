@@ -183,7 +183,7 @@ public class ImageSupport {
         }
 
     }
-    public static String thumbnailzeImg(File f, String id) {
+    public static String thumbnailzeImg(File f, String id, boolean onlyThumbs) {
 
         String outputFile = getDestDir(id) + id;
         try {
@@ -194,11 +194,12 @@ public class ImageSupport {
             int t_width = opts.getInt("thumbWidth", 100);
             int t_height = opts.getInt("thumbHeight", 100);
 
-            resizeWithThumbnailator(f, t_width, t_height, new File(outputFile + "_thumb.jpg"));
+            resizeAndCropWithThumbnailator(f, t_width, t_height, new File(outputFile + "_thumb.jpg"));
             
+            if(!onlyThumbs){
             int max = opts.getInt("mediumHeight", 1000);
             resizeWithThumbnailator(f, max, max, new File(outputFile + "_medium.jpg"));
-            
+            }
 
             return outputFile;
 
@@ -234,22 +235,27 @@ public class ImageSupport {
     return true;
   }
   
-  public static void resizeWithThumbnailator(File source, int w, int h, File dest) {
+  public static void resizeAndCropWithThumbnailator(File source, int w, int h, File dest) {
         try {
-//                ByteArrayOutputStream os = new ByteArrayOutputStream();
-
                 Thumbnails.of(source)
                         .size(w, h)
                         .crop(Positions.CENTER)
                         .outputFormat("jpg")
                         .toFile(dest);
-//                retval = os.toByteArray();
-//                os.close();
-            
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error in image resizer:", ex);
         }
-//        return retval;
+    }
+  
+  public static void resizeWithThumbnailator(File source, int w, int h, File dest) {
+        try {
+                Thumbnails.of(source)
+                        .size(w, h)
+                        .outputFormat("jpg")
+                        .toFile(dest);
+        } catch (Exception ex) {
+            LOGGER.log(Level.SEVERE, "Error in image resizer:", ex);
+        }
     }
   
   public static void resizeWithThumbnailator(BufferedImage srcImage, int w, int h, File f) {

@@ -32,11 +32,19 @@ public class ThumbsGenerator {
         System.setProperty("org.apache.pdfbox.rendering.UsePureJavaCMYKConversion", "true");
         ImageIO.scanForPlugins();
         boolean overwrite = false;
+        boolean onlyThumbs = false;
 
         if (args.length > 0) {
             String action = args[0];
             Logger.getLogger(ThumbsGenerator.class.getName()).log(Level.INFO, "action: {0}", action);
             switch(action){
+                case "-ot":
+                {
+                  //Only thumbs
+                    overwrite = true;
+                    onlyThumbs = true;
+                    break;
+                }
                 case "-o":
                 {
                     overwrite = true;
@@ -45,21 +53,21 @@ public class ThumbsGenerator {
                 case "-f":
                 {
                     String file = args[1];
-                    PDFThumbsGenerator pg = new PDFThumbsGenerator();
-                    pg.processFile(new File(file), true);
+                    PDFThumbsGenerator pg = new PDFThumbsGenerator(true);
+                    pg.processFile(new File(file), true, false);
                     return;
                 }
                 case "-id":{
                     String id = args[1];
-                    Indexer indexer = new Indexer();
-                    indexer.createThumb(id, false);
+                    Indexer indexer = new Indexer(true);
+                    indexer.createThumb(id, false, true, false);
                     return;
                 }
             }
         }
-        Indexer indexer = new Indexer();
+        Indexer indexer = new Indexer(false);
             try {
-                JSONObject jo = indexer.createThumbs(overwrite);
+                JSONObject jo = indexer.createThumbs(overwrite, onlyThumbs);
                 System.out.println(jo.toString(2));
             } catch (Exception ex) {
                 Logger.getLogger(ThumbsGenerator.class.getName()).log(Level.SEVERE, null, ex);

@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.geometry.Positions;
 import org.apache.commons.io.FileUtils;
 import org.apache.pdfbox.cos.COSBase;
 import org.apache.pdfbox.cos.COSDictionary;
@@ -51,7 +52,7 @@ public class PDFThumbsGenerator {
 
   List<String> unprocessables;
 
-  public PDFThumbsGenerator() {
+  public PDFThumbsGenerator(boolean forced) {
 
     try {
       opts = Options.getInstance();
@@ -65,11 +66,13 @@ public class PDFThumbsGenerator {
 
       //Test if the file was last processed before crash;
       String lastProcessed = readProcessing();
-      if (!"".equals(lastProcessed) && !unprocessables.contains(lastProcessed)) {
-        LOGGER.log(Level.INFO, "Last attemp to generate file {0} failed. Writing to unpracessables.txt", lastProcessed);
-        writeUnprocessable(lastProcessed);
-        writeProcessing("");
-        return;
+      if (!forced) {
+        if (!"".equals(lastProcessed) && !unprocessables.contains(lastProcessed)) {
+          LOGGER.log(Level.INFO, "Last attemp to generate file {0} failed. Writing to unpracessables.txt", lastProcessed);
+          writeUnprocessable(lastProcessed);
+          writeProcessing("");
+          return;
+        }
       }
 
       generated = 0;
@@ -78,9 +81,9 @@ public class PDFThumbsGenerator {
     }
   }
 
-  public void processFile(File f, boolean force) {
+  public void processFile(File f, boolean force, boolean onlyThumbs) {
 
-    if(!force){
+    if (!force) {
       //Test if the file was last processed before crash;
       String lastProcessed = readProcessing();
       if (f.getName().equals(lastProcessed)) {
@@ -110,8 +113,11 @@ public class PDFThumbsGenerator {
           if (pageCounter == 0) {
             thumbnailPdfPage(bim, f.getName());
           }
-          processPage(bim, pageCounter, f.getName());
 
+          if (onlyThumbs) {
+            break;
+          }
+          processPage(bim, pageCounter, f.getName());
           pageCounter++;
         }
         writeProcessing("");
@@ -143,10 +149,10 @@ public class PDFThumbsGenerator {
     int height = sourceImage.getHeight();
 
     if (width * height > maxPixels) {
-        writeSkipped(0, id, width + " x " + height);
-        return null;
+      writeSkipped(0, id, width + " x " + height);
+      return null;
     }
-    
+
     try {
       int w = opts.getInt("thumbWidth", 100);
       String destDir = ImageSupport.makeDestDir(id);
@@ -154,9 +160,10 @@ public class PDFThumbsGenerator {
       String outputFile = destDir + id + "_thumb.jpg";
       Thumbnails.of(sourceImage)
               .size(w, w)
+              .crop(Positions.CENTER)
               .outputFormat("jpg")
               .toFile(outputFile);
-      
+
       generated++;
       return outputFile;
     } catch (Exception ex) {
