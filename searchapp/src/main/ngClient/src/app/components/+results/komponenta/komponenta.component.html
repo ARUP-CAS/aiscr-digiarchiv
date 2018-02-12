@@ -2,7 +2,7 @@
 <span *ngIf="hasValue('poznamka') || nalez.length > 0" data-toggle="collapse" class="app-nav-tree-item app-cursor-pointer collapsed" [attr.data-target]="'#'+ id()">
   <span>{{idShort()}} - {{'f_obdobi.' + data.obdobi | translate}}</span>
 	<span *ngIf="hasValue('jistota')">({{data.jistota}} {{data.presna_datace}})</span> -
-	<span *ngIf="hasValue('areal')">{{data.areal}}</span>
+	<span *ngIf="hasValue('areal')">{{data.areal | translateHeslar: 'areal_druha'}}</span>
 	<span *ngIf="aktivity.length >0">
       <span>(<span *ngFor="let aktivita of aktivity; let idx = index">{{'f_aktivita.'+aktivita | translate}}<span *ngIf="idx<aktivity.length-1">, </span></span>)</span>
     </span>

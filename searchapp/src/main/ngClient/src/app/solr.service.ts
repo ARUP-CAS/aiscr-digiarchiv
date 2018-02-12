@@ -228,7 +228,9 @@ export class SolrService implements OnDestroy {
   }
 
   getTranslation(value: string, heslar: string): any {
-
+    if (this.config['poleToHeslar'].hasOwnProperty(heslar)){
+      heslar = this.config['poleToHeslar'][heslar];
+    }
     let hkey = heslar + "_" + value;
     let t = this.translate.instant(hkey);
     if (t === hkey) {

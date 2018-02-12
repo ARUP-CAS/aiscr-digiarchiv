@@ -31,7 +31,7 @@
         <ul *ngIf="v.visible" class="list-unstyled app-color-gray">
           <li class="app-facet-nav-separator"></li>
            <li *ngFor="let pv of v.pivot"><!-- [style.width]="treewidth" -->
-            <a (click)="clickPivot(pv.field, pv.value)">{{pv.value}}</a><span class="pull-right app-color-gray-light">{{pv.count}}</span>
+            <a (click)="clickPivot(pv.field, pv.value)">{{pv.value | translateHeslar : pv.field}}</a><span class="pull-right app-color-gray-light">{{pv.count}}</span>
           </li>
           <li class="app-facet-nav-separator"></li>
         </ul> 

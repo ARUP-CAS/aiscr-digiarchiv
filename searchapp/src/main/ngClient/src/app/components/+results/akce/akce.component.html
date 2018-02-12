@@ -26,7 +26,7 @@
   <li *ngIf="hasValue('hlavni_typ') || hasValue('vedlejsi_typ')">
     <label>{{'Typ' | translate}}:</label> 
     <span *ngIf="hasValue('hlavni_typ')">{{data.hlavni_typ | translateHeslar: 'typ_akce_druha'}}</span><span *ngIf="hasValue('hlavni_typ') && hasValue('vedlejsi_typ')">,</span>
-    <span *ngIf="data.vedlejsi_typ">{{data.vedlejsi_typ}}</span>
+    <span *ngIf="data.vedlejsi_typ">{{data.vedlejsi_typ | translateHeslar: 'typ_akce_druha'}}</span>
   </li>
   <li *ngIf="hasValue('datum_zahajeni_v') || hasValue('datum_ukonceni_v')">
     <label>{{'Datum výzkumu' | translate}}:</label> 

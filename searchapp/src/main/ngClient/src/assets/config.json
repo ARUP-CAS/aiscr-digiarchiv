@@ -266,9 +266,18 @@
       }
     }
   },
+  "poleToHeslar": {
+    "f_typ_dokumentu": "typ_dokumentu"
+  },
   "heslarToPole": {
     "areal_druha": "f_areal",
-    "obdobi_druha": "f_obdobi"
+    "obdobi_druha": "f_obdobi",
+    "aktivity" : "f_aktivita",
+    "objekt_druh": "f_druh_nalezu",
+    "predmet_druh":"f_druh_nalezu"
+
+
+
   },
   "icons": {
     "MS PowerPoint": "file-powerpoint",
