@@ -13,6 +13,7 @@ declare var jQuery: any;
 export class HeaderComponent implements OnInit {
 
   @ViewChild('loginuser') loginuser: any;
+  @ViewChild('logout') logout: any;
   currentLang: string;
 
   constructor(public solrService: SolrService, private translate: TranslateService) {
@@ -32,8 +33,8 @@ export class HeaderComponent implements OnInit {
 
     this.solrService.logginChanged.subscribe((logged: boolean) => {
       if(logged){
-        console.log('tady');
-        jQuery('.dropdown-toggle').dropdown("toggle");
+//        console.log('tady');
+        jQuery('#login-dropdown-toggle').dropdown("toggle");
       }
     });
   }
@@ -48,10 +49,6 @@ export class HeaderComponent implements OnInit {
   }
 
   focusu(){
-    setTimeout(() => {
-        this.loginuser.nativeElement.focus();
-      }, 100);
-
   }
 
   focusp(e, el){
@@ -60,6 +57,9 @@ export class HeaderComponent implements OnInit {
   
   login(){
     this.solrService.login();
+    setTimeout(() => {
+      this.logout.nativeElement.focus();
+    }, 1000);
   }
   
   logoClicked(){

@@ -16,6 +16,7 @@
         <li class="dropdown app-navbar-item-login">
           <a *ngIf="!solrService.config  || !solrService.config.logged" 
             (click)="focusu()"
+            id="login-dropdown-toggle"
             href="#" class="dropdown-toggle" data-toggle="dropdown">
             {{'Přihlásit' | translate}} <span class="caret"></span>
           </a>
@@ -36,7 +37,7 @@
                   <div class="input-group form-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                     <input id="loginpwd" type="password" class="form-control" name="loginpwd" placeholder="Heslo" #loginpwd
-                           (keyup.enter)="solrService.login()"
+                           (keyup.enter)="login()"
                            [(ngModel)]="solrService.loginpwd" />
                   </div>
                   <!-- Pokud budou prihlasovaci udaje spatne, odstran class 'hidden' -->
@@ -44,13 +45,13 @@
                     {{'Špatné přihlašovací údaje' | translate}}.
                   </div>
                   <div>
-                    <button type="button" class="btn btn-success btn-block app-border-radius" (click)="solrService.login()">{{'Přihlásit uživatele' | translate}}</button>
+                    <button type="button" class="btn btn-success btn-block app-border-radius" data-toggle="dropdown" (click)="login()">{{'Přihlásit uživatele' | translate}}</button>
                     <button type="button" class="btn btn-primary btn-block app-border-radius" onclick="window.open('http://api.archeologickamapa.cz/registrace/0/')">{{'Registrovat uživatele' | translate}}</button>
                   </div>
                 </div>
                 <div *ngIf="solrService.config && solrService.config.logged">
                   <button type="button" class="btn btn-block app-border-radius" data-toggle="dropdown" (click)="showFav()">{{'Favorites' | translate}}</button>
-                	<button type="button" class="btn btn-danger btn-block app-border-radius" (click)="solrService.logout()">{{'Odhlásit' | translate}}</button>
+                  <button type="button" class="btn btn-danger btn-block app-border-radius" (click)="solrService.logout()"  #logout>{{'Odhlásit' | translate}}</button>
                 </div>
              </form>
             </li>

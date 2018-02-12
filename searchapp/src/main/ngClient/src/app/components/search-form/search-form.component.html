@@ -20,11 +20,11 @@
       <div class="col-md-5">
         <form class="form-inline">
           <button type="button" class="btn app-btn app-btn-search-collapse app-color-white app-border-radius"
-						[class.collapsed]="isAdvancedCollapsed"
+	    [class.collapsed]="isAdvancedCollapsed"
             (click)="openAdvanced()"
-						data-toggle="collapse" data-target="#app-search-collapse-advanced-search">
-						<span *ngIf="isAdvancedCollapsed">{{'advanced search' | translate}}</span>
-						<span *ngIf="!isAdvancedCollapsed">{{'close search' | translate}}</span>
+            data-toggle="collapse" data-target="#app-search-collapse-advanced-search">
+            <span *ngIf="isAdvancedCollapsed">{{'advanced search' | translate}}</span>
+            <span *ngIf="!isAdvancedCollapsed">{{'close search' | translate}}</span>
           </button>
           <button type="button" class="btn app-btn app-btn-search-collapse app-color-white app-border-radius"
 					 	[class.collapsed]="isMapaCollapsed"
