@@ -24,7 +24,7 @@
       <img *ngIf="files.length > 0" class="app-result-item-img-thumb app-cursor-pointer" [src]="solrService.config.img + '?id='+files[0].filepath" (click)="viewFile()" />
     </div>
     <div class="media-body">
-      <h4 class="app-clean-mg-top app-color-blue-pastel">{{autor}} 
+      <h4 class="app-clean-mg-top app-color-blue-pastel app-result-item-header">{{autor}} 
         <span class="app-color-silver">|</span> {{result.ident_cely}} 
         <span class="app-color-silver">|</span> {{result.rok_vzniku}}
       </h4>
