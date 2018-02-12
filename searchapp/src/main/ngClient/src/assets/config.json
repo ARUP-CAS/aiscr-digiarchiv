@@ -126,7 +126,7 @@
       "type": "heslar",
       "heslar": "obdobi_druha",
       "field": "komponenta_dokumentu_obdobi",
-      "heslarDisplay": "nazev",
+      "heslarDisplay": "zkratka",
       "heslarValue": "zkratka"
     },
     {

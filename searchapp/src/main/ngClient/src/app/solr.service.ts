@@ -495,16 +495,18 @@ export class SolrService implements OnDestroy {
     } else {
       condition.searchField = f['field'];
     }
+    
+    console.log(condition, f);
     if (f['type'] === 'heslar') {
       let heslarValue = 'caption';
       let dispField = 'caption';
-      if(f.hasOwnProperty('heslarValue')){
-        heslarValue = f['heslarValue'];
-      } else if (f.hasOwnProperty('heslarDisplay')) {
+      if (f.hasOwnProperty('heslarDisplay')) {
         heslarValue = f['heslarDisplay'];
         dispField = f['heslarDisplay'];
       }
-      
+      if(f.hasOwnProperty('heslarValue')){
+        heslarValue = f['heslarValue'];
+      }
       
       if (this.heslare.hasOwnProperty(f['heslar'])) {
         condition.heslar = f['heslar'];
@@ -520,7 +522,7 @@ export class SolrService implements OnDestroy {
           condition.dispValue = res[0][dispField];
           condition.heslarDisplay = dispField;
           condition.heslarField = heslarValue;
-    
+    console.log(condition);
         });
       }
     }

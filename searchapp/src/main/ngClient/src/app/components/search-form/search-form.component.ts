@@ -45,7 +45,6 @@ export class SearchFormComponent implements OnInit, OnDestroy {
       }
       //console.log(val);
     });
-    console.log(this.solrService.heslare);
   }
   
   ngOnDestroy(){
