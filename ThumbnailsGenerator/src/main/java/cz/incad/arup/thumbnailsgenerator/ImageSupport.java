@@ -14,6 +14,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Date;
 import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.geometry.Positions;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 
@@ -239,6 +240,7 @@ public class ImageSupport {
 
                 Thumbnails.of(source)
                         .size(w, h)
+                        .crop(Positions.CENTER)
                         .outputFormat("jpg")
                         .toFile(dest);
 //                retval = os.toByteArray();

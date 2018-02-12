@@ -5,12 +5,8 @@
  */
 package cz.incad.arup.thumbnailsgenerator;
 
-import static cz.incad.arup.thumbnailsgenerator.ImageSupport.LOGGER;
-import static cz.incad.arup.thumbnailsgenerator.ImageSupport.resizeWithThumbnailator;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
-import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -82,22 +78,24 @@ public class PDFThumbsGenerator {
     }
   }
 
-  public void processFile(File f) {
+  public void processFile(File f, boolean force) {
 
-    //Test if the file was last processed before crash;
-    String lastProcessed = readProcessing();
-    if (f.getName().equals(lastProcessed)) {
-      LOGGER.log(Level.INFO, "Last attemp to generate file {0} failed. Writing to unpracessables.txt. Skipping it", f.getName());
-      writeUnprocessable(f.getName());
-      writeProcessing("");
-      return;
-    }
+    if(!force){
+      //Test if the file was last processed before crash;
+      String lastProcessed = readProcessing();
+      if (f.getName().equals(lastProcessed)) {
+        LOGGER.log(Level.INFO, "Last attemp to generate file {0} failed. Writing to unpracessables.txt. Skipping it", f.getName());
+        writeUnprocessable(f.getName());
+        writeProcessing("");
+        return;
+      }
 
-    if (unprocessables.contains(f.getName())) {
-      LOGGER.log(Level.INFO, "File {0} is in unprocessables.txt. Skipping it", f.getName());
-      return;
+      if (unprocessables.contains(f.getName())) {
+        LOGGER.log(Level.INFO, "File {0} is in unprocessables.txt. Skipping it", f.getName());
+        return;
+      }
+      writeProcessing(f.getName());
     }
-    writeProcessing(f.getName());
     LOGGER.log(Level.INFO, "Generating medium thumbs for pdf {0}", f);
 
     try {

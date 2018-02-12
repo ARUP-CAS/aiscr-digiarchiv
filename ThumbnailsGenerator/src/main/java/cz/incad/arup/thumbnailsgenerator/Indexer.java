@@ -175,7 +175,7 @@ public class Indexer {
                               totalDocs, pdfGen.generated, imgGenerated);
                       LOGGER.log(Level.INFO, "processing file {0}. {1}", new Object[]{f, msg});
                       if ("application/pdf".equals(mimetype)) {
-                          pdfGen.processFile(f);
+                          pdfGen.processFile(f, false);
 //                            ImageSupport.thumbnailPdfPage(f, 0, nazev);
 //                            ImageSupport.mediumPdf(f, nazev);
                       } else {

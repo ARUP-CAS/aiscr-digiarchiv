@@ -46,7 +46,7 @@ public class ThumbsGenerator {
                 {
                     String file = args[1];
                     PDFThumbsGenerator pg = new PDFThumbsGenerator();
-                    pg.processFile(new File(file));
+                    pg.processFile(new File(file), true);
                     return;
                 }
                 case "-id":{
