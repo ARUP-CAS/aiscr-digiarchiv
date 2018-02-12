@@ -81,7 +81,7 @@
    
    <!-- Seznam poli pro prokrocile vyhledavani -->
    
-   <field name="autor" type="text_general_cs" indexed="true" stored="true" multiValued="false" /> 
+   <field name="autor" type="text_general_cs" indexed="true" stored="true" multiValued="true" /> 
    <field name="autor_sort" type="icu_sort_cs" indexed="true" stored="true" docValues="true" multiValued="false" /> 
    <field name="rok_vzniku" type="string" indexed="true" stored="true" multiValued="false" /> 
    
@@ -192,13 +192,17 @@
  
 <copyField source="*" dest="text_all"/>
 
+<!--
 <copyField source="autor" dest="autor_sort" />
+-->
 
 <copyField source="typ_dokumentu" dest="f_typ_dokumentu" /> 
 <copyField source="autor" dest="f_autor" />
 <copyField source="vedouci" dest="f_autor" />
 <copyField source="*_vedouci" dest="f_autor" />
 <copyField source="akce_vedouci_akce" dest="f_autor" />
+<copyField source="akce_vedouci_akce_ostatni" dest="f_autor" />
+
 <!--
 <copyField source="vedouci" dest="f_vedouci" />
 <copyField source="*_vedouci" dest="f_vedouci" />
