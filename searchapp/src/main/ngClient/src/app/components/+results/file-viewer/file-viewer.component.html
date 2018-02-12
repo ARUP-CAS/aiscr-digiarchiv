@@ -34,7 +34,7 @@
           <!-- Slides wrapper -->
           <div *ngIf="selectedFile !== null && showing" role="listbox" class="carousel-inner">
             <div *ngFor="let page of selectedFile.pages; let idx = index" class="item" [class.active]="idx === 0">{{page}}
-              <img class="center-block img-responsive" [alt]="'page'+idx" [src]="solrService.imgPoint(selectedFile) + '?size=medium&id='+selectedFile.nazev + '&page=' + idx" />
+              <img class="center-block img-responsive" [alt]="'page'+idx" [src]="solrService.imgPoint(selectedFile) + '?size=medium&id='+selectedFile.filepath + '&page=' + idx" />
             </div>
           </div><!--/.slides wrapper -->
             <a *ngIf="currentPage > 1 && !rolling" class="left carousel-control" (click)="prevPage()" [href]="'#app-carousel-file-'+fileid" role="button" data-slide="prev">
