@@ -99,7 +99,7 @@ public class PDFThumbsGenerator {
       }
       writeProcessing(f.getName());
     }
-    LOGGER.log(Level.INFO, "Generating medium thumbs for pdf {0}", f);
+    LOGGER.log(Level.INFO, "Generating thumbs for pdf {0}", f);
 
     try {
       int pageCounter = 0;
