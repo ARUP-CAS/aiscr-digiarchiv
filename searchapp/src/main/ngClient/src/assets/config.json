@@ -115,7 +115,9 @@
     {
       "type": "heslar",
       "heslar": "aktivity",
-      "field": "komponenta_aktivita"
+      "field": "komponenta_aktivita",
+      "heslarDisplay": "zkratka",
+      "heslarValue": "caption"
     },
     {
       "type": "heslar",

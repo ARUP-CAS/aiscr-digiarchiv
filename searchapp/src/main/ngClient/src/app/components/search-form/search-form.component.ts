@@ -97,19 +97,20 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   setFieldValue(condition: Condition, f: any) {
       let heslarValue = 'caption';
       let dispField = 'caption';
-    
-      if(f.hasOwnProperty('heslarValue')){
-        heslarValue = f['heslarValue'];
-      } else if (f.hasOwnProperty('heslarDisplay')) {
+      
+    if (f.hasOwnProperty('heslarDisplay')) {
         heslarValue = f['heslarDisplay'];
         dispField = f['heslarDisplay'];
       }
-      
+      if(f.hasOwnProperty('heslarValue')){
+        heslarValue = f['heslarValue'];
+      } 
       
     //this.solrService.config['advancedFields']
     let c = f[condition.heslarDisplay];
     condition.value = f[condition.heslarField];
     condition.dispValue = f[condition.heslarDisplay];
+    
   }
 
   openMapa() {
