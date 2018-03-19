@@ -83,8 +83,9 @@ public class Indexer {
             SolrQuery query = new SolrQuery();
             //query.setRequestHandler(core);
             query.setQuery("doctype:soubor");
-            query.setFilterQueries("dokument:[* TO *]");
-            query.setFilterQueries("-dokument:\"\"");
+            query.addFilterQuery("dokument:[* TO *]");
+            query.addFilterQuery("-dokument:\"\"");
+            query.addFilterQuery("-dokument:X*");
             query.setRows(rows);
             query.setSort(SolrQuery.SortClause.asc(sort));
             query.setTimeAllowed(0);
