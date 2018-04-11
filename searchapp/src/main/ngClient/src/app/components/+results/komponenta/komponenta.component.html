@@ -4,7 +4,7 @@
 	<span *ngIf="hasValue('jistota')">({{data.jistota}} {{data.presna_datace}})</span> -
 	<span *ngIf="hasValue('areal')">{{data.areal | translateHeslar: 'areal_druha'}}</span>
 	<span *ngIf="aktivity.length >0">
-      <span>(<span *ngFor="let aktivita of aktivity; let idx = index">{{'f_aktivita.'+aktivita | translate}}<span *ngIf="idx<aktivity.length-1">, </span></span>)</span>
+      <span>(<span *ngFor="let aktivita of aktivity; let idx = index">{{'f_aktivita_'+aktivita | translate}}<span *ngIf="idx<aktivity.length-1">, </span></span>)</span>
     </span>
 </span><!--/.title collapse -->
 	
@@ -14,7 +14,7 @@
 	<span *ngIf="hasValue('jistota')">({{data.jistota}} {{data.presna_datace}}) -</span>
 	<span *ngIf="hasValue('areal')">{{data.areal | translateHeslar: 'areal_druha'}}</span>
 	<span *ngIf="aktivity.length >0">
-      <span>(<span *ngFor="let aktivita of aktivity; let idx = index">{{aktivita | translateHeslar: 'aktivity'}}<span *ngIf="idx<aktivity.length-1">, </span></span>)</span>
+      <span>(<span *ngFor="let aktivita of aktivity; let idx = index">{{'f_aktivita_'+aktivita | translate}}<span *ngIf="idx<aktivity.length-1">, </span></span>)</span>
     </span>
 </span><!--/.title -->
 
