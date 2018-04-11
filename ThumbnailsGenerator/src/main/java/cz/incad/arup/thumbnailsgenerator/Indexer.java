@@ -86,6 +86,8 @@ public class Indexer {
             query.addFilterQuery("dokument:[* TO *]");
             query.addFilterQuery("-dokument:\"\"");
             query.addFilterQuery("-dokument:X*");
+            query.addFilterQuery("-dokument:ZA*");
+            query.addFilterQuery("-dokument:ZL*");
             query.setRows(rows);
             query.setSort(SolrQuery.SortClause.asc(sort));
             query.setTimeAllowed(0);
