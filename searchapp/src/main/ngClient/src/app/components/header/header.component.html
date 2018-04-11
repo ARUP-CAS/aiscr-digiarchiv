@@ -45,7 +45,9 @@
                   </div>
                   <div>
                     <button type="button" class="btn btn-success btn-block app-border-radius" (click)="login()">{{'Přihlásit uživatele' | translate}}</button>
+                    
                     <button type="button" class="btn btn-primary btn-block app-border-radius" onclick="window.open('http://api.archeologickamapa.cz/registrace/0/')">{{'Registrovat uživatele' | translate}}</button>
+                    <button type="button" class="btn btn-primary btn-block app-border-radius" onclick="window.open('http://api.archeologickamapa.cz/password_request/0/')">{{'Zapomněli jste heslo' | translate}}?</button>
                   </div>
                 </div>
                 <div *ngIf="solrService.config && solrService.config.logged">
