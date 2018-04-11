@@ -634,9 +634,11 @@ public class CSVIndexer {
                     LOGGER.log(Level.SEVERE, null, ex);
                 }
             }
-            sclient.add(docs);
-            sclient.commit();
-            docs.clear();
+            if(!docs.isEmpty()){
+              sclient.add(docs);
+              sclient.commit();
+              docs.clear();
+            }
 
             typeJson.put("docs indexed", tsuccess).put("errors", terrors);
             Date tend = new Date();

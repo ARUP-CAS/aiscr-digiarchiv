@@ -83,7 +83,8 @@ public class ImageSupport {
   }
 
   public static boolean thumbExists(String f) {
-    String dest = getDestDir(f) + f + ".jpg";
+
+    String dest = getDestDir(f) + f + "_thumb.jpg";
     return (new File(dest)).exists();
   }
 

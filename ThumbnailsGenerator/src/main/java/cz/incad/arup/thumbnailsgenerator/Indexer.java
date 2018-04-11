@@ -165,8 +165,8 @@ public class Indexer {
             String nazev = doc.getFirstValue("nazev").toString();
               String path = doc.getFirstValue("filepath").toString();
               String mimetype = doc.getFirstValue("mimetype").toString();
-              //if (overwrite || !ImageSupport.thumbExists(nazev)) {
-              if (overwrite || !ImageSupport.folderExists(nazev)) {
+              if (overwrite || !ImageSupport.thumbExists(path)) {
+              //if (overwrite || !ImageSupport.folderExists(nazev)) {
 
                   File f = new File(imagesDir + path);
                   if (!f.exists()) {
