@@ -1,6 +1,6 @@
 <!-- Title -->
 <span [attr.data-target]="'#'+ id()">
-  <i class="fa fa-check-circle" aria-hidden="true"></i><span>{{nalez.druh_nalezu | translateHeslar: 'predmet_druh'}}</span>
+  <i class="fa fa-check-circle" aria-hidden="true"></i><span>{{nalez.druh_nalezu | translateHeslar: 'f_druh_nalezu'}}</span>
 	<span *ngIf="hasValue('specifikace') || hasValue('pocet')">({{nalez.specifikace | translateHeslar: 'specifikace_objektu_druha'}}
     <span *ngIf="hasValue('specifikace') && hasValue('pocet')">; </span>{{nalez.pocet}}).</span>
 	<span *ngIf="hasValue('poznamka')">{{nalez.poznamka}}.</span>
