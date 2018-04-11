@@ -155,7 +155,6 @@ export class ResultItemComponent implements OnInit {
     } else {
       let msg = this.solrService.translateKey('insuficient rights');
       alert(msg);
-      //console.log('insuficient rights');
     }
   }
 

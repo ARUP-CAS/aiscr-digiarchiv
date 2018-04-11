@@ -102,6 +102,9 @@ export class FileViewerComponent implements OnInit {
         file.filepath = fs[f].filepath[0];
         file.setSize(true);
         this.files.push(file);
+        this.files.sort((a,b) => {
+          return a.nazev.localeCompare(b.nazev);
+        });
       }
       this.fileid = new Date().getTime();
       this.selectedFile = this.files[0];
