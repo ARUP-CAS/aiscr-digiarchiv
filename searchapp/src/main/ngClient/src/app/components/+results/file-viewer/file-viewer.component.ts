@@ -38,6 +38,7 @@ export class FileViewerComponent implements OnInit {
   selectFile(file: File, idx: number) {
     this.selectedFile = file;
     this.currentPage = 1;
+    this.setPage();
     this.fileid = idx + new Date().getTime();
   }
   

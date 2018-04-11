@@ -153,6 +153,7 @@ export class ResultItemComponent implements OnInit {
     if(this.solrService.hasRights(this.result['pristupnost'])){
       this.onViewFile.emit(this.result);
     } else {
+//    this.onViewFile.emit(this.result);
       let msg = this.solrService.translateKey('insuficient rights');
       alert(msg);
     }
