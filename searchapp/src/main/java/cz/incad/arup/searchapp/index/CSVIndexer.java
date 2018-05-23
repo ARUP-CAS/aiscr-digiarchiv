@@ -2,6 +2,7 @@ package cz.incad.arup.searchapp.index;
 
 //import au.com.bytecode.opencsv.CSVReader;
 import cz.incad.FormatUtils;
+import cz.incad.arup.searchapp.I18n;
 import cz.incad.arup.searchapp.Options;
 import java.io.File;
 import java.io.FileInputStream;
@@ -189,6 +190,7 @@ public class CSVIndexer {
                 }
 
             }
+            I18n.resetInstance();
             LOGGER.log(Level.INFO, "Indexed Finished. {0} success, {1} errors", new Object[]{success, errors});
 
             ret.put("errors", errors);

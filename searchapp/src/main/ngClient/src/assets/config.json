@@ -190,15 +190,13 @@
     },
     {
       "type": "heslar",
-      "heslar": "okresy",
-      "field": "okres",
-      "heslarDisplay": "full_name"
+      "heslar": "okres",
+      "field": "okres"
     },
     {
       "type": "heslar",
       "heslar": "organizace",
-      "field": "organizace",
-      "heslarDisplay": "zkratka"
+      "field": "organizace"
     }
   ],
   "advancedFieldsCond": [
