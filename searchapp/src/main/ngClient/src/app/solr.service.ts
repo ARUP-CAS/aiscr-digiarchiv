@@ -496,10 +496,10 @@ export class SolrService implements OnDestroy {
       condition.searchField = f['field'];
     }
     
-    console.log(condition, f);
+//    console.log(condition, f);
     if (f['type'] === 'heslar') {
-      let heslarValue = 'caption';
-      let dispField = 'caption';
+      let heslarValue = 'heslo';
+      let dispField = 'cs';
       if (f.hasOwnProperty('heslarDisplay')) {
         heslarValue = f['heslarDisplay'];
         dispField = f['heslarDisplay'];
@@ -517,12 +517,13 @@ export class SolrService implements OnDestroy {
     
       } else {
         this.getHeslar(f['heslar'], dispField).subscribe(res => {
+//          console.log(f['heslar'], dispField, res[0]);
           condition.heslar = f['heslar'];
           condition.value = res[0][heslarValue];
           condition.dispValue = res[0][dispField];
           condition.heslarDisplay = dispField;
           condition.heslarField = heslarValue;
-    console.log(condition);
+//    console.log(condition);
         });
       }
     }
@@ -1149,18 +1150,49 @@ export class SolrService implements OnDestroy {
   }
 
   getHeslar(h: string, sort: string) {
+    var url = this.config['searchParams']['host'] + 'translations/select';
+    var params = new URLSearchParams();
+    this.addCommonParams(params);
+    params.set('rows', '1000');
+//      if(this.config['poleToHeslar'].hasOwnProperty(h)){
+//        params.set('q', '{!term f=heslar_name}' + this.config['poleToHeslar'][h]);
+//      } else {
+//        params.set('q', '{!term f=heslar_name}' + h);
+//      }
+    params.set('q', '{!term f=heslar}' + h);
+    params.set('sort', 'poradi asc, ' + sort + ' asc');
+    return this.jsonp.get(url, { search: params }).map(res => {
+      this.heslare[h] = res.json()['response']['docs'];
+//      if(this.config['poleToHeslar'].hasOwnProperty(h)){
+//        console.log(this.config['poleToHeslar'][h]);
+//        this.heslare[this.config['poleToHeslar'][h]] = res.json()['response']['docs'];
+//      }
+      return this.heslare[h];
+    });
+  }
+  
+    getHeslar2(h: string, sort: string) {
     var url = this.config['searchParams']['host'] + 'heslar/select';
     var params = new URLSearchParams();
     this.addCommonParams(params);
     params.set('rows', '1000');
+//      if(this.config['poleToHeslar'].hasOwnProperty(h)){
+//        params.set('q', '{!term f=heslar_name}' + this.config['poleToHeslar'][h]);
+//      } else {
+//        params.set('q', '{!term f=heslar_name}' + h);
+//      }
     params.set('q', '{!term f=heslar_name}' + h);
     params.set('sort', 'poradi asc, ' + sort + ' asc');
     return this.jsonp.get(url, { search: params }).map(res => {
       this.heslare[h] = res.json()['response']['docs'];
-      
+//      if(this.config['poleToHeslar'].hasOwnProperty(h)){
+//        console.log(this.config['poleToHeslar'][h]);
+//        this.heslare[this.config['poleToHeslar'][h]] = res.json()['response']['docs'];
+//      }
       return this.heslare[h];
     });
   }
+
 
   searchMapa(rect: MapBounds) {
     if (!rect) {

@@ -69,7 +69,8 @@
     {
       "type": "heslar",
       "heslar": "nahrada",
-      "field": "extra_data_nahrada"
+      "field": "extra_data_nahrada",
+      "heslarDisplay":"heslo"
     },
     {
       "type": "text",
@@ -98,7 +99,8 @@
     {
       "type": "heslar",
       "heslar": "zachovalost",
-      "field": "zachovalost"
+      "field": "zachovalost",
+      "heslarDisplay":"heslo"
     },
     {
       "type": "text",
@@ -116,8 +118,7 @@
       "type": "heslar",
       "heslar": "aktivity",
       "field": "komponenta_aktivita",
-      "heslarDisplay": "zkratka",
-      "heslarValue": "caption"
+      "heslarDisplay":"heslo"
     },
     {
       "type": "heslar",
@@ -128,8 +129,7 @@
       "type": "heslar",
       "heslar": "obdobi_druha",
       "field": "komponenta_dokumentu_obdobi",
-      "heslarDisplay": "zkratka",
-      "heslarValue": "zkratka"
+      "heslarDisplay":"heslo"
     },
     {
       "type": "heslar",
@@ -269,7 +269,9 @@
     }
   },
   "poleToHeslar": {
-    "f_typ_dokumentu": "typ_dokumentu"
+    "f_typ_dokumentu": "typ_dokumentu",
+    "aktivity" : "f_aktivita",
+    "areal_druha": "f_areal"
   },
   "heslarToPole": {
     "areal_druha": "f_areal",

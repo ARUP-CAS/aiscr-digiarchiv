@@ -88,7 +88,7 @@ export function HttpLoaderFactory(http: Http) {
       { path: 'id/:id', component: DocumentComponent },
       { path: 'export', component: ExportComponent },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: '**', component: PageNotFoundComponent }
+      //{ path: '**', component: PageNotFoundComponent }
     ]),
     HttpModule,
     JsonpModule,

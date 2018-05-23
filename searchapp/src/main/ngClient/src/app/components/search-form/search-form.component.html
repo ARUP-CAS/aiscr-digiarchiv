@@ -108,7 +108,7 @@
               <ul class="dropdown-menu">
                 <li *ngFor="let fv of solrService.heslare[condition.heslar]">
                   <a (click)="setFieldValue(condition, fv)">
-                    <span *ngIf="condition.heslar">{{fv[condition.heslarDisplay] | translateHeslar: condition.heslar}}</span>
+                    <span *ngIf="condition.heslar">{{fv[condition.heslarDisplay] | translateHeslar: condition.heslar}} ({{fv[condition.heslarDisplay] + ', ' + condition.heslar}})</span>
                   </a>
                 </li>
               </ul>
