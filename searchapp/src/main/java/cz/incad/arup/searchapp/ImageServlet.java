@@ -21,6 +21,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -48,7 +49,7 @@ public class ImageServlet extends HttpServlet {
       String size = request.getParameter("size");
       boolean full = Boolean.parseBoolean(request.getParameter("full"));
       Options opts = Options.getInstance();
-      boolean dynamicThumbs = opts.getBoolean("dynamicThumbs", false);
+      //boolean dynamicThumbs = opts.getBoolean("dynamicThumbs", false);
       if (full) {
         String imagesDir = opts.getString("imagesDir");
         String path = request.getParameter("filepath");
@@ -83,23 +84,11 @@ public class ImageServlet extends HttpServlet {
             BufferedImage bi = ImageIO.read(f);
             ImageSupport.addWatermark(bi, logoImg(response, out), (float) opts.getDouble("watermark.alpha", 0.2f));
             ImageIO.write(bi, "jpg", out);
-          } else if (dynamicThumbs) {
-            LOGGER.log(Level.INFO, "File does not exist in {0}. Trying to generate", fname);
-            Indexer indexer = new Indexer();
-            String t = indexer.createThumb(id, "thumb".equals(size));
-            //String t = ImageSupport.thumbnail(id);
-            if (t != null) {
-              response.setContentType("image/jpeg");
-              BufferedImage bi = ImageIO.read(new File(fname));
-              ImageSupport.addWatermark(bi, logoImg(response, out), (float)opts.getDouble("watermark.alpha", 0.2f));
-              ImageIO.write(bi, "jpg", out);
-            } else {
-              LOGGER.info("no image");
-              emptyImg(response, out);
-            }
           } else {
-            LOGGER.log(Level.INFO, "File does not exist in {0}. ",fname);
-            LOGGER.info("no image");
+              //LOG to file
+            File file = new File(opts.getString("thumbsDir") + File.separator + "missed.txt");
+            FileUtils.writeStringToFile(file, fname + System.getProperty("line.separator"), "UTF-8", true);
+            LOGGER.log(Level.WARNING, "File does not exist in {0}. ",fname);
             emptyImg(response, out);
           }
         } catch (Exception ex) {
