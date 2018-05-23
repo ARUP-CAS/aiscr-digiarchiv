@@ -68,7 +68,7 @@ public class PDFThumbsGenerator {
       String lastProcessed = readProcessing();
       if (!forced) {
         if (!"".equals(lastProcessed) && !unprocessables.contains(lastProcessed)) {
-          LOGGER.log(Level.INFO, "Last attemp to generate file {0} failed. Writing to unpracessables.txt", lastProcessed);
+          LOGGER.log(Level.INFO, "Last attemp to generate file {0} failed. Writing to unprocessables.txt", lastProcessed);
           writeUnprocessable(lastProcessed);
           writeProcessing("");
           return;
@@ -87,7 +87,7 @@ public class PDFThumbsGenerator {
       //Test if the file was last processed before crash;
       String lastProcessed = readProcessing();
       if (f.getName().equals(lastProcessed)) {
-        LOGGER.log(Level.INFO, "Last attemp to generate file {0} failed. Writing to unpracessables.txt. Skipping it", f.getName());
+        LOGGER.log(Level.INFO, "Last attemp to generate file {0} failed. Writing to unprocessables.txt. Skipping it", f.getName());
         writeUnprocessable(f.getName());
         writeProcessing("");
         return;
