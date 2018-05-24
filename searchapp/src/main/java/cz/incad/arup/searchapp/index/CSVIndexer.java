@@ -4,6 +4,7 @@ package cz.incad.arup.searchapp.index;
 import cz.incad.FormatUtils;
 import cz.incad.arup.searchapp.I18n;
 import cz.incad.arup.searchapp.Options;
+import cz.incad.arup.searchapp.imaging.ImageSupport;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -537,8 +538,20 @@ public class CSVIndexer {
             query.setFilterQueries("doctype:\"soubor\"");
             query.setRows(100);
             JSONObject resp = SolrIndex.json(query, "relations/");
+            //LOGGER.log(Level.INFO, resp.getJSONObject("response").getJSONArray("docs").toString());
             if (resp.getJSONObject("response").getJSONArray("docs").length() > 0) {
                 idoc.addField("soubor", resp.getJSONObject("response").getJSONArray("docs").toString());
+                
+                String filepath = resp.getJSONObject("response").getJSONArray("docs").getJSONObject(0).optJSONArray("filepath").getString(0);
+                String dest = ImageSupport.getDestDir(filepath);
+                String fname = dest + filepath + "_thumb.jpg";
+                
+            //LOGGER.log(Level.INFO, fname);
+            
+                idoc.addField("hasThumb", new File(fname).exists() || new File(dest + "_thumb.jpg").exists());
+                
+            } else {
+              idoc.addField("hasThumb", true);
             }
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
@@ -571,7 +584,10 @@ public class CSVIndexer {
         idoc.addField(fieldname, rdoc.toString());
     }
 
-    private void addFields(SolrInputDocument idoc, SolrDocument rdoc, String doctype) {
+    private void addFields(SolrInputDocument idoc, SolrDocument rdoc, String doctype ) {
+      addFields(idoc, rdoc, doctype, false);
+    }
+    private void addFields(SolrInputDocument idoc, SolrDocument rdoc, String doctype, boolean plain ) {
         Iterator<String> names = rdoc.getFieldNames().iterator();
         Map<String, Collection<Object>> values = rdoc.getFieldValuesMap();
         JSONArray jafields = opts.getJSONObject("indexFieldsByType").optJSONArray(doctype);
@@ -590,7 +606,11 @@ public class CSVIndexer {
                     Iterator<Object> valsIter = vals.iterator();
                     while (valsIter.hasNext()) {
                         Object obj = valsIter.next();
-                        idoc.addField(doctype + "_" + name, obj);
+                        if(plain){
+                          idoc.addField(name, obj);
+                        } else {
+                          idoc.addField(doctype + "_" + name, obj);
+                        }
                     }
                 }
             }
@@ -749,52 +769,43 @@ public class CSVIndexer {
         }
         return ret;
     }
-//  
-//  public JSONObject indexDokument(String id){
-//    
-//    JSONObject ret = new JSONObject();
-//    try {
-//
-//          SolrInputDocument doc = new SolrInputDocument();
-//          for (int j = 0; j < nextLine.length; j++) {
-//            doc.addField(headerLine[j], nextLine[j]);
-//          }
-//
-//          String uniqueid;
-//          if (uniqueField != null) {
-//            uniqueid = nextLine[fNames.get(uniqueField)];
-//          } else {
-//            uniqueid = ""+lineNumber++;
-//          }
-//          doc.addField("uniqueid", doctype + "_" + uniqueid);
-//          doc.addField("doctype", doctype);
-//          if (hasRelations) {
-//            addRelations(uniqueid, doctype, doc);
-//          }
-//          if(doc.containsKey("pian_centroid_e")){
-//            
-//            String loc = doc.getFieldValue("pian_centroid_n") + "," + doc.getFieldValue("pian_centroid_e");
-//            doc.addField("loc", loc);
-//            doc.addField("loc_rpt", loc);
-//          }
-//          sclient.add(doc);
-//          tsuccess++;
-//          success++;
-//          if (success % 500 == 0) {
-//            sclient.commit();
-//            LOGGER.log(Level.INFO, "Indexed {0} docs", success);
-//          }
-//        
-//
-//      
-//        
-//        
-//    } catch (Exception ex) {
-//      LOGGER.log(Level.SEVERE, null, ex);
-//      ret.put("error", ex);
-//    }
-//    return ret;
-//  }
+  
+  public JSONObject indexDokument(String id){
+    getClients();
+    JSONObject ret = new JSONObject();
+    try {
+      SolrQuery query = new SolrQuery();
+      query.setQuery("ident_cely:\"" + id + "\"");
+      SolrDocumentList docs = exportClient.query(query).getResults();
+      if (docs.isEmpty()) {
+          LOGGER.log(Level.INFO, "Doc {0} not found", id);
+          ret.put(id, "not exists");
+      } else {
+          SolrInputDocument idoc = new SolrInputDocument();
+          addFields(idoc, docs.get(0), "dokument", true);
+          idoc.removeField("indextime");
+          idoc.removeField("_version_");
+          idoc.removeField("_root_");
+          idoc.setField("uniqueid", "dokument_"+id);
+          idoc.setField("doctype", "dokument");
+          addRelations(id, "dokument", idoc);
+          if (idoc.containsKey("pian_centroid_e")) {
+              String loc = idoc.getFieldValue("pian_centroid_n") + "," + idoc.getFieldValue("pian_centroid_e");
+              idoc.addField("loc", loc);
+              idoc.addField("loc_rpt", loc);
+          }
+          dokumentClient.add(idoc);
+          dokumentClient.commit();
+          LOGGER.log(Level.INFO, "Doc {0} indexed", id);
+          ret.put(id, "success");
+      }
+        closeClients();
+    } catch (Exception ex) {
+      LOGGER.log(Level.SEVERE, null, ex);
+      ret.put("error", ex);
+    }
+    return ret;
+  }
 
     public JSONObject indexRelations() {
         JSONObject ret = new JSONObject();
@@ -837,118 +848,6 @@ public class CSVIndexer {
             LOGGER.log(Level.SEVERE, null, ex);
         }
         return ret;
-    }
-
-    private JSONObject indexFiles(String[] filenames) throws Exception {
-
-        Date start = new Date();
-        String core = opts.getString("exportCore", "export/");
-        SolrClient sclient = SolrIndex.getClient(core);
-        JSONObject ret = new JSONObject();
-        JSONArray ja = new JSONArray();
-        ret.put("errors msgs", ja);
-        JSONArray sources;
-        if (filenames == null || filenames.length == 0) {
-            sources = opts.getJSONArray("csvFiles");
-        } else {
-            sources = new JSONArray(filenames);
-        }
-
-        for (int i = 0; i < sources.length(); i++) {
-
-            String filename = sources.getJSONObject(i).getString("file");
-            String doctype = sources.getJSONObject(i).getString("doctype");
-
-            JSONObject jmap;
-
-            if (sources.getJSONObject(i).has("map")) {
-
-                String maps = sources.getJSONObject(i).getString("map");
-
-                jmap = new JSONObject(FileUtils.readFileToString(new File(maps), "UTF-8"));
-                //Otocim
-                Set keyset = jmap.keySet();
-                Object[] keys = keyset.toArray();
-                for (Object s : keys) {
-                    String key = (String) s;
-                    jmap.put(jmap.getString(key), key);
-                }
-            } else {
-                jmap = new JSONObject();
-            }
-            String url = String.format(apiPoint, doctype);
-            LOGGER.log(Level.INFO, "indexing from {0}", url);
-            readOne(new InputStreamReader(new URL(url).openStream(), "UTF-8"), "ident_cely", doctype, sclient, ret, true);
-        }
-        LOGGER.log(Level.INFO, "Indexed Finished. {0} success, {1} errors", new Object[]{success, errors});
-
-        ret.put("errors", errors);
-
-        Date end = new Date();
-        ret.put("ellapsed time", FormatUtils.formatInterval(end.getTime() - start.getTime()));
-        sclient.close();
-        return ret;
-
-    }
-
-    private JSONObject indexRelationsFromFiles() throws Exception {
-
-        Date start = new Date();
-        Options opts = Options.getInstance();
-        String core = opts.getString("csvRelationsCore", "relations/");
-
-        int success = 0;
-        int errors = 0;
-        SolrClient sclient = SolrIndex.getClient(core);
-        JSONObject ret = new JSONObject();
-        JSONArray ja = new JSONArray();
-        JSONArray sources = opts.getJSONArray("csvRelations");
-
-        for (int i = 0; i < sources.length(); i++) {
-
-            Date tstart = new Date();
-            int tsuccess = 0;
-            int terrors = 0;
-            JSONObject typeJson = new JSONObject();
-            String filename = sources.getJSONObject(i).getString("file");
-            String doctype = sources.getJSONObject(i).getString("doctype");
-
-            JSONObject jmap;
-
-            if (sources.getJSONObject(i).has("map")) {
-
-                String maps = sources.getJSONObject(i).getString("map");
-
-                jmap = new JSONObject(FileUtils.readFileToString(new File(maps), "UTF-8"));
-                //Otocim
-                Set keyset = jmap.keySet();
-                Object[] keys = keyset.toArray();
-                for (Object s : keys) {
-                    String key = (String) s;
-                    jmap.put(jmap.getString(key), key);
-                }
-            } else {
-                jmap = new JSONObject();
-            }
-            readOne(new InputStreamReader(new FileInputStream(filename), "UTF-8"), "ident_cely", doctype, sclient, ret, true);
-
-            typeJson.put("docs indexed", tsuccess);
-            typeJson.put("errors", terrors);
-            Date tend = new Date();
-            typeJson.put("ellapsed time", FormatUtils.formatInterval(tend.getTime() - tstart.getTime()));
-            ret.put(doctype, typeJson);
-
-            ret.put("docs indexed", success);
-        }
-        LOGGER.log(Level.INFO, "Indexed Finished. {0} success, {1} errors", new Object[]{success, errors});
-
-        ret.put("errors", errors);
-        ret.put("errors msgs", ja);
-
-        Date end = new Date();
-        ret.put("ellapsed time", FormatUtils.formatInterval(end.getTime() - start.getTime()));
-        return ret;
-
     }
 
 }

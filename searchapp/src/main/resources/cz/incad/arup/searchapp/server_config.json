@@ -221,7 +221,8 @@
     "jednotka_dokumentu",
     "komponenta_dokumentu",
     "komponenta",
-    "externi_zdroj"
+    "externi_zdroj",
+    "dokument"
   ],
   "csvRelationTables": [
     "vazba_projekt_akce",
