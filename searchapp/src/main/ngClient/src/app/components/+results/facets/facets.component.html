@@ -1,5 +1,12 @@
 <!-- Facet nav -->
 <ul class="nav  app-facet-nav">
+  <li><ul class="app-color-gray list-unstyled "><li>
+    <label class="checkbox-inline">
+      <input type="checkbox" class="checkbox" name="showHasThumbs" id="showWithoutThumbs" 
+             [(ngModel)]="solrService.showWithoutThumbs" (change)="changeShowWithoutThumbs()" />{{'showWithoutThumbs' | translate}}
+    </label>
+  </li>
+      <li class="app-facet-nav-separator"></li></ul></li>
   <li *ngIf="solrService.facets.length > 0 && solrService.facets[0].field === 'pristupnost'" [class]="'app-facet-pristupnost'" >
     <div class="app-facet-nav-title app-border-radius app-cursor-pointer " data-toggle="collapse" [attr.data-target]="'#app-collapse-pristupnost'">
       <span></span><strong>{{'facet.pristupnost' | translate}}</strong>
@@ -85,11 +92,5 @@
       </li>
       <li class="app-facet-nav-separator"></li>
     </ul>
-  </li>
-  <li>
-    <label class="checkbox-inline">
-      <input type="checkbox" class="checkbox" name="showHasThumbs" id="showWithoutThumbs" 
-             [(ngModel)]="solrService.showWithoutThumbs" (change)="changeShowWithoutThumbs()" />{{'showWithoutThumbs' | translate}}
-    </label>
   </li>
 </ul><!--/.facet nav -->
