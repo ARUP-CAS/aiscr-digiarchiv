@@ -147,6 +147,7 @@
    <field name="f_druh_nalezu" type="string" indexed="true" stored="true" multiValued="true" />
    
    
+   <field name="hasThumb" type="boolean" indexed="true" stored="true" multiValued="false" />
    
    <!-- obdobi integer for filters --> 
    <field name="obdobi_poradi" type="tint" indexed="true" stored="true" multiValued="true" /> 
