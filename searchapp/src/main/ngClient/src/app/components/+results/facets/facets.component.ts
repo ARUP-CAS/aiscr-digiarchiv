@@ -66,6 +66,10 @@ export class FacetsComponent implements OnInit {
     let val: string = '[' + v1 + ' TO ' + v2 + ']';
     this.solrService.addFilter(field, val);
   }
+  
+  changeShowWithoutThumbs(){ 
+    this.solrService.changeShowWithoutThumbs();
+  }
 
   icon(value: string){
     return this.solrService.icon(value);

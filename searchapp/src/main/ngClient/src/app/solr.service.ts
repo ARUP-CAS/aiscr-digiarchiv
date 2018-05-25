@@ -77,6 +77,8 @@ export class SolrService implements OnDestroy {
   public facetRanges: FacetRange[] = [];
   public facetPivots: FacetPivot[] = [];
   public facetHeatmaps = {};
+  
+  public showWithoutThumbs: boolean;
 
   public heslare = {};
 
@@ -371,6 +373,9 @@ export class SolrService implements OnDestroy {
               } else if (p === 'inFavorites') {
                     this.inFavorites = param === 'true';
               
+              } else if (p === 'showWithoutThumbs') {
+                    this.showWithoutThumbs = param === 'true';
+
               } else if (p === 'adv') {
                 this.setConditionsFromUrl(param.split(','));
               } else {
@@ -570,6 +575,9 @@ export class SolrService implements OnDestroy {
     let params = {};
     if (this.inFavorites) {
       params['inFavorites'] = 'true';
+    }
+    if (this.showWithoutThumbs) {
+      params['showWithoutThumbs'] = 'true';
     }
     for (let f in this.filters) {
       let name = this.filters[f].field + '';
@@ -836,6 +844,18 @@ export class SolrService implements OnDestroy {
       this.removeCondition(crumb.condition);
     }
   }
+  
+  
+  
+  changeShowWithoutThumbs(){ 
+    this.start = 0;
+    this.setUrl('results');
+  }
+  
+  removeShowWithoutThumbs(){
+    this.showWithoutThumbs = false;
+    this.changeShowWithoutThumbs();
+  }
 
   /* Called in pagination when page changes */
   setStartPage(page: number) {
@@ -918,6 +938,10 @@ export class SolrService implements OnDestroy {
 
         params.append('q.op', 'OR');
         params.append('fq', favFq);
+      }
+      
+      if(!this.showWithoutThumbs){
+        params.append('fq', '-hasThumb:false');
       }
 
       for (let f in this.filters) {

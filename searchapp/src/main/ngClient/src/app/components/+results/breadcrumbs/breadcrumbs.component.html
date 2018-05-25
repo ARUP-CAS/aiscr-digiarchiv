@@ -4,6 +4,9 @@
     <li *ngIf="solrService.inFavorites">
       <a class="app-cursor-pointer" (click)="solrService.removeInFav()">{{'Favorites' | translate}}</a>
     </li>
+    <li *ngIf="solrService.showWithoutThumbs">
+      <a class="app-cursor-pointer" (click)="solrService.removeShowWithoutThumbs()">{{'showWithoutThumbs' | translate}}</a>
+    </li>
     <li *ngFor="let crumb of solrService.breadcrumbs">
       <a class="app-cursor-pointer" (click)="solrService.removeFilterFromCrumb(crumb)">{{getTranslated(crumb)}}</a>
     </li>

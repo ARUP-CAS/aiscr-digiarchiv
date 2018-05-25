@@ -86,4 +86,10 @@
       <li class="app-facet-nav-separator"></li>
     </ul>
   </li>
+  <li>
+    <label class="checkbox-inline">
+      <input type="checkbox" class="checkbox" name="showHasThumbs" id="showWithoutThumbs" 
+             [(ngModel)]="solrService.showWithoutThumbs" (change)="changeShowWithoutThumbs()" />{{'showWithoutThumbs' | translate}}
+    </label>
+  </li>
 </ul><!--/.facet nav -->
