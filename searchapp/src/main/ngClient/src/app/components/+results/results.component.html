@@ -31,6 +31,11 @@
 		<div class="col-md-12 text-center">
 			<div class="alert alert-warning" role="alert">
 				Nalezeno <strong>{{solrService.numFound}}</strong> výsledků. Zkuste zadat jiný dotaz.
+                                <br />nebo <br />
+                                <label class="checkbox-inline">
+                                  <input type="checkbox" class="checkbox" name="showHasThumbs" id="showWithoutThumbs" 
+                                         [(ngModel)]="solrService.showWithoutThumbs" (change)="solrService.changeShowWithoutThumbs()" />{{'showWithoutThumbs' | translate}}
+                                </label>
 			</div>
 		</div>
 	</div>
