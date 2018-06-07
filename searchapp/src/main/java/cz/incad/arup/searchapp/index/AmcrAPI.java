@@ -34,9 +34,8 @@ public class AmcrAPI {
   JSONObject conf;
 
   private String URL = "http://kryton.smartgis.cz/~smetak/isamcr-p-5-8-21/xmlrpc/0/?t=600";
-  private String USER = "incad@incad.cz";
-  private String PWD = "2d2dbafe59a025b8def42614f824a42db24e8633";
-  //private String PWD = "test";
+  private String USER = "testuser";
+  private String PWD = "testpwd";
 
   private String sid = null;
   private boolean logged;
@@ -47,7 +46,6 @@ public class AmcrAPI {
       conf = opts.getJSONObject("amcrapi");
       URL = conf.getString("url");
       USER = conf.getString("user");
-      //PWD = sha1(conf.getString("pwd"));
       PWD = conf.getString("pwd");
 
       sid = getSid();
