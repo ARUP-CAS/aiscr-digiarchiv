@@ -18,7 +18,7 @@
     <label>{{'Areál' | translate}}:</label>
     <span>{{komponenta.areal | translateHeslar: 'areal_druha'}}</span>
     <span *ngIf="aktivity.length >0">
-      <span>(<span *ngFor="let aktivita of aktivity; let idx = index">{{'f_aktivita.'+aktivita | translate}}<span *ngIf="idx<aktivity.length-1">, </span></span>)</span>
+      <span>(<span *ngFor="let aktivita of aktivity; let idx = index">{{'f_aktivita_'+aktivita | translate}}<span *ngIf="idx<aktivity.length-1">, </span></span>)</span>
     </span>
   </li>
   <li *ngIf="hasValue('poznamka')">

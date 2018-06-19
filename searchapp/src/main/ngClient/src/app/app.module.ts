@@ -34,7 +34,8 @@ import {ResultsComponent,
     NeidentAkceComponent,
     PaginationComponent,
     ResultItemComponent,
-    TimelineComponent} from './components/+results/';
+    TimelineComponent,
+    TvarComponent} from './components/+results/';
 import { FreeTextComponent } from './components/free-text/free-text.component';
     
     // AoT requires an exported function for factories
@@ -71,6 +72,7 @@ export function HttpLoaderFactory(http: Http) {
     PaginationComponent,
     ResultItemComponent,
     TimelineComponent,
+    TvarComponent,
     
     DocumentComponent,
 

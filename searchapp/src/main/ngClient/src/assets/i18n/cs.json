@@ -436,6 +436,7 @@
   "Druh lokality": "Druh lokality",
   "Název lokality": "Název lokality",
 
+  "tvar":"Tvary (příznaky) na letecké fotografii:",
   "Nalez": "Nález",
   "Druh": "Druh",
   "Specifikace": "Specifikace",
@@ -458,6 +459,7 @@
   "Země (region)": "Země (region)",
   "Událost": "Událost",
   "Osoby": "Osoby",
+  "Datum vzniku": "Datum vzniku",
   "Popis letu": "Popis letu",
   "Identifikátor": "Identifikátor",
   "Datum (hodina)": "Datum (hodina)",

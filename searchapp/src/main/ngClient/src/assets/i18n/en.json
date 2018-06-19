@@ -9,6 +9,8 @@
   "Sborník": "Volume",
   "Materiál dokumentu": "Document material",
   "Osoby": "Persons",
+  
+  "Datum vzniku": "Creation date",
   "Datum výzkumu": "Fieldwork date",
   "close map": "Close map",
   "adv.nalez_specifikace_objektu": "Find - feature specification",
@@ -324,6 +326,8 @@
   "adv.objekt_kategorie": "Find - feature category",
   "Špatné přihlašovací údaje": "Login not recognized",
   "Areál": "Activity area",
+  
+  "tvar":"Shapes (marks) in the aerial image:",
   "Nalez": "Find",
   "f_areal.obora": "game park",
   "adv.rada": "Document - series",

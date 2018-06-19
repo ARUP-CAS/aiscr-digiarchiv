@@ -57,7 +57,7 @@
             <li *ngIf="hasValue('popis') || hasValue('extra_data_cislo_objektu')">
               <label>{{'Popis obsahu' | translate}}:</label>
               <span *ngIf="hasValue('popis')">{{result.popis}}</span>
-	<span *ngIf="hasValue('extra_data_cislo_objektu')">{{result.extra_data_cislo_objektu}}</span>
+              <span *ngIf="hasValue('extra_data_cislo_objektu')">{{result.extra_data_cislo_objektu}}</span>
             </li>
             <li *ngIf="hasValue('poznamka')">
               <label>{{'Poznámka' | translate}}:</label>
@@ -113,6 +113,10 @@
               <label>{{'Osoby' | translate}}:</label> 
               <span>{{result.extra_data_osoby}}</span>
             </li>
+            <li *ngIf="hasValue('extra_data_datum_vzniku')">
+              <label>{{'Datum vzniku' | translate}}:</label> 
+              <span>{{result.extra_data_datum_vzniku}}</span>
+            </li>
             <li class="app-nav-li-separator"></li>
           </ul>
         </li>
@@ -165,6 +169,22 @@
             <li *ngIf="hasValue('let_fotoaparat')">
               <label>{{'Fotoaparát' | translate}}:</label>
               <span>{{result.let_fotoaparat}}</span>
+            </li>
+            <li class="app-nav-li-separator"></li>
+          </ul>
+        </li>
+      </ul><!--/.popis letu -->
+      
+      <!-- Tvar -->
+      <ul class="nav app-result-item-nav" *ngIf="hasTvar()">
+        <li>
+          <div class="app-result-item-nav-title app-border-radius app-cursor-pointer app-color-blue-pastel collapsed" data-toggle="collapse" [attr.data-target]="'#tvar_'+ id()">
+            <strong>{{'tvar' | translate}}:</strong>
+          </div>
+          <ul class="list-unstyled app-nav-tree app-color-black collapse" [id]="'tvar_'+ id()">
+            <li class="app-nav-li-separator"></li>
+            <li >
+              <app-tvar [tvar]="result.tvar_tvar[0]" [poznamka]="result.tvar_poznamka[0]" [docId]="id()"></app-tvar>
             </li>
             <li class="app-nav-li-separator"></li>
           </ul>

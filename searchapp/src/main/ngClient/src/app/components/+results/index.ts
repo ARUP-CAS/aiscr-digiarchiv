@@ -16,3 +16,4 @@ export { NeidentAkceComponent } from './neident-akce/';
 export { PaginationComponent } from './pagination/';
 export { ResultItemComponent } from './result-item/';
 export { TimelineComponent } from './timeline/';
+export {TvarComponent} from './tvar/';

@@ -88,7 +88,7 @@ export class ResultItemComponent implements OnInit {
     if (this.result.hasOwnProperty('nalez_druh_nalezu')) {
       this.numNalezu = this.result.nalez_druh_nalezu.length;
     }
-
+    
     this.getIsFav();
   }
   
@@ -101,6 +101,10 @@ export class ResultItemComponent implements OnInit {
   
   hasPopisletu(){
     return this.result.hasOwnProperty('let_ident_cely');
+  }
+  
+  hasTvar(){
+    return this.result.hasOwnProperty('tvar_dokument') && this.result['tvar_dokument'].length >0 ;
   }
 
   okres() {
