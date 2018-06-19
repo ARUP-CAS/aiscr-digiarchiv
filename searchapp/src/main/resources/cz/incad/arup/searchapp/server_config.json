@@ -222,6 +222,7 @@
     "komponenta_dokumentu",
     "komponenta",
     "externi_zdroj",
+    "let",
     "dokument"
   ],
   "csvRelationTables": [
@@ -231,7 +232,8 @@
     "nalez",
     "nalez_dokumentu",
     "extra_data",
-    "externi_odkaz"
+    "externi_odkaz",
+    "tvar"
   ],
   "indexFieldsByType": {
 
@@ -303,7 +305,9 @@
       "udalost_typ",
       "rok_od",
       "rok_do",
-      "osoby"
+      "osoby",
+      "datum_vzniku"
+      
     ],
     "komponenta": [
       "ident_cely",
