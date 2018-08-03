@@ -7,6 +7,7 @@ package cz.incad.arup.searchapp;
 
 import cz.incad.arup.searchapp.imaging.ImageSupport;
 import cz.incad.arup.searchapp.index.Indexer;
+import cz.incad.arup.searchapp.index.SolrIndex;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,9 +45,22 @@ public class ImageServlet extends HttpServlet {
    */
   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
-    try (OutputStream out = response.getOutputStream()) {
-      String id = request.getParameter("id");
+    String id = request.getParameter("id");
+
+    String userPr = LoginServlet.pristupnost(request.getSession());
+    String imgPr = SolrIndex.getPristupnostBySoubor(id);
       String size = request.getParameter("size");
+      if (size == null) {
+        size = "thumb";
+      }
+    if (!"thumb".equals(size) && !"A".equals(imgPr) && imgPr.compareToIgnoreCase(userPr) > 0) {
+      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+      response.getWriter().println("insuficient rights!!");
+      return;
+    }
+    
+    try (OutputStream out = response.getOutputStream()) {
+
       boolean full = Boolean.parseBoolean(request.getParameter("full"));
       Options opts = Options.getInstance();
       //boolean dynamicThumbs = opts.getBoolean("dynamicThumbs", false);
@@ -56,9 +70,6 @@ public class ImageServlet extends HttpServlet {
         File f = new File(imagesDir + path);
         IOUtils.copy(new FileInputStream(f), out);
         return;
-      }
-      if (size == null) {
-        size = "thumb";
       }
       if (id != null && !id.equals("")) {
         boolean isPdf = id.toLowerCase().endsWith(".pdf");
@@ -71,10 +82,10 @@ public class ImageServlet extends HttpServlet {
 //          }
           String fname = dest + id + "_" + size + ".jpg";
           File f = new File(fname);
-          if(!f.exists() && size.equals("thumb")){
+          if (!f.exists() && size.equals("thumb")) {
             //a bug in PDFThumbsGenerator write name of thumb without id
             // check if exists _thumb.jpg in that directory
-            if(new File(dest + "_thumb.jpg").exists()){
+            if (new File(dest + "_thumb.jpg").exists()) {
               fname = dest + "_thumb.jpg";
               f = new File(fname);
             }
@@ -85,10 +96,10 @@ public class ImageServlet extends HttpServlet {
             ImageSupport.addWatermark(bi, logoImg(response, out), (float) opts.getDouble("watermark.alpha", 0.2f));
             ImageIO.write(bi, "jpg", out);
           } else {
-              //LOG to file
+            //LOG to file
             File file = new File(opts.getString("thumbsDir") + File.separator + "missed.txt");
             FileUtils.writeStringToFile(file, fname + System.getProperty("line.separator"), "UTF-8", true);
-            LOGGER.log(Level.WARNING, "File does not exist in {0}. ",fname);
+            LOGGER.log(Level.WARNING, "File does not exist in {0}. ", fname);
             emptyImg(response, out);
           }
         } catch (Exception ex) {

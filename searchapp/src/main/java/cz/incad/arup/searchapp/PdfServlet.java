@@ -7,6 +7,7 @@ package cz.incad.arup.searchapp;
 
 import cz.incad.arup.searchapp.imaging.ImageSupport;
 import cz.incad.arup.searchapp.index.Indexer;
+import cz.incad.arup.searchapp.index.SolrIndex;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,13 +44,22 @@ public class PdfServlet extends HttpServlet {
    */
   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
-    try (OutputStream out = response.getOutputStream()) {
+      
       String id = request.getParameter("id");
-      String page = request.getParameter("page");
+    String userPr = LoginServlet.pristupnost(request.getSession());
+    String imgPr = SolrIndex.getPristupnostBySoubor(id);
       String size = request.getParameter("size");
       if (size == null) {
         size = "thumb";
       }
+    if (!"thumb".equals(size) && !"A".equals(imgPr) && imgPr.compareToIgnoreCase(userPr) > 0) {
+      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+      response.getWriter().println("insuficient rights!!");
+      return;
+    }
+    
+    try (OutputStream out = response.getOutputStream()) {
+      String page = request.getParameter("page");
       boolean full = Boolean.parseBoolean(request.getParameter("full"));
       Options opts = Options.getInstance();
       //boolean dynamicThumbs = opts.getBoolean("dynamicThumbs", false);
