@@ -20,7 +20,7 @@
             {{'Přihlásit' | translate}} <span class="caret"></span>
           </a>
           <a *ngIf="solrService.config && solrService.config.logged" href="#" class="dropdown-toggle login-dropdown-toggle" data-toggle="dropdown">
-            {{solrService.config.user.jmeno}} {{solrService.config.user.prijmeni}}<span class="caret"></span>
+            {{solrService.config.user.jmeno}} {{solrService.config.user.prijmeni}} ({{'pristupnost_' + solrService.config.user.pristupnost | translate}})<span class="caret"></span>
           </a>
           <ul class="dropdown-menu app-border-radius">
             <li>
