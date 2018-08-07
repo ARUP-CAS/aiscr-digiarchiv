@@ -91,7 +91,7 @@
 
 /*** Box news ***/
 .app-box-news {
-  /*height: 298px; docasne zakomentovano pro spusteni aplikace, az bude vice novinek, tak se to odkomentuje*/
+  height: 298px; /*docasne zakomentovano pro spusteni aplikace, az bude vice novinek, tak se to odkomentuje*/
   overflow: auto;
   background-color: #fff;
   border: 1px solid #e6e6e6;
