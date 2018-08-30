@@ -1,4 +1,4 @@
-# arup-da-amcr
+# Digitální archiv AMČR - o aplikaci
 Digitální archiv Archeologické mapy ČR (AMČR) je webová aplikace určená k prohlížení digitálních dokumentů uložených v Archeologických ústavech AVČR v Praze a Brně. Archivy těchto institucí obsahují dokumentaci terénních archeologických výzkumů na území ČR od r. 1919 do současnosti a vzhledem k zákonné roli ústavů na poli památkové péče se dále rychle rozrůstají. Jde o největší soubory dokumentů k archeologickým výzkumům a nálezům na území ČR a o významnou součást našeho kulturního dědictví.
 
 Digitální archiv AMČR obsahuje textové dokumenty (nálezové zprávy, expertní posudky a hlášení), fotografie z terénních výzkumů, letecké snímky, mapy a plány a digitální data (tabulky, databáze, vektorovou grafiku apod.), vždy včetně popisných údajů. Dokumenty a další informace jsou průběžně přebírány z AMČR, s níž je Digitální archiv propojen i uživatelskými účty.
