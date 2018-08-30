@@ -184,6 +184,11 @@ export class ResultItemComponent implements OnInit {
     }
   }
 
+  popisObsahu(): string {
+    let s: string = this.result.popis;
+    return s.replace(/\[new_line\]/gi, '<br/>');
+  }
+ 
   id() {
     if (this.inModal) {
       return 'modal_' + this.result['uniqueid'];
