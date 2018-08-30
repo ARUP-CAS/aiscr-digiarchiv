@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="">
   <Parameter name="def_config_dir" override="false" value="/assets/"/>
-  <Parameter name="app_dir2" override="false" value="/var/lib/archeo/amcr"/>
+  <Parameter name="app_dir" override="false" value="/var/lib/archeo/amcr"/>
 </Context>
