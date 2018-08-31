@@ -1,40 +1,37 @@
-<script src="path/to/messageformat.js"></script>
-<script src="path/to/angular-translate-interpolation-messageformat"></script>
-
 <div class="container app-content-wrapper">
-<div class="row" *ngIf="solrService.numFound > 0">
-<!-- Facet -->
-<div class="col-md-4 app-facet">
-<app-facets></app-facets>
-</div><!--/.facet -->
+  <div class="row" *ngIf="solrService.numFound > 0">
+    <!-- Facet -->
+    <div class="col-md-4 app-facet">
+      <app-facets></app-facets>
+    </div><!--/.facet -->
+    
+    <!-- Result -->
+    <div class="col-md-8 app-result clearfix"
+          [class.app-result-view-row]="solrService.itemView === 'row'"
+          [class.app-result-view-col]="solrService.itemView === 'col'">
+      <!-- Timeline -->
+      <div class="collapse in" id="app-collapse-timeline">
+        <app-timeline  #timeline></app-timeline>
+      </div><!--/.timeline -->
 
-<!-- Result -->
-<div class="col-md-8 app-result clearfix"
-[class.app-result-view-row]="solrService.itemView === 'row'"
-[class.app-result-view-col]="solrService.itemView === 'col'">
-<!-- Timeline -->
-<div class="collapse in" id="app-collapse-timeline">
-<app-timeline  #timeline></app-timeline>
-</div><!--/.timeline -->
+      <!-- Result item container -->
+      <div class="app-result-item-container" *ngFor="let result of docs" >
+        <app-result-item [result]="result" (onViewFile)="onViewFile($event)" (onViewDetail)="onViewDetail($event)" [inModal]="false"></app-result-item>
+      </div><!--/.result item container -->
 
-<!-- Result item container -->
-<div class="app-result-item-container" *ngFor="let result of docs" >
-<app-result-item [result]="result" (onViewFile)="onViewFile($event)" (onViewDetail)="onViewDetail($event)" [inModal]="false"></app-result-item>
-</div><!--/.result item container -->
-
-<!-- Pagination -->
-<nav class="text-center">
-<app-pagination></app-pagination>
-</nav><!--/.pagination -->
-
-</div><!--/.result -->
-</div><!--/.row -->
-
-<div class="row" *ngIf="solrService.numFound === 0">
-<div class="col-md-12 text-center">
-<div class="alert alert-warning" role="alert">
-       	{{'Počet nalezených výsledků' | translate}}: <strong>{{solrService.numFound}}</strong>. {{'Zkuste zadat jiný dotaz' | translate}}.
-                                <br />{{'nebo' | translate}} <br />
+      <!-- Pagination -->
+      <nav class="text-center">
+        <app-pagination></app-pagination>
+      </nav><!--/.pagination -->
+      
+    </div><!--/.result -->
+  </div><!--/.row -->
+	
+	<div class="row" *ngIf="solrService.numFound === 0">
+		<div class="col-md-12 text-center">
+			<div class="alert alert-warning" role="alert">
+				Nalezeno <strong>{{solrService.numFound}}</strong> výsledků. Zkuste zadat jiný dotaz.
+                                <br />nebo <br />
                                 <label class="checkbox-inline">
                                   <input type="checkbox" class="checkbox" name="showHasThumbs" id="showWithoutThumbs" 
                                          [(ngModel)]="solrService.showWithoutThumbs" (change)="solrService.changeShowWithoutThumbs()" />{{'showWithoutThumbs' | translate}}
