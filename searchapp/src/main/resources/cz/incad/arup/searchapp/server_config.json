@@ -100,13 +100,7 @@
     "plán výzkumu": "mplany",
     "plán sondy": "mplany",
     "plán objektu": "mplany",
-    "mapa topografická": "mplany",
-    "mapa speciální": "mplany",
-    "mapa stará": "mplany",
-    "mapa historická": "mplany",
-
-    "mapa EN/katastru": "mplany",
-    "mapa SMO5": "mplany",
+    "mapa": "mplany",
     "-": "neuvedeno"
   },
   "kategorie": {
