@@ -11,7 +11,7 @@
       <a class="app-cursor-pointer" (click)="solrService.removeFilterFromCrumb(crumb)">{{getTranslated(crumb)}}</a>
     </li>
     <li class="pull-right">
-      <strong>{{solrService.numFound}}</strong> {{'výsledků' | translate}}
+      {{'Počet výsledků' | translate}}: <strong>{{solrService.numFound}}</strong> 
       <span class="app-color-silver app-pipe">|</span>
       <a (click)="solrService.gotoExport()" [title]="'Export' | translate" rel="tooltip">
 				<i class="fa fa-external-link app-clean-pd" aria-hidden="true"></i></a>
