@@ -394,7 +394,7 @@ public class CSVIndexer {
       query.setFilterQueries("doctype:\"komponenta\"");
       SolrDocumentList docs = exportClient.query(query).getResults();
       if (docs.isEmpty()) {
-        LOGGER.log(Level.FINE, "Doc {0} has no dokumentacni_jednotka", dokumentacni_jednotka);
+        LOGGER.log(Level.FINE, "Doc {0} has no komponenta", dokumentacni_jednotka);
       } else {
         for (SolrDocument doc : docs) {
           addFields(idoc, doc, "komponenta");
@@ -464,7 +464,7 @@ public class CSVIndexer {
       } else {
         for (SolrDocument doc : docs) {
           addFields(idoc, doc, "komponenta_dokumentu");
-          getNalezDokumentu(idoc, doc.getFirstValue("parent").toString());
+          getNalezDokumentu(idoc, doc.getFirstValue("ident_cely").toString());
         }
       }
 
