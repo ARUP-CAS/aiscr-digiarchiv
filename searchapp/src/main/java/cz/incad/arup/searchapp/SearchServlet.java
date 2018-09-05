@@ -82,9 +82,8 @@ public class SearchServlet extends HttpServlet {
           jo =  new JSONObject(solrResp);
         }
         
-        if (core.equals("dokument/")) {
-          filter(jo, pristupnost);
-        }
+        filter(jo, pristupnost);
+
         if(request.getParameter("json.wrf") != null){
           response.getWriter().println(request.getParameter("json.wrf") + "(" + jo.toString() + ")");
         }else{
