@@ -36,7 +36,12 @@ export class PaginationComponent implements OnInit {
     this.hasPagination = this.solrService.totalPages > 1;
     this.first = this.currentPage - 2 < 1 ? 1 : this.currentPage - 2;
     this.range = [];
-    let last = Math.min(this.numPages, this.solrService.totalPages);
+    let last = this.numPages;
+    let delta = this.first - 1 + last - this.solrService.totalPages;
+    if (delta > 0) {
+        last -= delta;
+    }
+
     for(let i = 0; i<last; i++){
       this.range.push(i+this.first);
     }
