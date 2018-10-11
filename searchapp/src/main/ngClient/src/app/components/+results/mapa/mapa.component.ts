@@ -1,5 +1,6 @@
 import { Component, OnInit, Renderer } from '@angular/core';
 
+import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 import { SolrService } from '../../../solr.service';
 import { MapBounds } from '../../../shared'
 
@@ -60,7 +61,8 @@ export class MapaComponent implements OnInit {
   height: string;
 
   constructor(public solrService: SolrService,
-    private renderer: Renderer) { }
+    private renderer: Renderer,
+    private translate: TranslateService) { }
 
   ngOnInit() {
     this.openSubs = this.solrService.mapOpenChanged.subscribe(val=> {
@@ -174,16 +176,18 @@ export class MapaComponent implements OnInit {
       layers: [baseLayer]
     });
 
-
     this.markers = new L.featureGroup();
 
     this.map.addLayer(this.heatmapLayer);
 
     this.popup = L.popup();
 
-
-
     this.locationFilter = new L.LocationFilter().addTo(this.map);
+
+    this.setMapCtrlLang();
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.setMapCtrlLang();
+    });
 
     //            this.map.on('click', _.bind(this.onMapClick, this));
     var mc = this;
@@ -234,6 +238,33 @@ export class MapaComponent implements OnInit {
     this.prepared = true;
   }
 
+  setMapCtrlLang() {
+    L.setOptions(this.map.zoomControl, {
+      zoomInTitle: this.solrService.translateKey('zoom in'),
+      zoomOutTitle: this.solrService.translateKey('zoom out'),
+    });
+    this.map.zoomControl._zoomInButton.title = this.map.zoomControl.options.zoomInTitle;
+    this.map.zoomControl._zoomOutButton.title = this.map.zoomControl.options.zoomOutTitle;
+
+    // the two calls should probably implement L.Control.Fullscreen.setOptions...
+    L.setOptions(this.map.fullscreenControl, {
+      title: {
+        'false': this.solrService.translateKey('view fullscreen'),
+        'true': this.solrService.translateKey('exit fullscreen')
+      }
+    });
+    this.map.fullscreenControl._toggleTitle();
+
+    L.setOptions(this.locationFilter, {
+      enableButton: {
+        enableText: this.solrService.translateKey('select area'),
+        disableText: this.solrService.translateKey('remove selection')
+      }
+    });
+    let textKey = this.locationFilter.isEnabled() ? 'disableText' : 'enableText';
+    this.locationFilter._enableButton.setText(
+      this.locationFilter.options.enableButton[textKey]);
+  }
 
   updateBounds(bounds) {
     this.solrService.addBoundsFilter(bounds);
@@ -381,14 +412,14 @@ export class MapaComponent implements OnInit {
       }
     }
   }
-  
+
   removeMarkers() {
     for (var i = 0; i < this.markersList.length; i++) {
       this.markers.removeLayer(this.markersList[i]);
-    } 
+    }
     this.markersList = [];
   }
-  
+
   markerExists(pianId : string){
     for (var i = 0; i < this.markersList.length; i++) {
       if(pianId === this.markersList[i]['pianId']){
@@ -402,8 +433,8 @@ export class MapaComponent implements OnInit {
     if (!doc.hasOwnProperty('pian')) {
       return;
     }
-    
-    
+
+
 
     var ngMapa = this;
     var pians = JSON.parse(doc['pian'][0]);
