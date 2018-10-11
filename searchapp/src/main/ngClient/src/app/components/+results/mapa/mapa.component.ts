@@ -117,6 +117,12 @@ export class MapaComponent implements OnInit {
             this.locationFilter.setBounds(bounds);
             this.locationFilter.enable();
           } else {
+            // forget previous bounds
+            this.locationFilter._nw = null;
+            this.locationFilter._ne = null;
+            this.locationFilter._sw = null;
+            this.locationFilter._se = null;
+
             this.locationFilter.disable();
           }
           this.setData();
