@@ -26,6 +26,7 @@ export class MapaComponent implements OnInit {
   popup: any;
   mapData: any;
   locationFilter: any;
+  pianFilter: any;
   heatView: boolean = false;
   prepared: boolean;
   conf: any = {
@@ -69,7 +70,12 @@ export class MapaComponent implements OnInit {
       setTimeout(() => {
         this.setIsCollapsed();
         if (!this.isCollapsed) {
+          let oldPianFilter = this.pianFilter;
+          this.pianFilter = this.solrService.getPianFilter();
           this.show();
+          if (this.pianFilter != oldPianFilter) {
+            this.search();
+          }
         }
       }, 100);
 
@@ -78,6 +84,7 @@ export class MapaComponent implements OnInit {
       setTimeout(() => {
         this.setIsCollapsed();
         if (!this.isCollapsed) {
+          this.pianFilter = this.solrService.getPianFilter();
           this.show();
         }
       }, 100);
@@ -440,17 +447,21 @@ export class MapaComponent implements OnInit {
       return;
     }
 
+    for (let i in doc['pian']) {
+      this.doAddMarker(doc, idx, doc['pian'][i]);
+    }
+  }
 
-
+  doAddMarker(doc, idx, serialized) {
     var ngMapa = this;
-    var pians = JSON.parse(doc['pian'][0]);
+    var pians = JSON.parse(serialized);
 
-    for(let i in pians){
-      let id = idx +'_'+i;
+    for (let i in pians) {
       var pian = pians[i];
       if(this.solrService.hasRights(pian['parent_pristupnost'])){
         var pianId = pian['ident_cely'][0];
-        if(!this.markerExists(pianId)){
+        if ((!this.pianFilter || (this.pianFilter === pianId)) &&
+            !this.markerExists(pianId)) {
           var marker = L.marker([pian['centroid_n'][0], pian['centroid_e'][0]], { pianId: pianId});
           this.markersList.push(marker);
           marker['pianId'] = pianId;
@@ -461,19 +472,18 @@ export class MapaComponent implements OnInit {
             });
           });
 
-          marker.bindPopup(this.popUpHtml(doc, i)).addTo(this.markers);
+          marker.bindPopup(this.popUpHtml(pianId, pian['centroid_n'][0],
+            pian['centroid_e'][0])).addTo(this.markers);
         }
       }
-
     }
-
   }
 
-  popUpHtml(doc: any, i: string){
-    return '<h4><a id="'+doc['pian_ident_cely'][i]+'">PIAN: ' +
-        doc['pian_ident_cely'][i] + ' ('+
-        this.solrService.formatNumber(doc['pian_centroid_n'][i])+' '+
-        this.solrService.formatNumber(doc['pian_centroid_e'][i]) + ')</a></h4>';
+  popUpHtml(ident_cely, centroid_n, centroid_e) {
+    return '<h4><a id="' + ident_cely + '">PIAN: ' +
+        ident_cely + ' (' +
+        this.solrService.formatNumber(centroid_n) + ' ' +
+        this.solrService.formatNumber(centroid_e) + ')</span></h4>';
   }
 
 

@@ -255,6 +255,17 @@ export class SolrService implements OnDestroy {
 
   }
 
+  getPianFilter() {
+    for (let i in this.filters) {
+      let f = this.filters[i];
+      if (f.field === 'pian_ident_cely') {
+        return f.displayValue;
+      }
+    }
+
+    return null;
+  }
+    
   startProgress() {
     // We can listen when loading will be completed
     this.slimLoader.start(() => {
