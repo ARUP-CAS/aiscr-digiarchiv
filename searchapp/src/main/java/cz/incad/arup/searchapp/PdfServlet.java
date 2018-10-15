@@ -6,8 +6,6 @@
 package cz.incad.arup.searchapp;
 
 import cz.incad.arup.searchapp.imaging.ImageSupport;
-import cz.incad.arup.searchapp.index.Indexer;
-import cz.incad.arup.searchapp.index.SolrIndex;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -45,14 +43,9 @@ public class PdfServlet extends HttpServlet {
   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
       
-      String id = request.getParameter("id");
-    String userPr = LoginServlet.pristupnost(request.getSession());
-    String imgPr = SolrIndex.getPristupnostBySoubor(id);
-      String size = request.getParameter("size");
-      if (size == null) {
-        size = "thumb";
-      }
-    if (!"thumb".equals(size) && !"A".equals(imgPr) && imgPr.compareToIgnoreCase(userPr) > 0) {
+    String id = request.getParameter("id");
+
+    if (!ImageAccess.isAllowed(request)) {
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       response.getWriter().println("insuficient rights!!");
       return;
@@ -62,16 +55,18 @@ public class PdfServlet extends HttpServlet {
       String page = request.getParameter("page");
       boolean full = Boolean.parseBoolean(request.getParameter("full"));
       Options opts = Options.getInstance();
-      //boolean dynamicThumbs = opts.getBoolean("dynamicThumbs", false);
       if (id != null && !id.equals("")) {
         try {
           if (full) {
-
             String imagesDir = opts.getString("imagesDir");
-            String path = request.getParameter("filepath");
-            File f = new File(imagesDir + path);
+            File f = new File(imagesDir + id);
             IOUtils.copy(new FileInputStream(f), out);
           } else {
+            String size = request.getParameter("size");
+            if (size == null) {
+              size = "thumb";
+            }
+
             //String fname = Options.getInstance().getString("thumbsDir") + id + ".jpg";
             String fname = ImageSupport.getDestDir(id) + id + File.separator + page + ".jpg";
             File f = new File(fname);

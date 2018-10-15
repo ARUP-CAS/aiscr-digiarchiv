@@ -6,8 +6,6 @@
 package cz.incad.arup.searchapp;
 
 import cz.incad.arup.searchapp.imaging.ImageSupport;
-import cz.incad.arup.searchapp.index.Indexer;
-import cz.incad.arup.searchapp.index.SolrIndex;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,39 +45,31 @@ public class ImageServlet extends HttpServlet {
           throws ServletException, IOException {
     String id = request.getParameter("id");
 
-    String userPr = LoginServlet.pristupnost(request.getSession());
-    String imgPr = SolrIndex.getPristupnostBySoubor(id);
-      String size = request.getParameter("size");
-      if (size == null) {
-        size = "thumb";
-      }
-    if (!"thumb".equals(size) && !"A".equals(imgPr) && imgPr.compareToIgnoreCase(userPr) > 0) {
+    if (!ImageAccess.isAllowed(request)) {
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       response.getWriter().println("insuficient rights!!");
       return;
     }
     
     try (OutputStream out = response.getOutputStream()) {
-
       boolean full = Boolean.parseBoolean(request.getParameter("full"));
       Options opts = Options.getInstance();
-      //boolean dynamicThumbs = opts.getBoolean("dynamicThumbs", false);
       if (full) {
         String imagesDir = opts.getString("imagesDir");
-        String path = request.getParameter("filepath");
-        File f = new File(imagesDir + path);
+        File f = new File(imagesDir + id);
         IOUtils.copy(new FileInputStream(f), out);
         return;
       }
-      if (id != null && !id.equals("")) {
-        boolean isPdf = id.toLowerCase().endsWith(".pdf");
-        try {
 
+      if (id != null && !id.equals("")) {
+        String size = request.getParameter("size");
+        if (size == null) {
+          size = "thumb";
+        }
+
+        try {
           //String fname = Options.getInstance().getString("thumbsDir") + id + ".jpg";
           String dest = ImageSupport.getDestDir(id);
-//          if(isPdf){
-//            dest += id + File.separator;
-//          }
           String fname = dest + id + "_" + size + ".jpg";
           File f = new File(fname);
           if (!f.exists() && size.equals("thumb")) {

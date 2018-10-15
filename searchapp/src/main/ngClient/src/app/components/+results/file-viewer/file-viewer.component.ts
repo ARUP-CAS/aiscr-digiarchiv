@@ -43,8 +43,7 @@ export class FileViewerComponent implements OnInit {
   }
   
   downloadUrl(){
-    return this.solrService.imgPoint(this.selectedFile) + '?full=true&id=' + 
-      this.selectedFile.nazev + '&filepath=' + this.selectedFile.filepath;
+    return this.solrService.imgPoint(this.selectedFile) + '?full=true&id=' + this.selectedFile.filepath;
   }
   
   download(){
