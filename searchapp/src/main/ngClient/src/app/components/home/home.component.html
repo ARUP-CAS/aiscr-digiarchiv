@@ -33,9 +33,9 @@
     </div>
   </div><!--/.clearfix -->
 
-  <div class="row">
+  <div class="app-spread-row">
     <!-- About project -->
-    <div class="col-md-6">
+    <div class="app-spread-col-prim">
       <div class="app-content-title">
         <h1 class="app-clean-mg app-clean-pd app-color-gray-light">{{'O projektu' | translate}}</h1>
       </div>
@@ -43,12 +43,14 @@
       
     </div><!--/.about project -->
     <!--News -->
-    <div class="col-md-6">
-      <div class="app-content-title">
-        <h1 class="app-clean-mg app-clean-pd app-color-gray-light">{{'Novinky' | translate}}</h1>
-      </div>
-      <div class="app-box-news app-border-radius">
-        <div><app-free-text [id]="'news'" ></app-free-text></div>
+    <div class="app-spread-col-sec">
+      <div class="app-spread-col-inner">
+        <div class="app-content-title">
+          <h1 class="app-clean-mg app-clean-pd app-color-gray-light">{{'Novinky' | translate}}</h1>
+        </div>
+        <div class="app-box-news app-border-radius">
+          <div><app-free-text [id]="'news'" ></app-free-text></div>
+        </div>
       </div>
     </div><!--/.news -->
   </div><!--/.row -->

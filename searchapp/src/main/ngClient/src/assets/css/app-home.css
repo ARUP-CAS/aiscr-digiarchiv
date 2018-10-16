@@ -89,9 +89,33 @@
 }
 
 
-/*** Box news ***/
+/*** About & news boxes ***/
+.app-spread-row {
+  display: flex;
+  margin-bottom: 1em;
+}
+
+.app-spread-col-sec {
+  position: relative;
+  padding-left: 15px;
+  padding-right: 15px;
+  flex: 1;
+}
+
+.app-spread-col-prim {
+  padding-left: 15px;
+  padding-right: 15px;
+  flex: 1;
+}
+
+.app-spread-col-inner {
+  position: absolute;
+  height: 100%;
+  overflow: hidden;
+}
+
 .app-box-news {
-  height: 298px; /*docasne zakomentovano pro spusteni aplikace, az bude vice novinek, tak se to odkomentuje*/
+  height: 90%; /* correct value is 100% - title height, but it's not clear how to compute it */
   overflow: auto;
   background-color: #fff;
   border: 1px solid #e6e6e6;
