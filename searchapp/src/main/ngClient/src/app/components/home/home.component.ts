@@ -73,10 +73,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 //    });
  }
 
-  translateType(tp) {
-    return this.solrService.getTranslation(tp.value, 'typ_dokumentu');
-  }
-
   clickPivot(value: string){
     let f : Facet = new Facet();
     f.field = this.solrService.facetPivots[0].field;
