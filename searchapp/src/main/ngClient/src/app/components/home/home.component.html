@@ -17,7 +17,7 @@
               <li *ngFor="let typ of box.typy">
                 
                 <a routerLink="/results" [queryParams]="{'f_typ_dokumentu' : typ.value}"
-                  class="app-cursor-pointer" title="">{{typ.value}}</a> 
+                  class="app-cursor-pointer" title="">{{ translateType(typ) }}</a> 
                 <span class="app-color-gray">{{typ.count}}</span>
               </li>
             </ul>
