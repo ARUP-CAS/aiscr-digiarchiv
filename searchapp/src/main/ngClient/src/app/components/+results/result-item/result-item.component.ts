@@ -136,8 +136,13 @@ export class ResultItemComponent implements OnInit {
       let os = [];
       let ret = "";
       for (let idx = 0; idx < this.result['organizace'].length; idx++) {
-        let o = this.result['organizace'][idx];
-        if (os.indexOf(o) < 0 && o.trim() !== '') {
+        let org = this.result['organizace'][idx];
+        if (org) {
+          org = org.trim();
+        }
+
+        let o = org ? this.solrService.getTranslation(org, 'organizace') : '';
+        if ((o !== '') && (os.indexOf(o) < 0)) {
           os.push(o);
 
           if (idx > 0) {
