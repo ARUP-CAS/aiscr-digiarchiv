@@ -250,9 +250,12 @@
 	},
 	"facets":{
 		"translate":{
+			"pristupnost":{"type": "i18n"},
+			"f_typ_dokumentu":{"type": "i18n"},
 			"kategorie":{"type": "i18n"}, 
 			"f_aktivita":{"type": "i18n"}, 
-			"f_obdobi": {"type": "i18n", "heslar": "obdobi_druha", "lookupField": "zkratka", "retField": "nazev"}, 
+			"f_obdobi": {"type": "i18n", "heslar": "obdobi_druha", "lookupField": "zkratka", "retField": "nazev"},
+			"f_areal": {"type": "i18n", "heslar": "areal_druha", "lookupField": "caption", "retField": "caption"},
 			"obdobi_poradi": {"type": "i18n"}
 		}
 	},
