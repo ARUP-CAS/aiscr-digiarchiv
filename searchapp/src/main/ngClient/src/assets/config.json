@@ -250,8 +250,8 @@
   },
   "facets": {
     "translate": {
-      "pristupnost":{"type": "i18n"},
-      "f_typ_dokumentu":{"type": "i18n"},
+      "pristupnost":{"type": "l10n"},
+      "f_typ_dokumentu":{"type": "l10n", "heslar": "typ_dokumentu"},
       "kategorie": {
         "type": "i18n"
       }, 
@@ -272,8 +272,7 @@
   },
   "poleToHeslar": {
     "f_typ_dokumentu": "typ_dokumentu",
-    "aktivity" : "f_aktivita",
-    "areal_druha": "f_areal"
+    "f_organizace": "organizace"
   },
   "heslarToPole": {
     "areal_druha": "f_areal",
