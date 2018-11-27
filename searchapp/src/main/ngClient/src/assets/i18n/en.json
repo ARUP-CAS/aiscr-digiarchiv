@@ -423,6 +423,18 @@
                 "f_aktivita_jina": "other activity",
                 "f_aktivita_intruze": "find intrusion",
 
+    "f_aktivita": {
+      "sidlistni": "residential",
+      "pohrebni": "burial",
+      "vyrobni": "production",
+      "tezebni": "mining",
+      "kultovni": "cult",
+      "komunikace": "transport",
+      "deponovani": "hoarding",
+      "boj": "combat",
+      "jina": "other activity",
+      "intruze": "find intrusion"
+    },
 
   "f_areal.areál nezemědělské výroby nesp.": "production area unsp.",
   "Datum": "Date",

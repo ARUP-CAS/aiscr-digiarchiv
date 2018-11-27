@@ -132,6 +132,18 @@
                 "f_aktivita_jina": "jiný druh aktivity",
                 "f_aktivita_intruze": "intruze",
 
+    "f_aktivita": {
+      "sidlistni": "sídlištní",
+      "pohrebni": "pohřbívání",
+      "vyrobni": "výroba",
+      "tezebni": "těžba",
+      "kultovni": "kult",
+      "komunikace": "komunikace",
+      "deponovani": "deponování",
+      "boj": "boj",
+      "jina": "jiný druh aktivity",
+      "intruze": "intruze"
+    },
 
   "f_obdobi": {
     "ha-la": "d. halštatská - laténská sp.",
