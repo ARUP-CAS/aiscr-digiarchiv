@@ -250,6 +250,8 @@
   },
   "facets": {
     "translate": {
+      "pristupnost":{"type": "i18n"},
+      "f_typ_dokumentu":{"type": "i18n"},
       "kategorie": {
         "type": "i18n"
       }, 
@@ -262,6 +264,7 @@
         "lookupField": "zkratka",
         "retField": "nazev"
       }, 
+      "f_areal": {"type": "i18n", "heslar": "areal_druha", "lookupField": "caption", "retField": "caption"},
       "obdobi_poradi": {
         "type": "i18n"
       }
