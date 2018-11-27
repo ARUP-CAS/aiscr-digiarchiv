@@ -45,7 +45,7 @@ export class BreadcrumbsComponent implements OnInit {
   getTranslated(crumb: Crumb) {
     if (!crumb.isFilter) {
       if (crumb.condition) {
-        let condFieldMap = { 'komponenta_aktivita': 'aktivity', 'tvar_tvar': 'tvar' };
+        let condFieldMap = { 'komponenta_aktivita': 'aktivity', 'organizace': 'organizace', 'tvar_tvar': 'tvar' };
         let field: string = crumb.condition.field;
         if (condFieldMap.hasOwnProperty(field)) {
           return this.solrService.translateKey(condFieldMap[field] + '_' + crumb.condition.dispValue);
