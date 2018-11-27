@@ -65,7 +65,11 @@ export class BreadcrumbsComponent implements OnInit {
           this.solrService.translateKey('to') + ' ' +
           this.solrService.translateKey(d2);
         return crumbDisplay;
-      } else if (field === 'pristupnost') {
+      } else if ((field === 'pristupnost') || (field === 'f_typ_dokumentu')) {
+        if (this.solrService.config['poleToHeslar'].hasOwnProperty(field)) {
+          field = this.solrService.config['poleToHeslar'][field];
+        }
+
         return this.solrService.translateKey(field + '_' + value);
       } else {
         let cf = this.solrService.config['facets']['translate'][field];
