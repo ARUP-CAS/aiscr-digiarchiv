@@ -47,6 +47,7 @@ export class BreadcrumbsComponent implements OnInit {
       if (crumb.condition) {
         let condFieldMap = {
           'druh_nalezu_objekt': 'objekt_druh',
+          'druh_nalezu_predmet': 'predmet_druh',
           'komponenta_aktivita': 'aktivity',
           'komponenta_areal': 'areal_druha',
           'komponenta_dokumentu_obdobi': 'obdobi_druha',
