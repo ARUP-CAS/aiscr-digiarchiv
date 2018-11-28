@@ -53,6 +53,7 @@ export class BreadcrumbsComponent implements OnInit {
           'komponenta_dokumentu_obdobi': 'obdobi_druha',
           'lokalita_druh': 'druh_lokality_druha',
           'lokalita_typ_lokality': 'typ_lokality',
+          'objekt_kategorie': 'objekt_kategorie',
           'organizace': 'organizace',
           'predmet_kategorie': 'predmet_kategorie',
           'tvar_tvar': 'tvar',
