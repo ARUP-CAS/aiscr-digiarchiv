@@ -46,14 +46,15 @@ export class BreadcrumbsComponent implements OnInit {
     if (!crumb.isFilter) {
       if (crumb.condition) {
         let condFieldMap = {
+          'druh_nalezu_objekt': 'objekt_druh',
           'komponenta_aktivita': 'aktivity',
           'komponenta_areal': 'areal_druha',
           'komponenta_dokumentu_obdobi': 'obdobi_druha',
           'lokalita_druh': 'druh_lokality_druha',
           'lokalita_typ_lokality': 'typ_lokality',
           'organizace': 'organizace',
-          'zachovalost': 'zachovalost',
-          'tvar_tvar': 'tvar'
+          'tvar_tvar': 'tvar',
+          'zachovalost': 'zachovalost'
         };
 
         let field: string = crumb.condition.field;
