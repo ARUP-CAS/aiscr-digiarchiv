@@ -48,6 +48,7 @@ export class BreadcrumbsComponent implements OnInit {
         let condFieldMap = {
           'komponenta_aktivita': 'aktivity',
           'lokalita_druh': 'druh_lokality_druha',
+          'lokalita_typ_lokality': 'typ_lokality',
           'organizace': 'organizace',
           'tvar_tvar': 'tvar'
         };
