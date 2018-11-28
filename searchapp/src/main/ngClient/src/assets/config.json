@@ -271,6 +271,7 @@
     }
   },
   "poleToHeslar": {
+    "f_druh_lokality": "druh_lokality_druha",
     "f_typ_dokumentu": "typ_dokumentu",
     "f_organizace": "organizace"
   },
