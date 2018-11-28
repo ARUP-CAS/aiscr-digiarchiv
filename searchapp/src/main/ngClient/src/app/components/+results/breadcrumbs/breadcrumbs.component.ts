@@ -54,6 +54,7 @@ export class BreadcrumbsComponent implements OnInit {
           'lokalita_druh': 'druh_lokality_druha',
           'lokalita_typ_lokality': 'typ_lokality',
           'nalez_specifikace_objektu': 'specifikace_objektu_druha',
+          'nalez_specifikace_predmetu': 'specifikace_predmetu',
           'objekt_kategorie': 'objekt_kategorie',
           'organizace': 'organizace',
           'predmet_kategorie': 'predmet_kategorie',
