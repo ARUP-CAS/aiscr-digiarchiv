@@ -51,6 +51,7 @@ export class BreadcrumbsComponent implements OnInit {
           'lokalita_druh': 'druh_lokality_druha',
           'lokalita_typ_lokality': 'typ_lokality',
           'organizace': 'organizace',
+          'zachovalost': 'zachovalost',
           'tvar_tvar': 'tvar'
         };
 
