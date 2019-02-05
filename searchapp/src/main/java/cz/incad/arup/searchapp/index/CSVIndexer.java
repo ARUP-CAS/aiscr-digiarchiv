@@ -709,6 +709,9 @@ public class CSVIndexer {
 
       typeJson.put("ellapsed time", FormatUtils.formatInterval(tend.getTime() - tstart.getTime()));
       ret.put(doctype, typeJson).put("docs indexed", success);
+    } catch (Exception ex) {
+      LOGGER.log(Level.WARNING, "Parser failed on line " + Long.toString(parser.getCurrentLineNumber()), ex);
+      throw ex;
     } finally {
       parser.close();
     }
@@ -877,8 +880,15 @@ public class CSVIndexer {
         String doctype = sources.getString(i);
 
         String url = String.format(apiPoint, doctype);
-        LOGGER.log(Level.INFO, "indexing from {0}", url);
-        readOne(new InputStreamReader(new URL(url).openStream(), "UTF-8"), uniqueid, doctype, sclient, ret, hasRelations);
+        LOGGER.log(Level.INFO, "downloading from {0}", url);
+        File localSource = File.createTempFile(doctype + "-", ".csv");
+        FileUtils.copyURLToFile(new URL(url), localSource);
+        LOGGER.log(Level.INFO, "sourcing from {0}", localSource.getPath());
+        FileInputStream fis = new FileInputStream(localSource);
+        readOne(new InputStreamReader(fis, "UTF-8"), uniqueid, doctype, sclient, ret, hasRelations);
+        if (!localSource.delete()) {
+          LOGGER.log(Level.WARNING, "Cannot delete {0}", localSource.getPath());
+        }
       }
       LOGGER.log(Level.INFO, "Indexed Finished. {0} success, {1} errors", new Object[]{success, errors});
 
