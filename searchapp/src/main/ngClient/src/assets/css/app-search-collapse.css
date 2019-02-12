@@ -45,3 +45,8 @@
 .app-btn-search-collapse.collapsed:before {
   content: '\f105';
 }
+
+/*** Indexing ***/
+.app-search-collapse-warn {
+  color: red;
+}

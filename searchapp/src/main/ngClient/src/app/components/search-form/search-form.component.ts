@@ -52,6 +52,10 @@ export class SearchFormComponent implements OnInit, OnDestroy {
     this.collSubs.unsubscribe();
   }
 
+  isIndexing() {
+    return this.solrService.config['indexing'];
+  }
+
   openAdvanced() {
     setTimeout(() => {
       this.isAdvancedCollapsed = !this.isAdvancedCollapsed; // pedro

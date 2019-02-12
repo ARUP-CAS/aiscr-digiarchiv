@@ -1,6 +1,7 @@
 {
   "help": "Nápověda",
   "usedFilters": "Použité filtry",
+  "indexing in progress": "Probíhá aktualizace databáze. Vraťte se prosím později.",
   "q.placeholder": "Zadejte dotaz pro vyhledávání v dokumentech",
   "advanced search": "Rozšířené vyhledávání",
   "close search": "Zavřít formulář",
