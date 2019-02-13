@@ -69,8 +69,7 @@ footer .app-footer-logo a:nth-child(6) img {
 }
 
 footer #app-licence-control {
-  float: left;
-  padding-top: 12px;
+  margin-left: 12px;
 }
 
 footer #app-licence p {
