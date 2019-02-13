@@ -37,11 +37,6 @@ footer div:first-child > p + p > span.collapsed:before {
 	content: '\f067';
 }
 
-footer .app-footer-logo {
-  padding-left: 0;
-  padding-right: 0;
-}
-
 footer .app-footer-logo > span:before {
 	font-family: FontAwesome;
 	content: '\f068';
@@ -57,15 +52,11 @@ footer .app-footer-logo img {
 }
 
 footer .app-footer-logo a:not(:first-child) {
-  padding-left: 10px;
+  padding-left: 15px;
 }
 
 footer .app-footer-logo a:nth-child(5) img {
 	width: 120px;
-}
-
-footer .app-footer-logo a:nth-child(6) img {
-	width: 100px;
 }
 
 footer #app-licence-control {
