@@ -2,7 +2,8 @@
 <div class="jumbotron app-jumbotron app-clean-mg">
   <div class="container">
     <div class="row">
-      <div class="col-md-7">
+      <span *ngIf="isIndexing()" class="app-search-collapse-warn">{{'indexing in progress' | translate}}</span>
+      <div *ngIf="!isIndexing()" class="col-md-7">
         <form class="form-inline">
           <div class="input-group">
             <input type="text" [placeholder]="'q.placeholder' | translate" class="form-control app-border-radius-l" 
@@ -17,7 +18,7 @@
           </div>
         </form>
       </div>
-      <div class="col-md-5">
+      <div *ngIf="!isIndexing()" class="col-md-5">
         <form class="form-inline">
           <button type="button" class="btn app-btn app-btn-search-collapse app-color-white app-border-radius"
 	    [class.collapsed]="isAdvancedCollapsed"

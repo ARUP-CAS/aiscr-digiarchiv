@@ -37,6 +37,16 @@ footer div:first-child > p + p > span.collapsed:before {
 	content: '\f067';
 }
 
+footer .app-footer-logo > span:before {
+	font-family: FontAwesome;
+	content: '\f068';
+	padding-right: 4px;
+}
+
+footer .app-footer-logo > span.collapsed:before {
+	content: '\f067';
+}
+
 footer .app-footer-logo img {
   padding-bottom: 10px;
 }
@@ -49,6 +59,14 @@ footer .app-footer-logo a:nth-child(5) img {
 	width: 120px;
 }
 
-footer .app-footer-logo a:nth-child(6) img {
-	width: 110px;
+footer #app-licence-control {
+  margin-left: 12px;
+}
+
+footer #app-licence p {
+  text-align: left;
+}
+
+footer #app-licence a {
+  padding-left: 0;
 }

@@ -96,7 +96,8 @@ export class FileViewerComponent implements OnInit {
         let file = new File();
         file.nazev = fs[f].nazev[0];
         file.mimetype = fs[f].mimetype[0];
-        file.rozsah = parseInt(fs[f].rozsah[0]);
+        let rozsah = fs[f].rozsah[0];
+        file.rozsah = (rozsah != null) ? parseInt(rozsah) : 1;
         file.size_bytes = parseInt(fs[f].size_bytes[0]);
         file.pages = new Array(file.rozsah);
         file.filepath = fs[f].filepath[0];

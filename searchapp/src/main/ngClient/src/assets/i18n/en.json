@@ -22,7 +22,13 @@
   "remove selection": "Remove selection",
   "zoom in": "Zoom in",
   "zoom out": "Zoom out",
-
+  "licence.work": "Database Archaeological Map of the Czech Republic",
+  "licence.authored_by": "authored by",
+  "licence.and": "and",
+  "licence.licenced_under": "is licensed under",
+  "licence.cc_by_nc": "Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)",
+  "licence.data_and_metadata_usage": "Re-use and sharing of data and metadata is covered by this license, unless explicitly stated otherwise.",
+    
   "insuficient rights": "You have insufficient user rights to view this document. Log in with a valid AMCR account or contact the system administrators.",
   "showWithoutThumbs":"show documents without thumbnail",
 
@@ -449,6 +455,7 @@
   "adv.akce_typ": "Fieldwork event - type",
   "Popis dokumentu": "Document description",
   "usedFilters": "Filters",
+  "indexing in progress": "Database update in progress. Please come back later.",
   "f_areal.neurčený areál": "area of unspecified activity",
   "adv.or": "Or",
   "Země (region)": "Country (region)",

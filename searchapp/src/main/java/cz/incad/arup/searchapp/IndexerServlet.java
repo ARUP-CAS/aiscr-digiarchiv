@@ -230,7 +230,11 @@ public class IndexerServlet extends HttpServlet {
 
         PrintWriter out = resp.getWriter();
         JSONObject json = new JSONObject();
+        boolean oldIndexing = Options.setIndexingFlag(true);
         try {
+          if (oldIndexing) {
+            throw new Exception("Indexing already in progress.");
+          }
 
           Options.resetInstance();
           JSONObject r = new JSONObject();
@@ -250,6 +254,12 @@ public class IndexerServlet extends HttpServlet {
         } catch (Exception ex) {
           json.put("error", ex.toString());
         }
+
+        if (!Options.setIndexingFlag(oldIndexing)) {
+          // shouldn't happen
+          LOGGER.log(Level.WARNING, "indexing flag updates crossed");
+        }
+        
         out.println(json.toString(2));
       }
     },

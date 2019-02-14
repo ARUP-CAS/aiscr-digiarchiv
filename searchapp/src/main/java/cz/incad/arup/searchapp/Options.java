@@ -19,6 +19,9 @@ public class Options {
   public static final Logger LOGGER = Logger.getLogger(Options.class.getName());
 
   private static Options _sharedInstance = null;
+
+  private static boolean _indexingFlag = false; // survives option reset
+  
   private final JSONObject client_conf;
   private final JSONObject server_conf;
 
@@ -34,6 +37,17 @@ public class Options {
     LOGGER.log(Level.INFO, "Options reseted");
   }
 
+  public synchronized static boolean setIndexingFlag(boolean indexing) {
+    boolean old = _indexingFlag;
+    _indexingFlag = indexing;
+
+    if ((old != indexing) && (_sharedInstance != null)) {
+      _sharedInstance.ensureIndexingFlag();
+    }
+
+    return old;
+  }
+  
   public Options() throws IOException, JSONException {
 
     File fdef = new File(InitServlet.DEFAULT_CONFIG_FILE);
@@ -74,6 +88,7 @@ public class Options {
   }
 
   public JSONObject getClientConf() {
+    ensureIndexingFlag();
     return client_conf;
   }
 
@@ -112,5 +127,9 @@ public class Options {
 
   public JSONObject getJSONObject(String key) {
     return server_conf.optJSONObject(key);
+  }
+
+  private void ensureIndexingFlag() {
+    client_conf.put("indexing", _indexingFlag);
   }
 }
