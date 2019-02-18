@@ -53,7 +53,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   }
 
   isIndexing() {
-    return this.solrService.config['indexing'];
+    return this.solrService.config ? this.solrService.config['indexing'] : false;
   }
 
   openAdvanced() {
