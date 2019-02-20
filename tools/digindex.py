@@ -95,13 +95,18 @@ def has_errors(doc):
 def main():
     parser = argparse.ArgumentParser(description='Invoke Digital archive indexing from command line.')
     parser.add_argument('--host', default='localhost', help="Digital archive server")
-    parser.add_argument('--recipient', '-r', default='novak@arup.cas.cz', help="where to send e-mail on failure")
+    parser.add_argument('--recipient', '-r', default='', help="where to send e-mail on failure")
     parser.add_argument('--clean', action='store_true', help="empty database before re-index")
     parser.add_argument('--no-index', '-n', action='store_true', help="don't index, just send e-mail")
     parser.add_argument('--config', default='/var/lib/archeo/amcr/config.json', help="config file path")
     args = parser.parse_args()
 
     config_file = args.config
+    config = load_config(config_file)
+    recipient = config.get("recipient")
+    if args.recipient:
+        recipient = args.recipient
+
     host = args.host
     recipient = args.recipient
     clean_flag = args.clean
@@ -114,7 +119,6 @@ def main():
     br = mechanize.Browser()
 
     if host != 'localhost':
-        config = load_config(config_file)
         login_args = { 'action': 'LOGIN' }
         for key in ( 'user', 'pwd' ):
             login_args[key] = config[key]
