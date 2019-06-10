@@ -534,9 +534,12 @@ export class SolrService implements OnDestroy {
       } else {
         this.getHeslar(f['heslar'], dispField).subscribe(res => {
 //          console.log(f['heslar'], dispField, res[0]);
+          if (!condition.value) {
+            condition.value = res[0][heslarValue];
+            condition.dispValue = res[0][dispField];
+          }
+
           condition.heslar = f['heslar'];
-          condition.value = res[0][heslarValue];
-          condition.dispValue = res[0][dispField];
           condition.heslarDisplay = dispField;
           condition.heslarField = heslarValue;
 //    console.log(condition);
