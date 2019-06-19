@@ -126,64 +126,6 @@ public class ImageSupport {
       return destDir;
   }
   
-    public static String thumbnailImgOld(File f, String id) {
-
-        String outputFile = getDestDir(id) + id;
-        try {
-
-            BufferedImage sourceImage = ImageIO.read(f);
-
-            if (sourceImage == null) {
-
-                LOGGER.log(Level.WARNING, "Cannot read image");
-                return "Cannot read image";
-            }
-            Options opts = Options.getInstance();
-            int t_width = opts.getInt("thumbWidth", 100);
-            int t_height = opts.getInt("thumbHeight", 100);
-
-            int width = sourceImage.getWidth();
-            int height = sourceImage.getHeight();
-            int pixels = width * height;
-            if (pixels > Options.getInstance().getInt("maxPixels", 2000 * 2000)) {
-                writeSkipped(-1, outputFile, width + " x " + height);
-                return "Image too big";
-            }
-            makeDestDir(id);
-            resize(outputFile + "_thumb.jpg", sourceImage, t_width, t_height);
-            
-            int max = opts.getInt("mediumHeight", 1000);
-            
-            int w;
-            int h;
-            if (height > width) {
-                double ratio = max * 1.0 / height;
-                w = (int) Math.max(1, Math.round(width * ratio));
-                h = max;
-            } else {
-                double ratio = max * 1.0 / width;
-                h = (int) Math.max(1, Math.round(height * ratio));
-                w = max;
-            }
-
-            BufferedImage img2 = scale(sourceImage, w, h);
-
-            ImageIO.write(img2, "jpg", new File(outputFile + "_medium.jpg"));
-            sourceImage.flush();
-            sourceImage = null;
-            img2.flush();
-            img2 = null;
-
-            return outputFile;
-
-        } catch (Exception ex) {
-
-            LOGGER.log(Level.SEVERE, "Error creating thumb {0}, ", outputFile);
-            LOGGER.log(Level.SEVERE, null, ex);
-            return null;
-        }
-
-    }
     public static String thumbnailzeImg(File f, String id, boolean onlyThumbs) {
 
         String outputFile = getDestDir(id) + id;
@@ -232,10 +174,6 @@ public class ImageSupport {
     }
   }
 
-  public static boolean useCache() {
-    return true;
-  }
-  
   public static void resizeAndCropWithThumbnailator(File source, int w, int h, File dest) {
         try {
                 Thumbnails.of(source)
@@ -432,67 +370,4 @@ public class ImageSupport {
     BufferedImage subImage = bufferedImage.getSubimage(Math.max(xoffset, 0), Math.max(yoffset, 0), Math.min(cwidth, width - xoffset), Math.min(cheight, height - yoffset));
     return subImage;
   }
-
-  
-  
-  public static void addWatermark(BufferedImage sourceImage, BufferedImage mark, float alpha) {
-    //try {
-        Graphics2D g2d = (Graphics2D) sourceImage.getGraphics();
- 
-        // initializes necessary graphic properties
-        AlphaComposite alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
-        g2d.setComposite(alphaChannel);
-//        g2d.setColor(Color.BLUE);
-// 
-        // calculates the coordinates where the String is painted
-        
-//        int cols = sourceImage.getWidth() / (mark.getWidth() + 20);
-//        int rows = (sourceImage.getHeight() / (mark.getHeight() + 20 ));
-//        for(int i =0; i<cols; i++){
-//          for(int j = 0; j<rows; j++){
-//            g2d.drawImage(mark, (mark.getWidth() + 20)*i, (mark.getHeight()+20)*j, null);
-//          }
-//        }
-        
-        int centerX = (sourceImage.getWidth() - (int) mark.getWidth()) / 2;
-        int centerY = (sourceImage.getHeight() - (int) mark.getHeight()) / 2;
-        g2d.drawImage(mark, centerX, centerY, null);
- 
-        //ImageIO.write(sourceImage, "png", destImageFile);
-        g2d.dispose();
- 
-//    } catch (IOException ex) {
-//        System.err.println(ex);
-//    }
-}
-  
-  public static void addTextWatermark(BufferedImage sourceImage) {
-    //try {
-        Graphics2D g2d = (Graphics2D) sourceImage.getGraphics();
- 
-        // initializes necessary graphic properties
-        AlphaComposite alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f);
-        g2d.setComposite(alphaChannel);
-        g2d.setColor(Color.BLUE);
-        g2d.setFont(new Font("Arial", Font.BOLD, 64));
-        FontMetrics fontMetrics = g2d.getFontMetrics();
-        Rectangle2D rect = fontMetrics.getStringBounds("AMCR TEXTEXTEXT", g2d);
- 
-        // calculates the coordinate where the String is painted
-        int centerX = (sourceImage.getWidth() - (int) rect.getWidth()) / 2;
-        int centerY = sourceImage.getHeight() / 2;
- 
-        // paints the textual watermark
-        g2d.drawString("AMCR TEXTEXTEXT", centerX, centerY);
- 
-        //ImageIO.write(sourceImage, "png", destImageFile);
-        g2d.dispose();
- 
-        System.out.println("The tex watermark is added to the image.");
- 
-//    } catch (IOException ex) {
-//        System.err.println(ex);
-//    }
-}
-  
 }
