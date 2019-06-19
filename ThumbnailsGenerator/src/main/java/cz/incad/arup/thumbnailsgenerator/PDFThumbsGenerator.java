@@ -172,65 +172,6 @@ public class PDFThumbsGenerator {
     }
   }
 
-  public String thumbnailPdfPage2(BufferedImage sourceImage, String id) {
-    try {
-
-      if (sourceImage == null) {
-
-        LOGGER.log(Level.WARNING, "Cannot read image for page 0 in file {0}", id);
-        return "Cannot read image";
-      }
-
-      int width = sourceImage.getWidth();
-      int height = sourceImage.getHeight();
-
-      if (width * height < maxPixels) {
-        BufferedImage img2;
-        if (width > height) {
-          float extraSize = height - t_height;
-          float percentHight = (extraSize / height) * 100;
-          float percentWidth = width - ((width / t_width) * percentHight);
-
-//                    BufferedImage img = new BufferedImage((int) percentWidth, t_height, BufferedImage.TYPE_INT_RGB);
-//                    Image scaledImage = sourceImage.getScaledInstance((int) percentWidth, t_height, Image.SCALE_SMOOTH);
-//                    img.createGraphics().drawImage(scaledImage, 0, 0, null);
-//                     img2 = img.getSubimage((int) ((percentWidth - 100) / 2), 0, t_width, t_height);
-          img2 = ImageSupport.scaleAndCrop(sourceImage, (int) ((percentWidth - 100) / 2), 0, t_width, t_height);
-
-        } else {
-          float extraSize = width - t_width;
-          float percentWidth = (extraSize / width) * 100;
-          float percentHight = height - ((height / t_height) * percentWidth);
-//                    BufferedImage  img = new BufferedImage(t_width, (int) percentHight, BufferedImage.TYPE_INT_RGB);
-//                    Image scaledImage = sourceImage.getScaledInstance(t_width, (int) percentHight, Image.SCALE_SMOOTH);
-//                    img.createGraphics().drawImage(scaledImage, 0, 0, null);
-
-//                img2 = img.getSubimage(0, (int) ((percentHight - 100) / 2), t_width, t_height);
-          img2 = ImageSupport.scaleAndCrop(sourceImage, 0, (int) ((percentHight - 100) / 2), t_width, t_height);
-
-        }
-
-        String destDir = ImageSupport.makeDestDir(id);
-        new File(destDir).mkdir();
-        String outputFile = destDir + id + "_thumb.jpg";
-        ImageIO.write(img2, "jpg", new File(outputFile));
-        img2.flush();
-
-        generated++;
-        return outputFile;
-
-      } else {
-        writeSkipped(0, id, width + " x " + height);
-        return null;
-      }
-
-    } catch (Exception ex) {
-      LOGGER.log(Level.SEVERE, null, ex);
-      return null;
-    }
-
-  }
-
   public void processPage(BufferedImage bim, int pageCounter, String id) throws IOException {
 
     String outputFile = null;
@@ -292,40 +233,6 @@ public class PDFThumbsGenerator {
         }
       }
     }
-  }
-
-  private List<RenderedImage> getImagesFromResources(PDResources resources) throws IOException {
-    List<RenderedImage> images = new ArrayList<>();
-    int i = 0;
-    for (Map.Entry<COSName, COSBase> entry : resources.getCOSObject().entrySet()) {
-      res++;
-
-      System.out.println(entry.getKey().getName());
-      COSBase b = entry.getValue();
-      if (b instanceof COSDictionary) {
-        COSDictionary d = (COSDictionary) b;
-        System.out.println(d.size());
-        logRes(d);
-      }
-
-    }
-    System.out.println("res -----------> " + res);
-    i = 0;
-
-    for (COSName xObjectName : resources.getXObjectNames()) {
-      PDXObject xObject = resources.getXObject(xObjectName);
-
-      if (xObject instanceof PDFormXObject) {
-        System.out.println("je to form");
-        images.addAll(getImagesFromResources(((PDFormXObject) xObject).getResources()));
-      } else if (xObject instanceof PDImageXObject) {
-        i++;
-        System.out.println(((PDImageXObject) xObject).getSuffix());
-      }
-    }
-
-    LOGGER.log(Level.INFO, "resources: {0}", i);
-    return images;
   }
 
   private String readProcessing() {
