@@ -12,7 +12,9 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
 import java.util.Date;
+import net.coobird.thumbnailator.ThumbnailParameter;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 import org.apache.commons.io.FileUtils;
@@ -130,29 +132,27 @@ public class ImageSupport {
 
         String outputFile = getDestDir(id) + id;
         try {
-
+            BufferedImage srcImage = ImageIO.read(f);
             Options opts = Options.getInstance();
             
             makeDestDir(id);
             int t_width = opts.getInt("thumbWidth", 100);
             int t_height = opts.getInt("thumbHeight", 100);
 
-            resizeAndCropWithThumbnailator(f, t_width, t_height, new File(outputFile + "_thumb.jpg"));
+            resizeAndCropWithThumbnailator(srcImage, t_width, t_height, new File(outputFile + "_thumb.jpg"));
             
             if(!onlyThumbs){
-            int max = opts.getInt("mediumHeight", 1000);
-            resizeWithThumbnailator(f, max, max, new File(outputFile + "_medium.jpg"));
+                int max = opts.getInt("mediumHeight", 1000);
+                resizeWithThumbnailator(srcImage, max, max, new File(outputFile + "_medium.jpg"));
             }
 
             return outputFile;
-
         } catch (Exception ex) {
 
             LOGGER.log(Level.SEVERE, "Error creating thumb {0}, ", outputFile);
             LOGGER.log(Level.SEVERE, null, ex);
             return null;
         }
-
     }
 
   public static void writeSkipped(int page, String id, String size) {
@@ -174,22 +174,12 @@ public class ImageSupport {
     }
   }
 
-  public static void resizeAndCropWithThumbnailator(File source, int w, int h, File dest) {
+  public static void resizeAndCropWithThumbnailator(BufferedImage srcImage, int w, int h, File dest) {
         try {
-                Thumbnails.of(source)
+                Thumbnails.of(srcImage)
                         .size(w, h)
                         .crop(Positions.CENTER)
-                        .outputFormat("jpg")
-                        .toFile(dest);
-        } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Error in image resizer:", ex);
-        }
-    }
-  
-  public static void resizeWithThumbnailator(File source, int w, int h, File dest) {
-        try {
-                Thumbnails.of(source)
-                        .size(w, h)
+                        .imageType(getImageType(srcImage))
                         .outputFormat("jpg")
                         .toFile(dest);
         } catch (Exception ex) {
@@ -204,6 +194,7 @@ public class ImageSupport {
 
                 Thumbnails.of(srcImage)
                         .size(w, h)
+                        .imageType(getImageType(srcImage))
                         .outputFormat("jpg")
                         .toFile(f);
 //                retval = os.toByteArray();
@@ -214,6 +205,12 @@ public class ImageSupport {
         }
 //        return retval;
     }
+
+  private static int getImageType(BufferedImage img) {
+    WritableRaster raster = img.getRaster();
+    int elemCount = raster.getNumDataElements();
+    return (elemCount == 1) ? BufferedImage.TYPE_BYTE_GRAY : ThumbnailParameter.ORIGINAL_IMAGE_TYPE;
+  }
 
   public static BufferedImage scaleAndCrop(BufferedImage img, int x, int y, int w, int h) {
       BufferedImage scaled = scale(img, w, h);
