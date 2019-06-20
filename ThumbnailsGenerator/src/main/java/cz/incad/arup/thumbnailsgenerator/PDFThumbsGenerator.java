@@ -182,14 +182,21 @@ public class PDFThumbsGenerator {
     if (width * height < maxPixels) {
       int w;
       int h;
-      if (height > width) {
-        double ratio = maxMedium * 1.0 / height;
-        w = (int) Math.max(1, Math.round(width * ratio));
-        h = maxMedium;
+      if ((width < maxMedium) && (height < maxMedium)) {
+        LOGGER.log(Level.WARNING, "Resized image too small at {0} x {1}.",
+                new Object[]{ width, height });
+        w = width;
+        h = height;
       } else {
-        double ratio = maxMedium * 1.0 / width;
-        h = (int) Math.max(1, Math.round(height * ratio));
-        w = maxMedium;
+        if (height > width) {
+          double ratio = maxMedium * 1.0 / height;
+          w = (int) Math.max(1, Math.round(width * ratio));
+          h = maxMedium;
+        } else {
+          double ratio = maxMedium * 1.0 / width;
+          h = (int) Math.max(1, Math.round(height * ratio));
+          w = maxMedium;
+        }
       }
 
       String destDir = ImageSupport.makeDestDir(id) + id + File.separator;
