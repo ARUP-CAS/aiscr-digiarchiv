@@ -27,6 +27,7 @@ import org.apache.pdfbox.cos.COSObject;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDResources;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.PDXObject;
 import org.apache.pdfbox.pdmodel.graphics.form.PDFormXObject;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
@@ -109,7 +110,7 @@ public class PDFThumbsGenerator {
           LOGGER.log(Level.FINE, "page {0}", pageCounter + 1);
 
 //                        getImagesFromResources(page.getResources());
-          BufferedImage bim = getImageFromPage(pdfRenderer, pageCounter);
+          BufferedImage bim = getImageFromPage(pdfRenderer, page.getMediaBox(), pageCounter);
           if (pageCounter == 0) {
             thumbnailPdfPage(bim, f.getName());
           }
@@ -135,8 +136,15 @@ public class PDFThumbsGenerator {
     }
   }
 
-  private BufferedImage getImageFromPage(PDFRenderer pdfRenderer, int page) throws Exception {
-    return pdfRenderer.renderImageWithDPI(page, 72, ImageType.RGB);
+  private BufferedImage getImageFromPage(PDFRenderer pdfRenderer,
+      PDRectangle mediaBox, int page) throws Exception {
+    float ratio = Math.max(getRenderRatio(mediaBox.getWidth()),
+      getRenderRatio(mediaBox.getHeight()));
+    return pdfRenderer.renderImageWithDPI(page, 72 * ratio, ImageType.RGB);
+  }
+
+  float getRenderRatio(float boxDim) {
+    return (((boxDim <= 1) || (boxDim > maxMedium)) ? 1f : (float)(maxMedium / boxDim));
   }
 
   public String thumbnailPdfPage(BufferedImage sourceImage, String id) {
