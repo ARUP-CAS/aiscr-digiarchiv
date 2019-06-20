@@ -110,15 +110,18 @@ public class PDFThumbsGenerator {
           LOGGER.log(Level.FINE, "page {0}", pageCounter + 1);
 
 //                        getImagesFromResources(page.getResources());
-          BufferedImage bim = getImageFromPage(pdfRenderer, page.getMediaBox(), pageCounter);
-          if (pageCounter == 0) {
-            thumbnailPdfPage(bim, f.getName());
+          BufferedImage bim = getImageFromPage(pdfRenderer, page.getMediaBox(), pageCounter, f.getName());
+          if (bim != null) {
+            if (pageCounter == 0) {
+              thumbnailPdfPage(bim, f.getName());
+            }
+
+            if (onlyThumbs) {
+              break;
+            }
+            processPage(bim, pageCounter, f.getName());
           }
 
-          if (onlyThumbs) {
-            break;
-          }
-          processPage(bim, pageCounter, f.getName());
           pageCounter++;
         }
         writeProcessing("");
@@ -137,14 +140,20 @@ public class PDFThumbsGenerator {
   }
 
   private BufferedImage getImageFromPage(PDFRenderer pdfRenderer,
-      PDRectangle mediaBox, int page) throws Exception {
-    float ratio = Math.max(getRenderRatio(mediaBox.getWidth()),
-      getRenderRatio(mediaBox.getHeight()));
-    return pdfRenderer.renderImageWithDPI(page, 72 * ratio, ImageType.RGB);
+      PDRectangle mediaBox, int page, String id) throws Exception {
+    float width = mediaBox.getWidth();
+    float height = mediaBox.getHeight();
+    if (width * height > maxPixels) {
+      writeSkipped(page, id, String.format("%f x %f", width, height));
+      return null;
+    } else {
+      float ratio = Math.max(getRenderRatio(width), getRenderRatio(height));
+      return pdfRenderer.renderImageWithDPI(page, 72 * ratio, ImageType.RGB);
+    }
   }
 
-  float getRenderRatio(float boxDim) {
-    return (((boxDim <= 1) || (boxDim > maxMedium)) ? 1f : (float)(maxMedium / boxDim));
+  private float getRenderRatio(float boxDim) {
+    return (boxDim <= 1) ? 10f : (float)(maxMedium / boxDim);
   }
 
   public String thumbnailPdfPage(BufferedImage sourceImage, String id) {
