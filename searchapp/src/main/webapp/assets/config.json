@@ -265,6 +265,9 @@
         "retField": "nazev"
       }, 
       "f_areal": {"type": "i18n", "heslar": "areal_druha", "lookupField": "caption", "retField": "caption"},
+      "loc_rpt": {
+        "type": "other"
+      },
       "obdobi_poradi": {
         "type": "i18n"
       }

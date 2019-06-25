@@ -399,11 +399,7 @@ export class SolrService implements OnDestroy {
                   if (p === 'loc_rpt') {
                     let coords = param.split(',');
 
-
-                    f.displayValue = 'mapa: (' + this.formatNumber(coords[0]) + " " +
-                      this.formatNumber(coords[1]) +
-                      ', ' + this.formatNumber(coords[2]) + " " +
-                      this.formatNumber(coords[3]) + ')';
+                    f.displayValue = this.formatMapFilter(coords);
 
                     f.queryValue = p + ':' + '[' + coords[0] + "," + coords[1] +
                       ' TO ' + coords[2] + "," + coords[3] + ']';
@@ -464,6 +460,14 @@ export class SolrService implements OnDestroy {
         }, 20);
     });
 
+  }
+
+  formatMapFilter(coords) {
+    return this.translateKey('map coord') + ': (' +
+      this.formatNumber(coords[0]) + " " +
+      this.formatNumber(coords[1]) + ', ' +
+      this.formatNumber(coords[2]) + " " +
+      this.formatNumber(coords[3]) + ')';
   }
   
   setConditionsFromUrl(adv : string[]){
