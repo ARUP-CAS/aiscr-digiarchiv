@@ -251,6 +251,7 @@
       "pristupnost":{"type": "l10n"},
       "f_typ_dokumentu":{"type": "l10n", "heslar": "typ_dokumentu"},
       "f_druh_nalezu":{"type": "l10n", "heslar": "objekt_druh"},
+      "f_organizace":{"type": "l10n", "heslar": "organizace"},
       "kategorie": {
         "type": "i18n"
       }, 
