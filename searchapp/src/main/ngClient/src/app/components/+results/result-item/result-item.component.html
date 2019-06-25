@@ -134,10 +134,10 @@
               <label>{{'Identifikátor' | translate}}:</label> 
               <span>{{result.let_ident_cely}}</span>
             </li>
-            <li *ngIf="hasValue('let_datum') || hasValue('let_hodina_zacatek') && hasValue('result.let_hodina_konec')">
+            <li *ngIf="hasValue('let_datum') || hasValue('let_hodina_zacatek') || hasValue('let_hodina_konec')">
               <label>{{'Datum (hodina)' | translate}}:</label> 
               <span *ngIf="hasValue('let_datum')">{{result.let_datum}}</span>
-							<span *ngIf="hasValue('let_hodina_zacatek') && hasValue('result.let_hodina_konec')">{{result.let_hodina_zacatek}} - {{result.let_hodina_konec}}</span>
+              <span *ngIf="hasValue('let_hodina_zacatek') || hasValue('let_hodina_konec')">({{result.let_hodina_zacatek}} - {{result.let_hodina_konec}})</span>
             </li>
             <li *ngIf="hasValue('let_pozorovatel') || hasValue('let_organizace')">
               <label>{{'Pozorovatel' | translate}}:</label>
@@ -161,10 +161,10 @@
               <label>{{'Trasa' | translate}}:</label>
               <span>{{result.let_letiste_start}} - {{result.let_letiste_cil}}</span>
             </li>
-            <li *ngIf="hasValue('let_pocasi') || hasValue('dohlednost') && hasValue('let_dohlednost')">
+            <li *ngIf="hasValue('let_pocasi') || hasValue('dohlednost') || hasValue('let_dohlednost')">
               <label>{{'Podmínky' | translate}}:</label>
               <span *ngIf="hasValue('let_pocasi')">{{result.let_pocasi}}</span>
-							<span *ngIf="hasValue('dohlednost') && hasValue('let_dohlednost')">({{result.dohlednost}} {{result.let_dohlednost}})</span>
+              <span *ngIf="hasValue('dohlednost') || hasValue('let_dohlednost')">({{result.dohlednost}}{{(hasValue('dohlednost') && hasValue('let_dohlednost')) ? ' ' : ''}}{{result.let_dohlednost}})</span>
             </li>
             <li *ngIf="hasValue('let_fotoaparat')">
               <label>{{'Fotoaparát' | translate}}:</label>
