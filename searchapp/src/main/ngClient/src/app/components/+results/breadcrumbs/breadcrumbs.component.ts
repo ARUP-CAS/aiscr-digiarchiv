@@ -86,6 +86,14 @@ export class BreadcrumbsComponent implements OnInit {
           this.solrService.translateKey('to') + ' ' +
           this.solrService.translateKey(d2);
         return crumbDisplay;
+      } else if (field === 'loc_rpt') {
+        let pair = crumb.filter.displayValue.split(':', 2);
+        if (pair.length == 2) {
+          return this.solrService.translateKey('map coord') + ':' + pair[1];
+        } else {
+          let coords = crumb.filter.displayValue.split(',');
+          return this.solrService.formatMapFilter(coords);
+        }
       } else {
         let cf = this.solrService.config['facets']['translate'][field];
         let typ = cf['type'];

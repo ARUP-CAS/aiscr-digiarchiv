@@ -58,6 +58,7 @@ export class MapaComponent implements OnInit {
   collSubs: any;
   openSubs: any;
   isCollapsed: boolean;
+  dirty: boolean;
   style: string = 'app-search-collapse app-search-collapse-map collapse ';
   height: string;
 
@@ -73,8 +74,9 @@ export class MapaComponent implements OnInit {
           let oldPianFilter = this.pianFilter;
           this.pianFilter = this.solrService.getPianFilter();
           this.show();
-          if (this.pianFilter != oldPianFilter) {
+          if (this.dirty || (this.pianFilter != oldPianFilter)) {
             this.search();
+            this.dirty = false;
           }
         }
       }, 100);
@@ -82,6 +84,8 @@ export class MapaComponent implements OnInit {
     });
     this.collSubs = this.solrService.routeChanged.subscribe(val=> {
       setTimeout(() => {
+        this.removeMarkers();
+        this.dirty = true;
         this.setIsCollapsed();
         if (!this.isCollapsed) {
           this.pianFilter = this.solrService.getPianFilter();
