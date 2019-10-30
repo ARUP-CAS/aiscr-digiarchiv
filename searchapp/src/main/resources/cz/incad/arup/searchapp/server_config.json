@@ -69,6 +69,7 @@
     "investorská zpráva": "texty",
     "hlášení/ZAA": "texty",
     "text jiný": "texty",
+    "kresba předmětu": "texty",
     "data analytická": "ddata",
     "data geodetická": "ddata",
 
@@ -86,6 +87,7 @@
     "foto předmětu": "foto",
     "foto mikro": "foto",
     "foto konzervace": "foto",
+    "foto události": "foto",
 
     "letfoto krajiny": "lfoto",
     "letfoto lokality": "lfoto",
