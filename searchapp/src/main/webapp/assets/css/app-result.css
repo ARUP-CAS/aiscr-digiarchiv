@@ -126,6 +126,10 @@
 }
 */
 
+.app-result-item-header{
+  width: calc(100% - 100px);
+}
+
 /*** Img thumb ***/
 .app-result-item-img-thumb {
  height: 100px; 
