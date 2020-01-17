@@ -16,7 +16,8 @@
 
       <!-- Result item container -->
       <div class="app-result-item-container" *ngFor="let result of docs" >
-        <app-result-item [result]="result" (onViewFile)="onViewFile($event)" (onViewDetail)="onViewDetail($event)" [inModal]="false"></app-result-item>
+        <app-result-item *ngIf="result.doctype !== 'pas'" [result]="result" (onViewFile)="onViewFile($event)" (onViewDetail)="onViewDetail($event)" [inModal]="false"></app-result-item>
+        <app-result-item-pas *ngIf="result.doctype === 'pas'" [result]="result" (onViewFile)="onViewFile($event)" (onViewDetail)="onViewDetail($event)" [inModal]="false"></app-result-item-pas>
       </div><!--/.result item container -->
 
       <!-- Pagination -->

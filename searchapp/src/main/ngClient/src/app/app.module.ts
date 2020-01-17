@@ -34,6 +34,7 @@ import {ResultsComponent,
     NeidentAkceComponent,
     PaginationComponent,
     ResultItemComponent,
+    ResultItemPasComponent,
     TimelineComponent,
     TvarComponent} from './components/+results/';
 import { FreeTextComponent } from './components/free-text/free-text.component';
@@ -71,6 +72,7 @@ export function HttpLoaderFactory(http: Http) {
     NeidentAkceComponent,
     PaginationComponent,
     ResultItemComponent,
+    ResultItemPasComponent,
     TimelineComponent,
     TvarComponent,
     

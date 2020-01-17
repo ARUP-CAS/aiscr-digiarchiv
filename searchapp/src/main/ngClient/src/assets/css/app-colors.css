@@ -100,3 +100,11 @@ a,
 .app-cat-lfoto-border {border-color: #2fa362 transparent transparent !important}
 .app-cat-mplany-border {border-color: #a10a1e transparent transparent !important}
 .app-cat-ddata-border {border-color: #19b1a4 transparent transparent !important}
+
+.app-cat-ddata3d {background-color: #595959 !important}
+.app-cat-ddata3d .app-cat-box-bottom {background-color: #999999 !important}
+.app-cat-ddata3d-border {border-color: #999999 transparent transparent !important}
+
+.app-cat-pas {background-color: #a212a2 !important}
+.app-cat-pas .app-cat-box-bottom {background-color: #cc48ea !important}
+.app-cat-pas-border {border-color: #cc48ea transparent transparent !important}

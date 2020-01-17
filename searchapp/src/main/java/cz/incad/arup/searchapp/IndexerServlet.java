@@ -347,6 +347,27 @@ public class IndexerServlet extends HttpServlet {
         }
       }
     },
+    INDEX_CSV_PAS {
+      @Override
+      void doPerform(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        resp.setContentType("application/json;charset=UTF-8");
+
+        PrintWriter out = resp.getWriter();
+        JSONObject json = new JSONObject();
+        try {
+
+          Options.resetInstance();
+          CSVIndexer indexer = new CSVIndexer();
+          JSONObject r = indexer.indexPas();
+
+          out.println(r.toString(2));
+        } catch (Exception ex) {
+          json.put("error", ex.toString());
+
+          out.println(json.toString(2));
+        }
+      }
+    },
     INDEX_DOKUMENT {
       @Override
       void doPerform(HttpServletRequest req, HttpServletResponse resp) throws Exception {

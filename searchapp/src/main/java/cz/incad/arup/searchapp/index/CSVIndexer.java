@@ -757,6 +757,11 @@ public class CSVIndexer {
       doc.addField("loc", loc);
       doc.addField("loc_rpt", loc);
     }
+    if (doctype.equals("pas")) {
+
+      doc.addField("f_typ_dokumentu", "Samostatné nálezy");
+      doc.addField("kategorie", "pas");
+    }
     return doc;
 
   }
@@ -805,6 +810,25 @@ public class CSVIndexer {
       success = 0;
       errors = 0;
       ret.put("dokuments", indexSource(dokumentClient, new JSONArray().put("dokument"), "ident_cely", true));
+
+      closeClients();
+
+    } catch (Exception ex) {
+      LOGGER.log(Level.SEVERE, null, ex);
+      ret.put("error", ex);
+    }
+    return ret;
+  }
+
+  public JSONObject indexPas() {
+    JSONObject ret = new JSONObject();
+    try {
+
+      getClients();
+
+      success = 0;
+      errors = 0;
+      ret.put("dokuments", indexSource(dokumentClient, new JSONArray().put("pas"), "ident_cely", true));
 
       closeClients();
 

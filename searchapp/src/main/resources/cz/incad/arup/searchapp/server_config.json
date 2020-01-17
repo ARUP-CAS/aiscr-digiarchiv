@@ -217,7 +217,8 @@
     "komponenta",
     "externi_zdroj",
     "let",
-    "dokument"
+    "dokument",
+    "pas"
   ],
   "csvRelationTables": [
     "vazba_projekt_akce",
