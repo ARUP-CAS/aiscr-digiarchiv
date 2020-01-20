@@ -50,73 +50,12 @@
           </div>
           <ul class="list-unstyled app-nav-tree app-color-black collapse" [id]="'popis_'+ id()">
             <li class="app-nav-li-separator"></li>
-            <li *ngIf="hasValue('jazyk_dokumentu')">
-              <label>{{'Jazyk' | translate}}:</label>
-              <span>{{result.jazyk_dokumentu | translateHeslar: 'jazyk_dokumentu'}}</span>
+            <ng-container *ngFor="let f of detailFields">
+            <li *ngIf="hasValue(f)">
+              <label>{{f | translate}}:</label>
+              <span>{{result[f] | translateHeslar: 'pas'}}</span>
             </li>
-            <li *ngIf="hasValue('popis') || hasValue('extra_data_cislo_objektu')">
-              <label>{{'Popis obsahu' | translate}}:</label>
-              <span *ngIf="hasValue('popis')" [innerHTML]="popisObsahu()"></span>
-              <span *ngIf="hasValue('extra_data_cislo_objektu')">{{result.extra_data_cislo_objektu}}</span>
-            </li>
-            <li *ngIf="hasValue('poznamka')">
-              <label>{{'Poznámka' | translate}}:</label>
-              <span>{{result.poznamka}}</span>
-            </li>
-            <li *ngIf="hasValue('ulozeni_originalu')">
-              <label>{{'Uložení originálu' | translate}}:</label>
-              <span>{{result.ulozeni_originalu | translateHeslar: 'ulozeni_originalu'}}</span>
-            </li>
-            <li *ngIf="hasValue('oznaceni_originalu')">
-              <label>{{'Původní označení' | translate}}:</label>
-              <span>{{result.oznaceni_originalu}}</span>
-            </li>
-            <li *ngIf="hasValue('extra_data_pas') || hasValue('extra_data_easting') || hasValue('extra_data_northing')">
-              <label>{{'Souřadnice utm' | translate}}:</label>
-              <span *ngIf="hasValue('extra_data_pas')">{{result.extra_data_pas}}</span>
-							<span *ngIf="hasValue('extra_data_easting')">{{result.extra_data_easting}}</span><span *ngIf="hasValue('extra_data_northing')">:{{result.extra_data_northing}}</span>
-            </li>
-            <li *ngIf="hasValue('extra_data_zachovalost') || hasValue('extra_data_nahrada')">
-              <label>{{'Zachovalost (náhrada)' | translate}}:</label> 
-              <span *ngIf="hasValue('extra_data_zachovalost')">{{result.extra_data_zachovalost | translateHeslar: 'zachovalost'}}</span>
-							<span *ngIf="hasValue('extra_data_nahrada')">({{result.extra_data_nahrada | translateHeslar: 'nahrada'}})</span>
-            </li>
-            <li *ngIf="hasValue('extra_data_pocet_variant_originalu')">
-              <label>{{'Varianty originálu' | translate}}:</label>
-              <span>{{result.extra_data_pocet_variant_originalu}}</span>
-            </li>
-            <li *ngIf="hasValue('extra_data_odkaz')">
-              <label>{{'Odkaz' | translate}}:</label> 
-              <span>{{result.extra_data_odkaz}}</span>
-            </li>
-            <li *ngIf="hasValue('extra_data_format') || hasValue('extra_data_vyska') && hasValue('extra_data_sirka')">
-              <label>{{'Formát/rozměry' | translate}}:</label>
-              <span *ngIf="hasValue('extra_data_format')">{{result.extra_data_format}}</span>
-							<span *ngIf="hasValue('extra_data_vyska') && hasValue('extra_data_sirka')">({{result.extra_data_vyska * result.extra_data_sirka}})</span>
-            </li>
-            <li *ngIf="hasValue('extra_data_meritko')">
-              <label>{{'Měřítko' | translate}}:</label>
-              <span>{{result.extra_data_meritko}}</span>
-            </li>
-            <li *ngIf="hasValue('extra_data_zeme') || hasValue('extra_data_region')">
-              <label>{{'Země (region)' | translate}}:</label>
-              <span *ngIf="hasValue('extra_data_zeme')">{{result.extra_data_zeme | translateHeslar: 'zeme'}}</span>
-							<span *ngIf="hasValue('extra_data_region')">({{result.extra_data_region}})</span>
-            </li>
-            <li *ngIf="hasValue('extra_data_udalost_typ') || hasValue('extra_data_udalost') || hasValue('extra_data_rok_od') && hasValue('extra_data_rok_do')">
-              <label>{{'Událost' | translate}}:</label>
-              <span *ngIf="hasValue('extra_data_udalost_typ')">{{result.extra_data_udalost_typ}},</span>
-							<span *ngIf="hasValue('extra_data_udalost')">{{result.extra_data_udalost}}</span>
-							<span *ngIf="hasValue('extra_data_rok_od') && hasValue('extra_data_rok_do')">{{result.extra_data_rok_od}} - {{result.extra_data_rok_do}}</span>
-            </li>
-            <li *ngIf="hasValue('extra_data_osoby')">
-              <label>{{'Osoby' | translate}}:</label> 
-              <span>{{result.extra_data_osoby}}</span>
-            </li>
-            <li *ngIf="hasValue('extra_data_datum_vzniku')">
-              <label>{{'Datum vzniku' | translate}}:</label> 
-              <span>{{result.extra_data_datum_vzniku}}</span>
-            </li>
+          </ng-container>
             <li class="app-nav-li-separator"></li>
           </ul>
         </li>

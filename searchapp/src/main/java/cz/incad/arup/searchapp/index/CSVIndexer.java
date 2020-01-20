@@ -216,6 +216,7 @@ public class CSVIndexer {
         SolrQuery query = new SolrQuery();
         query.setQuery("dokument:\"" + uniqueid + "\"");
         query.setFilterQueries("doctype:\"extra_data\"");
+        query.setRows(100);
         //JSONObject resp = SolrIndex.json(query, "relations/");
         //doc.addField("extra_data", resp.getJSONObject("response").getJSONArray("docs"));
         SolrDocumentList docs = relationsClient.query(query).getResults();
@@ -226,7 +227,7 @@ public class CSVIndexer {
             addFields(doc, qdoc, "extra_data");
           }
         }
-        
+
         if (doc.containsKey("let")) {
           String let = (String) doc.getFieldValue("let");
           getLet(let, doc);
@@ -238,6 +239,36 @@ public class CSVIndexer {
       } catch (IOException | SolrServerException ex) {
         LOGGER.log(Level.SEVERE,
                 "Error adding relations,\n uniqueid: {0} \n doctype: {1} \n doc {2}",
+                new Object[]{uniqueid, doctype, doc});
+        LOGGER.log(Level.SEVERE, null, ex);
+      }
+    } else if (doctype.equals("pas")) {
+
+      try {
+        //add soubory to samostatny_nalez
+        SolrQuery query = new SolrQuery();
+
+        query.setQuery("samostatny_nalez:\"" + uniqueid + "\"");
+        query.setFilterQueries("doctype:\"soubor\"");
+        query.setRows(100);
+        JSONObject resp = SolrIndex.json(query, "relations/");
+        //LOGGER.log(Level.INFO, resp.getJSONObject("response").getJSONArray("docs").toString());
+        if (resp.getJSONObject("response").getJSONArray("docs").length() > 0) {
+          doc.addField("soubor", resp.getJSONObject("response").getJSONArray("docs").toString());
+
+          String filepath = resp.getJSONObject("response").getJSONArray("docs").getJSONObject(0).optJSONArray("filepath").getString(0);
+          String dest = ImageSupport.getDestDir(filepath);
+          String fname = dest + filepath + "_thumb.jpg";
+
+          //LOGGER.log(Level.INFO, fname);
+          doc.addField("hasThumb", new File(fname).exists() || new File(dest + "_thumb.jpg").exists());
+
+        } else {
+          doc.addField("hasThumb", true);
+        }
+      } catch (IOException ex) {
+        LOGGER.log(Level.SEVERE,
+                "Error adding files,\n uniqueid: {0} \n doctype: {1} \n doc {2}",
                 new Object[]{uniqueid, doctype, doc});
         LOGGER.log(Level.SEVERE, null, ex);
       }

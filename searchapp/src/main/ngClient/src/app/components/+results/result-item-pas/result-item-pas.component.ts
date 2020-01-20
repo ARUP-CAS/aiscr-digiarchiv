@@ -17,6 +17,25 @@ export class ResultItemPasComponent implements OnInit {
   @Output() onViewFile = new EventEmitter();
   @Output() onViewDetail = new EventEmitter();
 
+  detailFields = ['inv_cislo',
+  "projekt_id",
+  "lokalizace",
+  "geom_x",
+  "geom_y",
+  "hloubka",
+  "nalezove_okolnosti",
+  "obdobi",
+  "presna_datace",
+  "typ",
+  "druh",
+  "specifikace",
+  "pocet",
+  "poznamka",
+  "stav",
+  "stav_popis",
+  "predano",
+  "predano_organizace"]
+
   files: any = [];
   lokality: Lokalita[] = [];
   
@@ -33,7 +52,7 @@ export class ResultItemPasComponent implements OnInit {
 
   ngOnInit() {
     
-
+console.log(this.result);
     if (this.result.hasOwnProperty('soubor')) {
       this.files = JSON.parse(this.result.soubor[0]);
     }
