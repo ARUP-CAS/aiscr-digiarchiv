@@ -115,6 +115,7 @@ public class CSVIndexer {
       ret.put("relations", indexSource(relationsClient, opts.getJSONArray("csvRelationTables"), null, false));
       ret.put("tables", indexSource(exportClient, opts.getJSONArray("csvTables"), "ident_cely", false));
       ret.put("dokuments", indexSource(dokumentClient, new JSONArray().put("dokument"), "ident_cely", true));
+      ret.put("dokuments", indexSource(dokumentClient, new JSONArray().put("pas"), "ident_cely", true));
 
       closeClients();
 
