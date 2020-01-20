@@ -3,6 +3,7 @@
   "defaultLang": "cs",
   "serverUrl": "https://digiarchiv.aiscr.cz",
   "searchParams": {
+    "host": "search/",
     "q": "*",
     "rows": 20,
     "facets": [
@@ -239,6 +240,18 @@
         "index": "ddata",
         "field": "data",
         "ico": "database"
+      },
+      {
+        "label": "3D data",
+        "index": "ddata3d",
+        "field": "data3d",
+        "ico": "diamond"
+      },
+      {
+        "label": "Samostatné nálezy",
+        "index": "pas",
+        "field": "pas",
+        "ico": "map-marker"
       }
     ]
   },

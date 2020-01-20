@@ -793,6 +793,13 @@ public class CSVIndexer {
 
       doc.addField("f_typ_dokumentu", "Samostatné nálezy");
       doc.addField("kategorie", "pas");
+      if (doc.getFieldValue("geom_x") != null && !doc.getFieldValue("geom_x").equals("")) {
+        String loc = doc.getFieldValue("geom_x") + "," + doc.getFieldValue("geom_y");
+        doc.addField("pian_centroid_n", doc.getFieldValue("geom_x"));
+        doc.addField("pian_centroid_e", doc.getFieldValue("geom_y"));
+        doc.addField("loc", loc);
+        doc.addField("loc_rpt", loc);
+      }
     }
     return doc;
 

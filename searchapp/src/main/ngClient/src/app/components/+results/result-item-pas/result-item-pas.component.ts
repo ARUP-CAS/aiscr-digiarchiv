@@ -52,7 +52,6 @@ export class ResultItemPasComponent implements OnInit {
 
   ngOnInit() {
     
-console.log(this.result);
     if (this.result.hasOwnProperty('soubor')) {
       this.files = JSON.parse(this.result.soubor[0]);
     }
