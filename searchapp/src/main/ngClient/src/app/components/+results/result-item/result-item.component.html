@@ -45,10 +45,10 @@
       <!-- Popis dokumentu -->
       <ul class="nav app-result-item-nav">
         <li>
-          <div class="app-result-item-nav-title app-border-radius app-cursor-pointer app-color-blue-pastel collapsed" data-toggle="collapse" [attr.data-target]="'#popis_'+ id()">
+          <div class="app-result-item-nav-title app-border-radius app-cursor-pointer app-color-blue-pastel" data-toggle="collapse" [attr.data-target]="'#popis_'+ id()">
             <strong>{{'Popis dokumentu' | translate}}:</strong>
           </div>
-          <ul class="list-unstyled app-nav-tree app-color-black collapse" [id]="'popis_'+ id()">
+          <ul class="list-unstyled app-nav-tree app-color-black collapse in" [id]="'popis_'+ id()">
             <li class="app-nav-li-separator"></li>
             <li *ngIf="hasValue('jazyk_dokumentu')">
               <label>{{'Jazyk' | translate}}:</label>
