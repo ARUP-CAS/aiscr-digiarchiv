@@ -29,13 +29,16 @@
         <span class="app-color-silver">|</span> {{result.datum_nalezu}}
       </h4>
       <div class="app-color-gray-light">
-        <label>{{'Typ' | translate}}:</label> {{result.typ_dokumentu | translateHeslar: 'typ_dokumentu'}} | 
-        <label>{{'Materiál' | translate}}:</label> {{result.material_originalu | translateHeslar: 'material_dokumentu'}} | 
-        <label>{{'Řada' | translate}}:</label> {{result.rada}} | 
+        <label>{{'Uložení' | translate}}:</label> {{result.predano_organizace | translateHeslar: 'pas'}} | 
+        <label>{{'Ev. č' | translate}}:</label> {{result.inv_cislo | translateHeslar: 'pas'}} | 
         <label>{{'Přístupnost' | translate}}:</label> {{result.pristupnost | translateHeslar: 'pristupnost'}}
       </div>
-        <div><label>{{'Organizace' | translate}}:</label> {{organizace()}}</div>
-        <div><label>{{'Katastr (okres)' | translate}}:</label> {{okres()}}</div>
+        <div>
+          <label>{{'Období' | translate}}:</label> {{result.obdobi}} ({{result.presna_datace}}) |
+          <label>{{'Nález' | translate}}:</label> {{result.druh_nalezu}} ({{result.specifikace}}) 
+        </div>
+        <div *ngIf="hasRights"><label>{{'Katastr (okres)' | translate}}:</label> {{okres()}}</div>
+        <div *ngIf="!hasRights"><label>{{'Katastr' | translate}}:</label>  {{katastr()}}</div>
     </div>
   </div><!--/.result inner -->
 
@@ -45,10 +48,10 @@
       <!-- Popis dokumentu -->
       <ul class="nav app-result-item-nav">
         <li>
-          <div class="app-result-item-nav-title app-border-radius app-cursor-pointer app-color-blue-pastel collapsed" data-toggle="collapse" [attr.data-target]="'#popis_'+ id()">
-            <strong>{{'Popis dokumentu' | translate}}:</strong>
+          <div class="app-result-item-nav-title app-border-radius app-color-blue-pastel " >
+            <strong>{{'Popis nálezu' | translate}}:</strong>
           </div>
-          <ul class="list-unstyled app-nav-tree app-color-black collapse" [id]="'popis_'+ id()">
+          <ul class="list-unstyled app-nav-tree app-color-black">
             <li class="app-nav-li-separator"></li>
             <ng-container *ngFor="let f of detailFields">
             <li *ngIf="hasValue(f)">

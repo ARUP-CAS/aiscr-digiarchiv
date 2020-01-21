@@ -474,6 +474,14 @@
   "Materiál": "Materiál",
   "Řada": "Řada",
   "Popis dokumentu": "Popis dokumentu",
+  "Popis nálezu": "Popis nálezu",
+  "Ev. č": "Ev. č",
+  "Nález": "Nález",
+  "projekt_id": "Projekt id",
+  "pocet": "Počet",
+  "nalezove_okolnosti": "Okolnosti",
+  "hloubka": "Hloubka",
+  "poznamka": "Poznámka",
   "Přístupnost záznamu": "Přístupnost záznamu",
   "Popis obsahu": "Popis obsahu",
   "Souřadnice utm": "Souřadnice utm",
@@ -499,6 +507,7 @@
 
   "Počet akcí": "Počet akcí",
   "Počet nálezů": "Počet nálezů",
+
   "Počet lokalit": "Počet lokalit",
 
   "Správa dat, uživatelů a podpora pro oblast Čech": "Správa dat, uživatelů a podpora pro oblast Čech",

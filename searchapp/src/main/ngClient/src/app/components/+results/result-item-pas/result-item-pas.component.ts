@@ -17,24 +17,23 @@ export class ResultItemPasComponent implements OnInit {
   @Output() onViewFile = new EventEmitter();
   @Output() onViewDetail = new EventEmitter();
 
-  detailFields = ['inv_cislo',
+  detailFields = [
   "projekt_id",
-  "lokalizace",
-  "geom_x",
-  "geom_y",
-  "hloubka",
-  "nalezove_okolnosti",
-  "obdobi",
-  "presna_datace",
-  "typ",
-  "druh",
-  "specifikace",
   "pocet",
+  "nalezove_okolnosti",
+  "hloubka",
   "poznamka",
-  "stav",
-  "stav_popis",
-  "predano",
-  "predano_organizace"]
+  // "geom_x",
+  // "geom_y",
+  // "obdobi",
+  // "presna_datace",
+  // "typ",
+  // "druh",
+  // "specifikace",
+  // "stav",
+  // "stav_popis",
+  // "predano"
+]
 
   files: any = [];
   lokality: Lokalita[] = [];
@@ -48,6 +47,8 @@ export class ResultItemPasComponent implements OnInit {
   toggleText: string = 'Zobrazit detail';
 
   public versions: any[] = [];
+  hasRights = false;
+
   constructor(public solrService: SolrService) { }
 
   ngOnInit() {
@@ -58,6 +59,12 @@ export class ResultItemPasComponent implements OnInit {
 
     if (this.result.hasOwnProperty('nalez_druh_nalezu')) {
       this.numNalezu = this.result.nalez_druh_nalezu.length;
+    }
+
+    this.hasRights = this.solrService.hasRights(this.result['pristupnost']);
+    
+    if(this.hasRights) {
+      this.detailFields.splice(2, 0, "lokalizace");
     }
     
     this.getIsFav();
@@ -71,6 +78,28 @@ export class ResultItemPasComponent implements OnInit {
   
   hasTvar(){
     return this.result.hasOwnProperty('tvar_dokument') && this.result['tvar_dokument'].length >0 ;
+  }
+
+  katastr() {
+    if (this.result.hasOwnProperty('f_katastr')) {
+      let katastry = [];
+      let ret = "";
+      for (let idx = 0; idx < this.result['f_okres'].length; idx++) {
+        
+        let katastr = this.result['f_katastr'][idx];
+
+        if (katastry.indexOf(katastr) < 0) {
+          katastry.push(katastr);
+          if (idx > 0) {
+            ret += ', ';
+          }
+          ret += katastr;
+        }
+      }
+      return ret;
+    } else {
+      return "";
+    }
   }
 
   okres() {
