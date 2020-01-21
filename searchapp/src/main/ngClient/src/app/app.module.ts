@@ -41,7 +41,7 @@ import { FreeTextComponent } from './components/free-text/free-text.component';
     
     // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: Http) {
-  return new TranslateHttpLoader(http, '/assets/i18n/', '');
+  return new TranslateHttpLoader(http, '/assets/i18n/', '.json');
 }
 
 
