@@ -19,7 +19,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.csv.CSVFormat;
@@ -33,6 +32,7 @@ import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -56,6 +56,7 @@ public class CSVIndexer {
   ArrayList<String> csvExcludeRelations;
   ArrayList<String> csvStavyAkce;
   ArrayList<String> csvStavyLokalita;
+  ArrayList<String> csvStavyPas;
 
   public CSVIndexer() throws IOException {
 
@@ -75,6 +76,11 @@ public class CSVIndexer {
     csvStavyLokalita = new ArrayList<>();
     for (int i = 0; i < opts.getJSONArray("csvStavyLokalita").length(); i++) {
       csvStavyLokalita.add(opts.getJSONArray("csvStavyLokalita").getString(i));
+    }
+
+    csvStavyPas = new ArrayList<>();
+    for (int i = 0; i < opts.getJSONArray("csvStavyPas").length(); i++) {
+      csvStavyPas.add(opts.getJSONArray("csvStavyPas").getString(i));
     }
   }
 
@@ -711,15 +717,16 @@ public class CSVIndexer {
       for (final CSVRecord record : parser) {
         try {
           SolrInputDocument doc = parseCsvLine(header, record, uniqueField, doctype, hasRelations);
-
-          docs.add(doc);
-          tsuccess++;
-          success++;
-          if (success % 500 == 0) {
-            sclient.add(docs);
-            sclient.commit();
-            docs.clear();
-            LOGGER.log(Level.INFO, "Indexed {0} docs", success);
+          if (doc != null) {
+            docs.add(doc);
+            tsuccess++;
+            success++;
+            if (success % 500 == 0) {
+              sclient.add(docs);
+              sclient.commit();
+              docs.clear();
+              LOGGER.log(Level.INFO, "Indexed {0} docs", success);
+            }
           }
         } catch (Exception ex) {
           terrors++;
@@ -790,13 +797,18 @@ public class CSVIndexer {
       doc.addField("loc_rpt", loc);
     }
     if (doctype.equals("pas")) {
+//      if (!csvStavyPas.contains(doc.getFieldValue("stav").toString())) {
+//        LOGGER.log(Level.FINE, "Skip doc as stav is {0}", doc.getFieldValue("stav"));
+//        return null;
+//      }
 
+      
       doc.addField("f_typ_dokumentu", "Samostatné nálezy");
       doc.addField("kategorie", "pas");
       if (doc.getFieldValue("geom_x") != null && !doc.getFieldValue("geom_x").equals("")) {
         String loc = doc.getFieldValue("geom_x") + "," + doc.getFieldValue("geom_y");
         doc.addField("pian_centroid_n", doc.getFieldValue("geom_x"));
-        doc.addField("pian_centroid_e", doc.getFieldValue("geom_y"));        
+        doc.addField("pian_centroid_e", doc.getFieldValue("geom_y"));
         doc.addField("pian_ident_cely", uniqueid);
         doc.addField("pian", uniqueid);
         doc.addField("loc", loc);
@@ -860,6 +872,18 @@ public class CSVIndexer {
     }
     return ret;
   }
+  
+  public JSONObject cleanPas() {
+    try {
+      dokumentClient = SolrIndex.getClient(opts.getString("dokumentsCore", "dokument/"));
+      dokumentClient.deleteByQuery("doctype:pas", 1);
+      dokumentClient.close();
+      return new JSONObject().put("message", "Pas cleaned");
+    } catch (IOException | JSONException | SolrServerException ex) {
+      LOGGER.log(Level.SEVERE, null, ex);
+      return new JSONObject().put("error", ex);
+    }
+  }
 
   public JSONObject indexPas() {
     JSONObject ret = new JSONObject();
@@ -904,6 +928,53 @@ public class CSVIndexer {
           idoc.addField("loc", loc);
           idoc.addField("loc_rpt", loc);
         }
+        dokumentClient.add(idoc);
+        dokumentClient.commit();
+        LOGGER.log(Level.INFO, "Doc {0} indexed", id);
+        ret.put(id, "success");
+      }
+      closeClients();
+    } catch (Exception ex) {
+      LOGGER.log(Level.SEVERE, null, ex);
+      ret.put("error", ex);
+    }
+    return ret;
+  }
+
+  public JSONObject indexPasDokument(String id) {
+    getClients();
+    JSONObject ret = new JSONObject();
+    try {
+      SolrQuery query = new SolrQuery();
+      query.setQuery("ident_cely:\"" + id + "\"");
+      SolrDocumentList docs = exportClient.query(query).getResults();
+      if (docs.isEmpty()) {
+        LOGGER.log(Level.INFO, "Doc {0} not found", id);
+        ret.put(id, "not exists");
+      } else {
+        SolrInputDocument idoc = new SolrInputDocument();
+        addFields(idoc, docs.get(0), "pas", true);
+        idoc.removeField("indextime");
+        idoc.removeField("_version_");
+        idoc.removeField("_root_");
+        String uniqueid = "pas_" + id;
+        idoc.setField("uniqueid", uniqueid);
+        idoc.setField("doctype", "pas");
+        
+        
+        //idoc.addField("f_typ_dokumentu", "Samostatné nálezy");
+//        idoc.addField("kategorie", "pas");
+//        if (idoc.getFieldValue("geom_x") != null && !idoc.getFieldValue("geom_x").equals("")) {
+//          String loc = idoc.getFieldValue("geom_x") + "," + idoc.getFieldValue("geom_y");
+//          idoc.addField("pian_centroid_n", idoc.getFieldValue("geom_x"));
+//          idoc.addField("pian_centroid_e", idoc.getFieldValue("geom_y"));
+//          idoc.addField("pian_ident_cely", uniqueid);
+//          idoc.addField("pian", uniqueid);
+//          idoc.addField("loc", loc);
+//          idoc.addField("loc_rpt", loc);
+//        }
+      
+      
         dokumentClient.add(idoc);
         dokumentClient.commit();
         LOGGER.log(Level.INFO, "Doc {0} indexed", id);

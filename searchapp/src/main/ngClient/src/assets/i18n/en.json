@@ -40,7 +40,8 @@
       "texty": "Texts",
       "ddata": "Digital data",
       "mplany": "Plans and maps",
-      "neuvedeno": "Unspecified"
+      "neuvedeno": "Unspecified",
+      "pas": "Individual finds"
     },
     "rada": {
       "DT": "digital field photos",
@@ -78,7 +79,8 @@
     "texty": "Texts",
     "ddata": "Digital data",
     "mplany": "Plans and maps",
-    "neuvedeno": "Unspecified"
+    "neuvedeno": "Unspecified",
+    "pas": "Individual finds"
   },
   "adv.andnot": "And not",
   "adv.komponenta_areal": "Component - area",

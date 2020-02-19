@@ -20,7 +20,11 @@ public class ImageAccess {
         allow = true;
       } else {
         String id = request.getParameter("id");
-        String imgPr = SolrIndex.getPristupnostBySoubor(id);
+        String field = request.getParameter("field");
+        if(field == null) {
+          field = "dokument";
+        }
+        String imgPr = SolrIndex.getPristupnostBySoubor(id, field);
         if ("A".equals(imgPr)) {
           allow = true;
         } else {

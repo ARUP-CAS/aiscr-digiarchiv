@@ -3,8 +3,8 @@
 @font-face {
 	font-family: 'Conv_RobotoCondensed-Light';
 	src: url('../fonts/roboto/RobotoCondensed-Light.eot');
-	src: local('☺'), url('../fonts/roboto/RobotoCondensed-Light.woff') format('font-woff'), 
-	url('../fonts/roboto/RobotoCondensed-Light.ttf') format('font-truetype'), 
+	src: local('☺'), url('../fonts/roboto/RobotoCondensed-Light.woff') format('woff'), 
+	url('../fonts/roboto/RobotoCondensed-Light.ttf') format('truetype'), 
 	url('../fonts/roboto/RobotoCondensed-Light.svg') format('svg');
 	font-weight: normal;
 	font-style: normal;
@@ -13,7 +13,7 @@
 @font-face {
 	font-family: 'Conv_RobotoCondensed-Regular';
 	src: url('../fonts/roboto/RobotoCondensed-Regular.eot');
-	src: local('☺'), url('../fonts/roboto/RobotoCondensed-Regular.woff') format('font-woff'), 
+	src: local('☺'), url('../fonts/roboto/RobotoCondensed-Regular.woff') format('woff'), 
 	url('../fonts/roboto/RobotoCondensed-Regular.ttf') format('truetype'), 
 	url('../fonts/roboto/RobotoCondensed-Regular.svg') format('svg');
 	font-weight: normal;

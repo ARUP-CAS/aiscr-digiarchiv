@@ -59,16 +59,19 @@ public class SolrIndex {
     return server;
   }
 
-  public static String getPristupnostBySoubor(String id) {
+  public static String getPristupnostBySoubor(String id, String field) {
     try {
       SolrClient relClient = getClient("relations");
-      SolrQuery query = new SolrQuery("*").addFilterQuery("filepath:\"" + id + "\"").setRows(1).setFields("dokument");
+      SolrQuery query = new SolrQuery("*").addFilterQuery("filepath:\"" + id + "\"").setRows(1).setFields("dokument", "samostatny_nalez");
       QueryResponse rsp = relClient.query(query);
       relClient.close();
       if (rsp.getResults().isEmpty()) {
         return null;
       } else {
         String dok = (String) rsp.getResults().get(0).getFirstValue("dokument");
+        if (dok == null || "".equals(dok)) {
+          dok = (String) rsp.getResults().get(0).getFirstValue("samostatny_nalez");
+        }
         SolrClient dokClient = getClient("dokument");
         SolrQuery queryDok = new SolrQuery("*").addFilterQuery("ident_cely:\"" + dok + "\"").setRows(1).setFields("pristupnost");
         QueryResponse rsp2 = dokClient.query(queryDok);

@@ -73,7 +73,8 @@
       "lfoto": "Letecké fotografie",
       "ddata": "Digitální data",
       "mplany": "Plány a mapy",
-      "neuvedeno": "Neuvedeno"
+      "neuvedeno": "Neuvedeno",
+      "pas": "Samostatné nálezy"
     }
   },
   "kategorie": {
@@ -82,7 +83,8 @@
     "lfoto": "Letecké fotografie",
     "ddata": "Digitální data",
     "mplany": "Plány a mapy",
-    "neuvedeno": "Neuvedeno"
+    "neuvedeno": "Neuvedeno",
+    "pas": "Samostatné nálezy"
   },
   "adv.add.condition": "Přidat další kritérium",
   "adv.sendQuery": "Odeslat dotaz",

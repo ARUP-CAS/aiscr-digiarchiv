@@ -7,8 +7,6 @@ package cz.incad.arup.searchapp.index;
 
 import cz.incad.FormatUtils;
 import cz.incad.arup.searchapp.Options;
-import cz.incad.arup.searchapp.imaging.ImageSupport;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -19,7 +17,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
