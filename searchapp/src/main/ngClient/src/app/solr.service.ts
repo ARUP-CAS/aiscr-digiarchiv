@@ -389,6 +389,8 @@ export class SolrService implements OnDestroy {
 
               } else if (p === 'adv') {
                 this.setConditionsFromUrl(param.split(','));
+              } else if (this.config.urlFields.indexOf(p) < 0) {
+                // Ignore this param
               } else {
               
                 let f = new Filter();
@@ -438,6 +440,8 @@ export class SolrService implements OnDestroy {
             } else {
               if (p === 'adv') {
                 this.setConditionsFromUrl(param);
+              } else if (this.config.urlFields.indexOf(p) < 0) {
+                // Ignore this param
               } else {
                 let f = new Filter();
                 f.field = p;
