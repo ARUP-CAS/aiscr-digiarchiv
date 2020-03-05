@@ -468,7 +468,7 @@
        <str name="f.f_rok_vzniku.facet.limit">-1</str>
        
        <str name="facet.pivot">kategorie,f_typ_dokumentu</str>
-       <str name="facet.field">pristupnost_dokument</str>
+       <str name="facet.field">pristupnost</str>
        <str name="facet.field">f_autor</str>
        <!--
        <str name="facet.field">f_vedouci</str>
