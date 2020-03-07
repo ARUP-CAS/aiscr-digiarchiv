@@ -805,10 +805,10 @@ public class CSVIndexer {
       
       doc.addField("f_typ_dokumentu", "Samostatné nálezy");
       doc.addField("kategorie", "pas");
-      if (doc.getFieldValue("geom_x") != null && !doc.getFieldValue("geom_x").equals("")) {
-        String loc = doc.getFieldValue("geom_x") + "," + doc.getFieldValue("geom_y");
-        doc.addField("pian_centroid_n", doc.getFieldValue("geom_x"));
-        doc.addField("pian_centroid_e", doc.getFieldValue("geom_y"));
+      if (doc.getFieldValue("centroid_n") != null && !doc.getFieldValue("centroid_n").equals("")) {
+        String loc = doc.getFieldValue("centroid_n") + "," + doc.getFieldValue("centroid_e");
+        doc.addField("pian_centroid_n", doc.getFieldValue("centroid_n"));
+        doc.addField("pian_centroid_e", doc.getFieldValue("centroid_e"));
         doc.addField("pian_ident_cely", uniqueid);
         doc.addField("pian", uniqueid);
         doc.addField("loc", loc);

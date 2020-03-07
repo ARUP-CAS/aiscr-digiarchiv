@@ -455,11 +455,11 @@ export class MapaComponent implements OnInit {
   addMarker(doc, idx) {
 
     // samostatne nalezy maji jinak
-    if (doc.hasOwnProperty('geom_x')) {
+    if (doc.hasOwnProperty('centroid_n')) {
       if (this.solrService.hasRights(doc['pristupnost'])){
         var ngMapa = this;
         let pianId = doc['pian'][0];
-        var marker = L.marker([doc['geom_x'][0], doc['geom_y'][0]], { pianId: pianId });
+        var marker = L.marker([doc['centroid_n'][0], doc['centroid_e'][0]], { pianId: pianId });
         this.markersList.push(marker);
         marker['pianId'] = pianId;
 
@@ -469,8 +469,8 @@ export class MapaComponent implements OnInit {
           });
         });
 
-        marker.bindPopup(this.popUpHtml(pianId, doc['geom_x'][0],
-        doc['geom_y'][0], '')).addTo(this.markers);
+        marker.bindPopup(this.popUpHtml(pianId, doc['centroid_n'][0],
+        doc['centroid_e'][0], '')).addTo(this.markers);
       }
     } else if (doc.hasOwnProperty('pian')) {
       for (let i in doc['pian']) {
