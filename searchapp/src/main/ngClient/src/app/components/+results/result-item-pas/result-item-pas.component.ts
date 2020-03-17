@@ -18,7 +18,7 @@ export class ResultItemPasComponent implements OnInit {
   @Output() onViewDetail = new EventEmitter();
 
   detailFields = [
-  "projekt_id",
+  // "projekt_id",
   "pocet",
   "nalezove_okolnosti",
   "hloubka",
