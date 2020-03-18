@@ -587,8 +587,8 @@ export class SolrService implements OnDestroy {
     this.itemView = 'default';
     this.mapOpen = true;
     this.shouldPrint = print;
-    this.router.navigate(['/id', id]);
     this._routeChanged.next(this.route);
+    this.router.navigate(['/id', id]);
   }
 
   setUrl(route: string) {

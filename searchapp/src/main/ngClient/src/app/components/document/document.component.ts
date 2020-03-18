@@ -19,7 +19,6 @@ export class DocumentComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('fileViewer') fileViewer: FileViewerComponent;
   paramsObserver: Subscription;
   
-  hasConfig : boolean = false;
   
   docid : string;
   link: string;
@@ -33,13 +32,13 @@ export class DocumentComponent implements OnInit, AfterViewInit, OnDestroy {
     
     this.titleService.setTitle('Digitální archiv AMČR | Dokument');
     this.solrService.configObservable.subscribe(val => {
-      this.hasConfig =  true; 
       this.getData();
     });
     
     this.paramsObserver = this.activatedRoute.params.subscribe((params: Params) => {
       this.docid = params['id'];
-      if (this.hasConfig){
+      
+      if (this.solrService.config){
         this.getData();
       }
       
