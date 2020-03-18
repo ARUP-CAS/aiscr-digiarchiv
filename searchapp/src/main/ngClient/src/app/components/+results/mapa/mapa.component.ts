@@ -67,6 +67,7 @@ export class MapaComponent implements OnInit {
     private translate: TranslateService) { }
 
   ngOnInit() {
+    // this.solrService.mapOpen = true;
     this.openSubs = this.solrService.mapOpenChanged.subscribe(val => {
       setTimeout(() => {
         this.setIsCollapsed();
@@ -406,9 +407,11 @@ export class MapaComponent implements OnInit {
         this.map.removeLayer(this.heatmapLayer);
       }
     }
-    if (this.solrService.route === 'document' && this.docs.length === 1) {
+    if (this.solrService.route === 'document' && this.docs.length === 1 && this.docs[0]['pian_centroid_n']) {
       var ll = new L.LatLng(this.docs[0]['pian_centroid_n'][0], this.docs[0]['pian_centroid_e'][0]);
       this.map.panTo(ll);
+    // } else {
+    //   this.solrService.changeMapOpen();
     }
   }
 
@@ -455,7 +458,7 @@ export class MapaComponent implements OnInit {
   addMarker(doc, idx) {
 
     // samostatne nalezy maji jinak
-    if (doc.hasOwnProperty('centroid_n')) {
+    if (doc.hasOwnProperty('centroid_n') && doc.hasOwnProperty('pian')) {
       if (this.solrService.hasRights(doc['pristupnost'])){
         var ngMapa = this;
         let pianId = doc['pian'][0];
@@ -476,6 +479,8 @@ export class MapaComponent implements OnInit {
       for (let i in doc['pian']) {
         this.doAddMarker(doc, idx, doc['pian'][i]);
       }
+    } else {
+      //this.solrService.changeMapOpen();
     }
   }
 

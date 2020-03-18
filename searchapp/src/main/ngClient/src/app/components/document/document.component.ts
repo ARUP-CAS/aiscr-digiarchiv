@@ -29,25 +29,27 @@ export class DocumentComponent implements OnInit, AfterViewInit, OnDestroy {
    public solrService: SolrService) { }
    
   ngOnInit() {
+    this.docid = this.activatedRoute.snapshot.params.id;
+    
     this.titleService.setTitle('Digitální archiv AMČR | Dokument');
     this.solrService.configObservable.subscribe(val => {
       this.hasConfig =  true; 
+      this.getData();
     });
     
     this.paramsObserver = this.activatedRoute.params.subscribe((params: Params) => {
       this.docid = params['id'];
       if (this.hasConfig){
-        this.link = this.solrService.config['serverUrl'] + '/id/' + this.docid;
-        return this.solrService.getDocument(params['id']).subscribe();
-      } else {
-        return setTimeout(() => {
-          
-          this.link = this.solrService.config['serverUrl'] + '/id/' + this.docid;
-          return this.solrService.getDocument(params['id']).subscribe();
-        }, 100);
+        this.getData();
       }
       
     });
+
+  }
+
+  getData() {
+    this.link = this.solrService.config['serverUrl'] + '/id/' + this.docid;
+    return this.solrService.getDocument(this.docid).subscribe();
 
   }
   
@@ -72,7 +74,7 @@ export class DocumentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onViewFile(doc) {
-    console.log(this.fileViewer);
+    // console.log(this.fileViewer);
     this.fileViewer.openModal(doc);
   }
 
