@@ -316,5 +316,5 @@
   },
   "urlFields": ["q", "f_organizace", "f_rok_vzniku", "f_okres", "f_katastr", "f_obdobi",
      "f_areal", "f_aktivita", "f_druh_lokality", "f_druh_nalezu", "f_autor",
-     "pristupnost", "kategorie","f_typ_dokumentu", "pian_ident_cely", "loc_rpt" ]
+     "pristupnost", "kategorie","f_typ_dokumentu", "pian_ident_cely", "loc_rpt", "obdobi_poradi" ]
 }

@@ -5,6 +5,7 @@ import cz.incad.FormatUtils;
 import cz.incad.arup.searchapp.I18n;
 import cz.incad.arup.searchapp.Options;
 import cz.incad.arup.searchapp.imaging.ImageSupport;
+import static cz.incad.arup.searchapp.index.SolrIndex.host;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
@@ -28,6 +30,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
@@ -57,6 +61,8 @@ public class CSVIndexer {
   ArrayList<String> csvStavyAkce;
   ArrayList<String> csvStavyLokalita;
   ArrayList<String> csvStavyPas;
+  
+  Map<String, String> obdobi_poradi;
 
   public CSVIndexer() throws IOException {
 
@@ -805,6 +811,7 @@ public class CSVIndexer {
       
       doc.addField("f_typ_dokumentu", "Samostatné nálezy");
       doc.addField("kategorie", "pas");
+      doc.addField("dokument_popis", doc.getFieldValue("lokalizace") + " " + doc.getFieldValue("poznamka"));
       if (doc.getFieldValue("centroid_n") != null && !doc.getFieldValue("centroid_n").equals("")) {
         String loc = doc.getFieldValue("centroid_n") + "," + doc.getFieldValue("centroid_e");
         doc.addField("pian_centroid_n", doc.getFieldValue("centroid_n"));
@@ -815,8 +822,38 @@ public class CSVIndexer {
         doc.addField("loc_rpt", loc);
       }
     }
+    if (doc.getFieldValue("obdobi") != null && !doc.getFieldValue("obdobi").equals("")) {
+      doc.addField("obdobi_poradi", getObdobiPoradi((String) doc.getFieldValue("obdobi")));
+    }
     return doc;
 
+  }
+  
+  private String getObdobiPoradi(String obdobi) {
+    if(obdobi_poradi == null) {
+      initObdobiPoradi();
+    }
+    return obdobi_poradi.get(obdobi.toLowerCase());
+  }
+  
+  private void initObdobiPoradi(){
+    try (SolrClient solr = new HttpSolrClient.Builder(String.format("%s%s",
+            SolrIndex.host(),
+            "heslar/")).build()){
+      obdobi_poradi = new HashMap<>();
+      
+      SolrQuery query = new SolrQuery()
+              .setQuery("heslar_name:obdobi_druha")
+              .setRows(1000)
+              .setFields("poradi,nazev");
+      QueryResponse resp = solr.query(query);
+      for (SolrDocument doc : resp.getResults()) {
+        obdobi_poradi.put(((String)doc.getFieldValue("nazev")).toLowerCase(), "" + doc.getFieldValue("poradi"));
+      }
+      LOGGER.info(obdobi_poradi.toString());
+    } catch (SolrServerException| IOException ex) {
+      LOGGER.log(Level.SEVERE, null, ex);
+    }
   }
 
   public JSONObject indexTable(String doctype) {
