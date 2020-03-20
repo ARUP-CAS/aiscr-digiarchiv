@@ -85,7 +85,7 @@ export class MapaComponent implements OnInit {
     });
     this.collSubs = this.solrService.routeChanged.subscribe(val => {
       setTimeout(() => {
-        this.removeMarkers();
+        // this.removeMarkers();
         this.dirty = true;
         this.setIsCollapsed();
         if (!this.isCollapsed) {
@@ -305,7 +305,7 @@ export class MapaComponent implements OnInit {
     this.markersList = [];
 
     this.renderSearchResults();
-
+    
     if (this.heatView) {
       var mapdata = [];
       var facet = this.solrService.facetHeatmaps['loc_rpt'];
@@ -347,6 +347,7 @@ export class MapaComponent implements OnInit {
         data: mapdata
       };
       this.heatmapLayer.setData(this.mapData);
+
     }
 
     this.overlayMaps = {
@@ -390,6 +391,7 @@ export class MapaComponent implements OnInit {
         this.solrService.docsFoundInMapa > this.conf.displayRows &&
         count > this.conf.displayRows;
     }
+    
     if (this.heatView) {
 
       if (this.map.hasLayer(this.markers)) {
