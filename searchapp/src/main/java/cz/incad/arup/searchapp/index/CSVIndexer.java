@@ -822,11 +822,29 @@ public class CSVIndexer {
         doc.addField("loc_rpt", loc);
       }
     }
+    
+    // Pridame pole pro adv search
     if (doc.getFieldValue("obdobi") != null && !doc.getFieldValue("obdobi").equals("")) {
       doc.addField("obdobi_poradi", getObdobiPoradi((String) doc.getFieldValue("obdobi")));
     }
+    if (doc.getFieldValue("specifikace") != null && !doc.getFieldValue("specifikace").equals("")) {
+      doc.addField("nalez_specifikace", doc.getFieldValue("specifikace"));
+    }
+    if (doc.getFieldValue("druh") != null && !doc.getFieldValue("druh").equals("")) {
+      doc.addField("druh_nalezu", doc.getFieldValue("druh"));
+    }
+    if (doc.getFieldValue("predano_organizace") != null && !doc.getFieldValue("predano_organizace").equals("")) {
+      doc.addField("organizace", doc.getFieldValue("predano_organizace"));
+    }
+    if (doc.getFieldValue("nalezce") != null && !doc.getFieldValue("nalezce").equals("")) {
+      doc.addField("adv_jmeno", doc.getFieldValue("nalezce"));
+    }
+    
+    if (doc.getFieldValue("datum_nalezu") != null && !doc.getFieldValue("datum_nalezu").equals("")) {
+      doc.addField("datum", doc.getFieldValue("datum_nalezu"));
+    }
+    
     return doc;
-
   }
   
   private String getObdobiPoradi(String obdobi) {
@@ -850,7 +868,6 @@ public class CSVIndexer {
       for (SolrDocument doc : resp.getResults()) {
         obdobi_poradi.put(((String)doc.getFieldValue("nazev")).toLowerCase(), "" + doc.getFieldValue("poradi"));
       }
-      LOGGER.info(obdobi_poradi.toString());
     } catch (SolrServerException| IOException ex) {
       LOGGER.log(Level.SEVERE, null, ex);
     }
