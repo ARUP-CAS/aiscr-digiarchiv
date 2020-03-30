@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -150,9 +151,10 @@ public class CSVIndexer {
       ret.put("errors msgs", ja);
       String thesauriDir = opts.getString("thesauriDir");
       File dir = new File(thesauriDir);
+      LOGGER.log(Level.INFO, "indexing from {0}", thesauriDir);
       for (File file : dir.listFiles()) {
         LOGGER.log(Level.INFO, "indexing from {0}", file.getName());
-        Reader in = new FileReader(file);
+        Reader in = new FileReader(file, Charset.forName("UTF-8"));
         //readOne( , uniqueid, "", translationsClient, ret, hasRelations);
 
         Date tstart = new Date();
@@ -199,7 +201,6 @@ public class CSVIndexer {
           typeJson.put("ellapsed time", FormatUtils.formatInterval(tend.getTime() - tstart.getTime()));
           ret.put(file.getName(), typeJson).put("docs indexed", success);
         } finally {
-
           parser.close();
         }
 
