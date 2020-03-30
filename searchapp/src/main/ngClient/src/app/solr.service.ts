@@ -981,7 +981,9 @@ export class SolrService implements OnDestroy {
           }
           params.append('fq', fqValue);
         } else if (name.toString() === 'q') {
-          params.set('q', this.q);
+          const fullText = this.config['logged'] ? 'full_text_logged' : 'full_text_notlogged';
+          params.set('q',  this.q);
+          params.set('df', fullText);
         } else {
           params.append('fq', this.filters[f].queryValue);
         }
