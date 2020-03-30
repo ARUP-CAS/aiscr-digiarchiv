@@ -58,7 +58,7 @@
             <ng-container *ngFor="let f of detailFields">
             <li *ngIf="hasValue(f)">
               <label>{{f | translate}}:</label>
-              <span>{{result[f] | translateHeslar: 'pas'}}{{f === 'hloubka' ? ' cm.' : ""}}</span>
+              <span>{{result[f] | translateHeslar: 'pas'}}{{f === 'hloubka' ? ' cm' : ""}}</span>
             </li>
           </ng-container>
             <li class="app-nav-li-separator"></li>
