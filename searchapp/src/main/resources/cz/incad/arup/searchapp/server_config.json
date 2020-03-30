@@ -504,5 +504,6 @@
     "druh_lokality_prvni",
     "druh_lokality_druha"
 
-  ]
+  ],
+  "pasSecuredFields": ["lokalizace", "katastr"]
 }

@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -250,6 +251,8 @@ public class CSVIndexer {
         getOdkaz(uniqueid, doc);
         getTvar(uniqueid, doc);
         getJednotkaDokument(uniqueid, doc);
+        
+        
       } catch (IOException | SolrServerException ex) {
         LOGGER.log(Level.SEVERE,
                 "Error adding relations,\n uniqueid: {0} \n doctype: {1} \n doc {2}",
@@ -285,6 +288,19 @@ public class CSVIndexer {
                 "Error adding files,\n uniqueid: {0} \n doctype: {1} \n doc {2}",
                 new Object[]{uniqueid, doctype, doc});
         LOGGER.log(Level.SEVERE, null, ex);
+      }
+    }
+  }
+  
+  private void addSearchFields(SolrInputDocument idoc, String doctype) {
+    List<String> excludePas = Arrays.asList(opts.getStrings("pasSecuredFields"));
+    Object[] fields = idoc.getFieldNames().toArray();
+    String pristupnost = (String) idoc.getFieldValue("pristupnost");
+    for (Object  f: fields) {
+      String s = (String)f;
+      idoc.addField("full_text_logged", idoc.getFieldValues(s));
+      if (!"pas".equals(doctype) || !excludePas.contains(s) || "A".equals(pristupnost)) {
+        idoc.addField("full_text_notlogged", idoc.getFieldValues(s));
       }
     }
   }
@@ -803,13 +819,13 @@ public class CSVIndexer {
       doc.addField("loc", loc);
       doc.addField("loc_rpt", loc);
     }
+    addSearchFields(doc, doctype);
     if (doctype.equals("pas")) {
 //      if (!csvStavyPas.contains(doc.getFieldValue("stav").toString())) {
 //        LOGGER.log(Level.FINE, "Skip doc as stav is {0}", doc.getFieldValue("stav"));
 //        return null;
 //      }
 
-      
       doc.addField("f_typ_dokumentu", "Samostatné nálezy");
       doc.addField("kategorie", "pas");
       doc.addField("dokument_popis", doc.getFieldValue("lokalizace") + " " + doc.getFieldValue("poznamka"));
