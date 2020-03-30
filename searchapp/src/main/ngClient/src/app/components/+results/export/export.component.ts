@@ -11,11 +11,22 @@ import { SolrService } from '../../../solr.service';
 })
 export class ExportComponent implements OnInit {
 
+  docs: any[];
+  pas: any[];
+
   constructor(private titleService: Title, public solrService: SolrService) { }
 
   ngOnInit() {
     this.titleService.setTitle('Digitální archiv AMČR | Export');
+    this.solrService.searchObservable.subscribe(resp => {
+      this.setData();
+    });
     
+  }
+
+  setData() {
+    this.docs = this.solrService.docs.filter(doc => doc.doctype !== 'pas');
+    this.pas = this.solrService.docs.filter(doc => doc.doctype === 'pas');
   }
 
   numFiles(result) {
