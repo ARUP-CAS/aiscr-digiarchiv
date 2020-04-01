@@ -36,8 +36,8 @@
         <div>
           <label>{{'Období' | translate}}:</label> {{result.obdobi}} 
           <span *ngIf="result.presna_datace && result.presna_datace[0] !== ''">({{result.presna_datace}})</span> |
-          <label>{{'Nález' | translate}}:</label> {{result.druh}} 
-          <span *ngIf="result.specifikace && result.specifikace[0] !== ''">({{result.specifikace}})</span> 
+          <label>{{'Nález' | translate}}:</label> {{result.druh | translateHeslar: 'f_druh_nalezu'}} 
+          <span *ngIf="result.specifikace && result.specifikace[0] !== ''">({{result.specifikace | translateHeslar: 'specifikace_objektu_druha'}})</span> 
         </div>
         <div *ngIf="hasRights"><label>{{'Katastr (okres)' | translate}}:</label> {{okres()}}</div>
         <div *ngIf="!hasRights"><label>{{'Okres' | translate}}:</label>  {{result.okres}}</div>

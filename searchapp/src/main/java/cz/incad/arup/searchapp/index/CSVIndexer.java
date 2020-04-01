@@ -63,7 +63,7 @@ public class CSVIndexer {
   ArrayList<String> csvStavyAkce;
   ArrayList<String> csvStavyLokalita;
   ArrayList<String> csvStavyPas;
-  
+
   Map<String, String> obdobi_poradi;
 
   public CSVIndexer() throws IOException {
@@ -251,8 +251,7 @@ public class CSVIndexer {
         getOdkaz(uniqueid, doc);
         getTvar(uniqueid, doc);
         getJednotkaDokument(uniqueid, doc);
-        
-        
+
       } catch (IOException | SolrServerException ex) {
         LOGGER.log(Level.SEVERE,
                 "Error adding relations,\n uniqueid: {0} \n doctype: {1} \n doc {2}",
@@ -286,21 +285,23 @@ public class CSVIndexer {
       } catch (IOException ex) {
         LOGGER.log(Level.SEVERE,
                 "Error adding files,\n uniqueid: {0} \n doctype: {1} \n doc {2}",
-                new Object[]{uniqueid, doctype, doc});
+                new Object[]{uniqueid, doctype, doc}); 
         LOGGER.log(Level.SEVERE, null, ex);
       }
     }
   }
-  
+
   private void addSearchFields(SolrInputDocument idoc, String doctype) {
-    List<String> excludePas = Arrays.asList(opts.getStrings("pasSecuredFields"));
-    Object[] fields = idoc.getFieldNames().toArray();
-    String pristupnost = (String) idoc.getFieldValue("pristupnost");
-    for (Object  f: fields) {
-      String s = (String)f;
-      idoc.addField("full_text_logged", idoc.getFieldValues(s));
-      if (!"pas".equals(doctype) || !excludePas.contains(s) || "A".equals(pristupnost)) {
-        idoc.addField("full_text_notlogged", idoc.getFieldValues(s));
+    if (doctype.equals("dokument") || doctype.equals("pas")) {
+      List<String> excludePas = Arrays.asList(opts.getStrings("pasSecuredFields"));
+      Object[] fields = idoc.getFieldNames().toArray();
+      String pristupnost = (String) idoc.getFieldValue("pristupnost");
+      for (Object f : fields) {
+        String s = (String) f;
+        idoc.addField("full_text_logged", idoc.getFieldValues(s));
+        if (!"pas".equals(doctype) || !excludePas.contains(s) || "A".equals(pristupnost)) {
+          idoc.addField("full_text_notlogged", idoc.getFieldValues(s));
+        }
       }
     }
   }
@@ -375,8 +376,10 @@ public class CSVIndexer {
       } else {
         for (SolrDocument doc : docs) {
           //getNeidentAkce(idoc, doc.getFirstValue("ident_cely").toString());
-          String childid = doc.getFirstValue("vazba").toString();
-          getChilds(idoc, childid);
+          if (doc.getFirstValue("vazba") != null) {
+            String childid = doc.getFirstValue("vazba").toString();
+            getChilds(idoc, childid);
+          }
           getKomponentaDokumentu(idoc, doc.getFirstValue("ident_cely").toString());
         }
       }
@@ -839,7 +842,7 @@ public class CSVIndexer {
         doc.addField("loc_rpt", loc);
       }
     }
-    
+
     // Pridame pole pro adv search
     if (doc.getFieldValue("obdobi") != null && !doc.getFieldValue("obdobi").equals("")) {
       doc.addField("obdobi_poradi", getObdobiPoradi((String) doc.getFieldValue("obdobi")));
@@ -856,36 +859,36 @@ public class CSVIndexer {
     if (doc.getFieldValue("nalezce") != null && !doc.getFieldValue("nalezce").equals("")) {
       doc.addField("adv_jmeno", doc.getFieldValue("nalezce"));
     }
-    
+
     if (doc.getFieldValue("datum_nalezu") != null && !doc.getFieldValue("datum_nalezu").equals("")) {
       doc.addField("datum", doc.getFieldValue("datum_nalezu"));
     }
-    
+
     return doc;
   }
-  
+
   private String getObdobiPoradi(String obdobi) {
-    if(obdobi_poradi == null) {
+    if (obdobi_poradi == null) {
       initObdobiPoradi();
     }
     return obdobi_poradi.get(obdobi.toLowerCase());
   }
-  
-  private void initObdobiPoradi(){
+
+  private void initObdobiPoradi() {
     try (SolrClient solr = new HttpSolrClient.Builder(String.format("%s%s",
             SolrIndex.host(),
-            "heslar/")).build()){
+            "heslar/")).build()) {
       obdobi_poradi = new HashMap<>();
-      
+
       SolrQuery query = new SolrQuery()
               .setQuery("heslar_name:obdobi_druha")
               .setRows(1000)
               .setFields("poradi,nazev");
       QueryResponse resp = solr.query(query);
       for (SolrDocument doc : resp.getResults()) {
-        obdobi_poradi.put(((String)doc.getFieldValue("nazev")).toLowerCase(), "" + doc.getFieldValue("poradi"));
+        obdobi_poradi.put(((String) doc.getFieldValue("nazev")).toLowerCase(), "" + doc.getFieldValue("poradi"));
       }
-    } catch (SolrServerException| IOException ex) {
+    } catch (SolrServerException | IOException ex) {
       LOGGER.log(Level.SEVERE, null, ex);
     }
   }
@@ -943,7 +946,7 @@ public class CSVIndexer {
     }
     return ret;
   }
-  
+
   public JSONObject cleanPas() {
     try {
       dokumentClient = SolrIndex.getClient(opts.getString("dokumentsCore", "dokument/"));
@@ -1031,8 +1034,7 @@ public class CSVIndexer {
         String uniqueid = "pas_" + id;
         idoc.setField("uniqueid", uniqueid);
         idoc.setField("doctype", "pas");
-        
-        
+
         //idoc.addField("f_typ_dokumentu", "Samostatné nálezy");
 //        idoc.addField("kategorie", "pas");
 //        if (idoc.getFieldValue("geom_x") != null && !idoc.getFieldValue("geom_x").equals("")) {
@@ -1044,8 +1046,6 @@ public class CSVIndexer {
 //          idoc.addField("loc", loc);
 //          idoc.addField("loc_rpt", loc);
 //        }
-      
-      
         dokumentClient.add(idoc);
         dokumentClient.commit();
         LOGGER.log(Level.INFO, "Doc {0} indexed", id);
