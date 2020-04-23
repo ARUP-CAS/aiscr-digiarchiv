@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 import { SolrService } from '../../solr.service';
+import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 declare var jQuery: any;
 
@@ -14,6 +15,7 @@ export class HeaderComponent implements OnInit {
 
   @ViewChild('loginuser') loginuser: any;
   @ViewChild('logout') logout: any;
+  @ViewChild('help') help: ModalComponent;
   currentLang: string;
 
   constructor(public solrService: SolrService, private translate: TranslateService) {
@@ -61,6 +63,10 @@ export class HeaderComponent implements OnInit {
   
   logoClicked(){
     this.solrService.closeMapa();
+  }
+
+  showHelp(){
+      this.help.open();
   }
 
 }
