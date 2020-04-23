@@ -34,7 +34,7 @@
         <label>{{'Přístupnost' | translate}}:</label> {{result.pristupnost | translateHeslar: 'pristupnost'}}
       </div>
         <div>
-          <label>{{'Období' | translate}}:</label> {{result.obdobi}} 
+          <label>{{'Období' | translate}}:</label> {{'f_obdobi.' + result.obdobi | translate}} 
           <span *ngIf="result.presna_datace && result.presna_datace[0] !== ''">({{result.presna_datace}})</span> |
           <label>{{'Nález' | translate}}:</label> {{result.druh | translateHeslar: 'f_druh_nalezu'}} 
           <span *ngIf="result.specifikace && result.specifikace[0] !== ''">({{result.specifikace | translateHeslar: 'specifikace_objektu_druha'}})</span> 

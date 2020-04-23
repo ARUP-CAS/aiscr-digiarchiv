@@ -111,10 +111,6 @@
       "field": "adv_jmeno"
     },
     {
-      "type": "text",
-      "field": "katastr"
-    },
-    {
       "type": "heslar",
       "heslar": "aktivity",
       "field": "komponenta_aktivita",

@@ -167,6 +167,17 @@ public class Indexer {
     }
 
   }
+  
+  public JSONObject cleanHeslare() {
+    try (SolrClient client = SolrIndex.getClient(opts.getString("csvHeslarCore", "heslar/"))) {
+      client.deleteByQuery("*:*");
+      client.commit();
+      return new JSONObject().put("message", "Heslare cleaned");
+    } catch (IOException | JSONException | SolrServerException ex) {
+      LOGGER.log(Level.SEVERE, null, ex);
+      return new JSONObject().put("clean heslare error", ex);
+    }
+  }
 
   public JSONObject indexHeslare() {
     try {

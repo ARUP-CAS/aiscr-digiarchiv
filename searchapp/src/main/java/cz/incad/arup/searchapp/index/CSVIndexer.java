@@ -5,7 +5,7 @@ import cz.incad.FormatUtils;
 import cz.incad.arup.searchapp.I18n;
 import cz.incad.arup.searchapp.Options;
 import cz.incad.arup.searchapp.imaging.ImageSupport;
-import static cz.incad.arup.searchapp.index.SolrIndex.host;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -156,6 +156,7 @@ public class CSVIndexer {
       for (File file : dir.listFiles()) {
         LOGGER.log(Level.INFO, "indexing from {0}", file.getName());
         Reader in = new FileReader(file);
+        // Reader in = new FileReader(file, Charset.forName("UTF-8")); 
         //readOne( , uniqueid, "", translationsClient, ret, hasRelations);
 
         Date tstart = new Date();
@@ -830,6 +831,7 @@ public class CSVIndexer {
 //      }
 
       doc.addField("f_typ_dokumentu", "Samostatné nálezy");
+      doc.addField("komponenta_dokumentu_obdobi", doc.getFieldValue("obdobi"));
       doc.addField("kategorie", "pas");
       doc.addField("dokument_popis", doc.getFieldValue("lokalizace") + " " + doc.getFieldValue("poznamka"));
       if (doc.getFieldValue("centroid_n") != null && !doc.getFieldValue("centroid_n").equals("")) {
@@ -837,9 +839,16 @@ public class CSVIndexer {
         doc.addField("pian_centroid_n", doc.getFieldValue("centroid_n"));
         doc.addField("pian_centroid_e", doc.getFieldValue("centroid_e"));
         doc.addField("pian_ident_cely", uniqueid);
-        doc.addField("pian", uniqueid);
+        JSONObject pian =  new JSONObject()
+                .put("ident_cely", (new JSONArray()).put(uniqueid))
+                .put("parent_pristupnost", doc.getFieldValue("pristupnost"))
+                .put("centroid_n", (new JSONArray()).put(doc.getFieldValue("centroid_n")))
+                .put("centroid_e", (new JSONArray()).put(doc.getFieldValue("centroid_e")));
+        
+        doc.addField("pian", "["+pian.toString()+"]");
         doc.addField("loc", loc);
         doc.addField("loc_rpt", loc);
+        
       }
     }
 
