@@ -2,6 +2,7 @@
   "Popis obsahu": "Content description",
   "Pilot": "Pilot",
   "Texty": "Texts",
+  "Knihovna 3D": "3D library",
   "f_areal.nadkomunitní areál nesp.": "supracommunity area unsp.",
   "f_areal.předměstí": "suburb",
   "adv.ulozeni_originalu": "Document - storage",
@@ -40,6 +41,7 @@
       "texty": "Texts",
       "ddata": "Digital data",
       "mplany": "Plans and maps",
+      "ddata3d": "3D library",
       "neuvedeno": "Unspecified",
       "pas": "Individual finds"
     },
@@ -81,6 +83,7 @@
     "texty": "Texts",
     "ddata": "Digital data",
     "mplany": "Plans and maps",
+    "ddata3d": "3D library",
     "neuvedeno": "Unspecified",
     "pas": "Individual finds"
   },

@@ -103,6 +103,9 @@
     "plán sondy": "mplany",
     "plán objektu": "mplany",
     "mapa": "mplany",
+    
+    "3D – textura": "ddata3d",
+    "3D – rekonstrukce": "ddata3d",
     "-": "neuvedeno"
   },
   "kategorie": {
