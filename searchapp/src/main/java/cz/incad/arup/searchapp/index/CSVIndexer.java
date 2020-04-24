@@ -1068,6 +1068,21 @@ public class CSVIndexer {
     return ret;
   }
 
+  public JSONObject indexTables() {
+    JSONObject ret = new JSONObject();
+    try {
+      getClients();
+      success = 0;
+      errors = 0;
+      ret.put("tables", indexSource(exportClient, opts.getJSONArray("csvTables"), "ident_cely", false));
+      closeClients();
+    } catch (Exception ex) {
+      LOGGER.log(Level.SEVERE, null, ex);
+      ret.put("error", ex);
+    }
+    return ret;
+  }
+
   public JSONObject indexRelations() {
     JSONObject ret = new JSONObject();
     try {

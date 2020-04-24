@@ -33,9 +33,26 @@
         <label>{{'Materiál' | translate}}:</label> {{result.material_originalu | translateHeslar: 'material_dokumentu'}} | 
         <label>{{'Řada' | translate}}:</label> {{result.rada}} | 
         <label>{{'Přístupnost' | translate}}:</label> {{result.pristupnost | translateHeslar: 'pristupnost'}}
+        <ng-container *ngIf="result.rada[0] === '3D'">
+          <label>{{'Formát' | translate}}:</label> {{result.extra_data_format}}
+        </ng-container>
+        
       </div>
+      <ng-container *ngIf="result.rada[0] !== '3D'">
         <div><label>{{'Organizace' | translate}}:</label> {{organizace()}}</div>
         <div><label>{{'Katastr (okres)' | translate}}:</label> {{okres()}}</div>
+      </ng-container>
+      <ng-container *ngIf="result.rada[0] === '3D'">
+        <div>
+          <label>{{'Období' | translate}}:</label> {{'f_obdobi.' + result.komponenta_dokumentu_obdobi | translate}}
+          <label>{{'Areál' | translate}}:</label> {{result.komponenta_dokumentu_areal | translateHeslar: 'areal_druha'}}
+        </div>
+        <div>
+          <label>{{'Odkaz' | translate}}:</label> 
+          <span>{{result.extra_data_odkaz}}</span>
+        </div>
+        <div><label>{{'Popis obsahu' | translate}}:</label> {{popisObsahuShort()}}</div>
+      </ng-container>
     </div>
   </div><!--/.result inner -->
 
@@ -85,7 +102,7 @@
               <label>{{'Varianty originálu' | translate}}:</label>
               <span>{{result.extra_data_pocet_variant_originalu}}</span>
             </li>
-            <li *ngIf="hasValue('extra_data_odkaz')">
+            <li *ngIf="hasValue('extra_data_odkaz') && result.rada[0] !== '3D'">
               <label>{{'Odkaz' | translate}}:</label> 
               <span>{{result.extra_data_odkaz}}</span>
             </li>
@@ -117,6 +134,11 @@
               <label>{{'Datum vzniku' | translate}}:</label> 
               <span>{{result.extra_data_datum_vzniku}}</span>
             </li>
+            <li *ngIf="hasValue('duveryhodnost')">
+              <label>{{'Důvěryhodnost' | translate}}:</label> 
+              <span>{{result.duveryhodnost}} %</span>
+            </li>
+
             <li class="app-nav-li-separator"></li>
           </ul>
         </li>

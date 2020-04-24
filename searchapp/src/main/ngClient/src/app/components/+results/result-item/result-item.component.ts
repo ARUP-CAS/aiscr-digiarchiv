@@ -189,6 +189,15 @@ export class ResultItemComponent implements OnInit {
     }
   }
 
+  popisObsahuShort() {
+
+    let s: string = this.result.popis.substring(0, 30);
+    if (this.result.popis.length > 30) {
+      s += ' (...)';
+    }
+    return s;
+  }
+
   popisObsahu(): string {
     let s: string = this.result.popis;
     return s.replace(/\[new_line\]/gi, '<br/>');
