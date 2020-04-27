@@ -99,4 +99,9 @@ export class DocumentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
+  capitalFirst(heslo: string, heslar: string) {
+    let ret = this.solrService.getTranslation(heslo, heslar);
+    return ret[0].toUpperCase() + ret.slice(1);
+  }
+
 }

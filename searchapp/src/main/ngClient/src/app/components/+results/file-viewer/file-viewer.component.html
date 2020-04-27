@@ -70,9 +70,9 @@
   <!--/.modal body -->
 </modal><!-- modal -->
 
-<modal [animation]="true" #license>
+<modal [animation]="true" #license *ngIf="selectedFile" style="z-index:1100;">
   <modal-body>
-    <div *ngIf="selectedFile">
+    <div>
     <p>
       Tento dokument podléhá licenci
       <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">
@@ -80,15 +80,15 @@
       </a>
     </p>
     <p>
-      Dokument citujte jako:
-      {{autor}} {{result.rok_vzniku}}: {{result.typ_dokumentu | translateHeslar: 'typ_dokumentu'}}
+      <strong>{{'Citujte jako' | translate}}</strong>:
+      {{autor}} {{result.rok_vzniku}}: {{capitalFirst(result.typ_dokumentu, 'typ_dokumentu')}}
       {{ result.ident_cely }}. {{ organizace }}.<br/>
-      Dostupné z: <a [href]="'https://digiarchiv.aiscr.cz/id/'+ result.ident_cely">https://digiarchiv.aiscr.cz/id/{{ result.ident_cely }}</a>.
+      {{ 'Dostupné z' | translate }}: <a [href]="'https://digiarchiv.aiscr.cz/id/'+ result.ident_cely">https://digiarchiv.aiscr.cz/id/{{ result.ident_cely }}</a>.
     </p>
     </div>
   </modal-body>
   <modal-footer>
-    <button type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal" (click)="license.dismiss()">Cancel</button>
     <button type="button" class="btn btn-primary" (click)="download()">Ok</button>
   </modal-footer>
 </modal>

@@ -829,7 +829,9 @@ public class CSVIndexer {
 //        LOGGER.log(Level.FINE, "Skip doc as stav is {0}", doc.getFieldValue("stav"));
 //        return null;
 //      }
-
+      
+      doc.addField("katastr_pas", doc.getFieldValues("katastr"));
+      doc.removeField("katastr");
       doc.addField("f_typ_dokumentu", "Samostatné nálezy");
       doc.addField("komponenta_dokumentu_obdobi", doc.getFieldValue("obdobi"));
       doc.addField("kategorie", "pas");

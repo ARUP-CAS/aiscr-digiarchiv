@@ -148,5 +148,10 @@ export class FileViewerComponent implements OnInit {
     
   }
 
+  capitalFirst(heslo: string, heslar: string) {
+    let ret = this.solrService.getTranslation(heslo, heslar);
+    return ret[0].toUpperCase() + ret.slice(1);
+  }
+
 
 }

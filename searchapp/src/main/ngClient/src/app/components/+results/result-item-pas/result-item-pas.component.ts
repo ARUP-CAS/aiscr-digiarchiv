@@ -81,12 +81,12 @@ export class ResultItemPasComponent implements OnInit {
   }
 
   katastr() {
-    if (this.result.hasOwnProperty('f_katastr')) {
+    if (this.result.hasOwnProperty('katastr_pas')) {
       let katastry = [];
       let ret = "";
       for (let idx = 0; idx < this.result['f_okres'].length; idx++) {
         
-        let katastr = this.result['f_katastr'][idx];
+        let katastr = this.result['katastr_pas'][idx];
 
         if (katastry.indexOf(katastr) < 0) {
           katastry.push(katastr);
@@ -109,7 +109,7 @@ export class ResultItemPasComponent implements OnInit {
       let ret = "";
       for (let idx = 0; idx < this.result['f_okres'].length; idx++) {
         let okres = this.result['f_okres'][idx];
-        let katastr = this.result['f_katastr'][idx];
+        let katastr = this.result['katastr_pas'][idx];
 
         if (katastry.indexOf(katastr) < 0) {
           okresy.push(okres);
@@ -155,7 +155,11 @@ export class ResultItemPasComponent implements OnInit {
 
   viewFile() {
     if(this.solrService.hasRights(this.result['pristupnost'])){
-      this.onViewFile.emit(this.result);
+      this.onViewFile.emit({
+        result:this.result, 
+        autor: this.result.nalezce, 
+        organizace: this.organizace()
+      });
     } else {
 //    this.onViewFile.emit(this.result);
       let msg = this.solrService.translateKey('insuficient rights');
