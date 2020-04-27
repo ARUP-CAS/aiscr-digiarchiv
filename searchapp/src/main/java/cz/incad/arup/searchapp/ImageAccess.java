@@ -10,11 +10,11 @@ public class ImageAccess {
   public static boolean isAllowed(HttpServletRequest request) {
     boolean full = Boolean.parseBoolean(request.getParameter("full"));
     boolean allow;
-    if (full) {
-      // same as FileViewerComponent (in frontend)
-      String userPr = LoginServlet.pristupnost(request.getSession());
-      allow = (userPr != null) && (userPr.compareToIgnoreCase("D") >= 0);
-    } else {
+//    if (full) {
+//      // same as FileViewerComponent (in frontend)
+//      String userPr = LoginServlet.pristupnost(request.getSession());
+//      allow = (userPr != null) && (userPr.compareToIgnoreCase("D") >= 0);
+//    } else {
       String size = request.getParameter("size");
       if ((size == null) || "thumb".equals(size)) {
         allow = true;
@@ -32,7 +32,7 @@ public class ImageAccess {
           allow = (userPr != null) && (userPr.compareToIgnoreCase(imgPr) >= 0);
         }
       }
-    }
+    //}
     
     return allow;
   }

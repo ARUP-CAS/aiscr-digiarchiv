@@ -15,10 +15,13 @@ declare var jQuery: any;
 export class FileViewerComponent implements OnInit {
 
   @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('license') license: ModalComponent;
 
   showing: boolean = false;
   rolling: boolean = false;
   result: any;
+  autor: string;
+  organizace: string;
 
   files: File[] = [];
   selectedFile: File = null;
@@ -47,8 +50,15 @@ export class FileViewerComponent implements OnInit {
   }
   
   download(){
-    
-    window.open(this.downloadUrl());
+    // window.open(this.downloadUrl(), 'Download');
+    var link=document.createElement('a');
+    link.href = this.downloadUrl();
+    link.download = this.selectedFile.nazev;
+    link.click();
+  }
+
+  confirmDownload() {
+    this.license.open();
   }
 
   nextPage() {
@@ -83,11 +93,13 @@ export class FileViewerComponent implements OnInit {
     }
   }
 
-  openModal(result) {
+  openModal(data) {
     this.selectedFile = null;
     this.files = [];
     this.showing = false;
-    this.result = result;
+    this.result = data.result;
+    this.autor = data.autor;
+    this.organizace = data.organizace;
     setTimeout(() => {
       this.rolling = false;
       let fs = JSON.parse(this.result.soubor[0]);
