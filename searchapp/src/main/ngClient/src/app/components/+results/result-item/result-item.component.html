@@ -48,9 +48,9 @@
           <label>{{'Období' | translate}}:</label><span *ngFor="let obdobi of result.komponenta_dokumentu_obdobi">{{'f_obdobi.' + obdobi | translate}}</span> 
           <label>{{'Areál' | translate}}:</label> {{result.komponenta_dokumentu_areal | translateHeslar: 'areal_druha'}}
         </div>
-        <div>
+        <div *ngIf="hasValue('extra_data_odkaz')">
           <label>{{'Odkaz' | translate}}:</label> 
-          <span>{{result.extra_data_odkaz}}</span>
+          <span><a [href]="result.extra_data_odkaz" target="_blank">{{result.extra_data_odkaz}}</a></span>
         </div>
         <div><label>{{'Popis obsahu' | translate}}:</label> {{popisObsahuShort()}}</div>
       </ng-container>
@@ -105,7 +105,7 @@
             </li>
             <li *ngIf="hasValue('extra_data_odkaz') && result.rada[0] !== '3D'">
               <label>{{'Odkaz' | translate}}:</label> 
-              <span>{{result.extra_data_odkaz}}</span>
+              <span><a [href]="result.extra_data_odkaz" target="_blank">{{result.extra_data_odkaz}}</a></span>
             </li>
             <li *ngIf="hasValue('extra_data_format') || hasValue('extra_data_vyska') && hasValue('extra_data_sirka')">
               <label>{{'Formát/rozměry' | translate}}:</label>
