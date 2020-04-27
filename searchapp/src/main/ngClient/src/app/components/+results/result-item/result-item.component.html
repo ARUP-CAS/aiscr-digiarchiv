@@ -33,9 +33,6 @@
         <label>{{'Materiál' | translate}}:</label> {{result.material_originalu | translateHeslar: 'material_dokumentu'}} | 
         <label>{{'Řada' | translate}}:</label> {{result.rada}} | 
         <label>{{'Přístupnost' | translate}}:</label> {{result.pristupnost | translateHeslar: 'pristupnost'}}
-        <ng-container *ngIf="result.rada[0] === '3D'">
-          <label>{{'Formát' | translate}}:</label> {{result.extra_data_format}}
-        </ng-container>
         
       </div>
       <ng-container *ngIf="result.rada[0] !== '3D'">
@@ -107,10 +104,13 @@
               <label>{{'Odkaz' | translate}}:</label> 
               <span><a [href]="result.extra_data_odkaz" target="_blank">{{result.extra_data_odkaz}}</a></span>
             </li>
-            <li *ngIf="hasValue('extra_data_format') || hasValue('extra_data_vyska') && hasValue('extra_data_sirka')">
+            <li *ngIf="(hasValue('extra_data_format') || hasValue('extra_data_vyska') && hasValue('extra_data_sirka')) && result.rada[0] !== '3D'">
               <label>{{'Formát/rozměry' | translate}}:</label>
               <span *ngIf="hasValue('extra_data_format')">{{result.extra_data_format}}</span>
 							<span *ngIf="hasValue('extra_data_vyska') && hasValue('extra_data_sirka')">({{result.extra_data_vyska * result.extra_data_sirka}})</span>
+            </li>
+            <li *ngIf="result.rada[0] === '3D'">
+              <label>{{'Formát' | translate}}:</label> {{result.extra_data_format}}
             </li>
             <li *ngIf="hasValue('extra_data_meritko')">
               <label>{{'Měřítko' | translate}}:</label>
