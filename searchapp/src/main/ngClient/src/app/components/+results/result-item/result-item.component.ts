@@ -195,8 +195,8 @@ export class ResultItemComponent implements OnInit {
 
   popisObsahuShort() {
 
-    let s: string = this.result.popis.substring(0, 60);
-    if (this.result.popis.length > 60) {
+    let s: string = this.result.popis.substring(0, 70);
+    if (this.result.popis.length > 70) {
       s += ' (...)';
     }
     return s;

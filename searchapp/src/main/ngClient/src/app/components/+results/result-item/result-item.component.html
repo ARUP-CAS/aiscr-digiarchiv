@@ -38,18 +38,18 @@
       <ng-container *ngIf="result.rada[0] !== '3D'">
         <div><label>{{'Organizace' | translate}}:</label> {{organizace()}}</div>
         <div><label>{{'Katastr (okres)' | translate}}:</label> {{okres()}}</div>
-        <div><label>{{'Popis obsahu' | translate}}:</label> {{popisObsahuShort()}}</div>
+        <div *ngIf="hasValue('popis')"><label>{{'Popis' | translate}}:</label> {{popisObsahuShort()}}</div>
       </ng-container>
       <ng-container *ngIf="result.rada[0] === '3D'">
         <div>
-          <label>{{'Období' | translate}}:</label><span *ngFor="let obdobi of result.komponenta_dokumentu_obdobi">{{'f_obdobi.' + obdobi | translate}}</span> 
+          <label>{{'Období' | translate}}:</label> <span *ngFor="let obdobi of result.komponenta_dokumentu_obdobi">{{'f_obdobi.' + obdobi | translate}}</span> |
           <label>{{'Areál' | translate}}:</label> {{result.komponenta_dokumentu_areal | translateHeslar: 'areal_druha'}}
         </div>
         <div *ngIf="hasValue('extra_data_odkaz')">
           <label>{{'Odkaz' | translate}}:</label> 
           <span><a [href]="result.extra_data_odkaz" target="_blank">{{result.extra_data_odkaz}}</a></span>
         </div>
-        <div><label>{{'Popis obsahu' | translate}}:</label> {{popisObsahuShort()}}</div>
+        <div *ngIf="hasValue('popis')"><label>{{'Popis' | translate}}:</label> {{popisObsahuShort()}}</div>
       </ng-container>
     </div>
   </div><!--/.result inner -->
