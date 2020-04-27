@@ -6,7 +6,13 @@
           [class.app-result-view-col]="solrService.itemView === 'col'">
       <!-- Result item container -->
       <div class="app-result-item-container" *ngFor="let result of solrService.docs" >
-        <div class="alert alert-info app-persistent-url app-color-blue-pastel" role="alert"><strong>{{'Persistentní odkaz' | translate}}:</strong> {{link}}</div>
+        <div class="alert alert-info app-persistent-url " role="alert">
+          <!-- <strong>{{'Persistentní odkaz' | translate}}:</strong> {{link}} -->
+          Citujete jako:<br/>
+          {{result.autor}} {{result.rok_vzniku}}: {{result.typ_dokumentu | translateHeslar: 'typ_dokumentu'}}
+          {{ result.ident_cely }}. {{ organizace(result) }}. 
+          Dostupné z: <a [href]="'https://digiarchiv.aiscr.cz/id/'+ result.ident_cely">https://digiarchiv.aiscr.cz/id/{{ result.ident_cely }}</a>.
+        </div>
         <!-- <app-result-item [result]="result" (onViewFile)="onViewFile($event)"></app-result-item> -->
 
         <app-result-item *ngIf="result.doctype !== 'pas'" [result]="result" (onViewFile)="onViewFile($event)" (onViewDetail)="onViewDetail($event)" [inModal]="false"></app-result-item>
