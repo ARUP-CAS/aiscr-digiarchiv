@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { SolrService } from '../../solr.service';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 
@@ -34,39 +34,39 @@ export class HeaderComponent implements OnInit {
     });
 
     this.solrService.logginChanged.subscribe((logged: boolean) => {
-      if(logged){
+      if (logged) {
         console.log('tady');
         jQuery('.login-dropdown-toggle').dropdown("toggle");
       }
     });
   }
 
-  changeLang(lang: string){
+  changeLang(lang: string) {
     this.solrService.currentLang = lang;
     this.translate.use(lang);
   }
 
-  showFav(){
+  showFav() {
     this.solrService.gotoFav();
   }
 
-  focusu(){
+  focusu() {
   }
 
-  focusp(e, el){
-      el.focus();
+  focusp(e, el) {
+    el.focus();
   }
-  
-  login(){
+
+  login() {
     this.solrService.login();
   }
-  
-  logoClicked(){
+
+  logoClicked() {
     this.solrService.closeMapa();
   }
 
-  showHelp(){
-      this.help.open();
+  showHelp() {
+    this.help.open();
   }
 
 }

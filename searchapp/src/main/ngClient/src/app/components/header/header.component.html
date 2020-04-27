@@ -58,10 +58,9 @@
             </li>
           </ul>
         </li><!--/.login -->
-        <!-- Help -->
         <li>
           <a (click)="showHelp()"><i class="fa fa-question-circle"></i>{{'help' | translate}}</a>
-        </li><!--/.help -->
+        </li>
         <!-- Lang -->
         <li>
           <a *ngIf="currentLang !== 'en'" (click)="changeLang('en')" class="app-cursor-pointer">English</a>
@@ -72,12 +71,11 @@
   </div><!--/.container -->
 </nav><!--/.navbar -->
 
-<modal [animation]="true"  #help class="app-modal-file-viewer" >
-  <modal-header [show-close]="true" >
-    {{'help' | translate}}
-	</modal-header>
-  <modal-body>
-		<app-free-text [id]="'help'"></app-free-text>
-	</modal-body>
-		
-</modal>
+  <modal [animation]="true" #help >
+    <modal-header [show-close]="true" >
+      {{'help' | translate}}
+    </modal-header>
+    <modal-body>
+      <app-free-text [id]="'help'"></app-free-text>
+    </modal-body>
+  </modal>
