@@ -17,9 +17,10 @@
         <div *ngIf="result.doctype === 'pas'" class="alert alert-info app-persistent-url " role="alert">
           <strong>{{'Persistentní odkaz' | translate}}:</strong> {{link}} 
           <br/>
-          <strong>{{'license.record' | translate}}:</strong>
+          <strong>{{'Citujte jako' | translate}}:</strong>
+          {{'license.record' | translate}}
           {{ result.ident_cely }}.
-          cit. {{result.datum_nalezu | date : 'yyyy-MM-dd'}}.
+          cit. {{now | date : 'yyyy-MM-dd'}}.
           {{ 'licence.work' | translate }}.
           {{ 'Dostupné z' | translate }}: <a [href]="link">{{link}}</a>.
         </div>

@@ -17,6 +17,8 @@ export class FileViewerComponent implements OnInit {
   @ViewChild('modal') modal: ModalComponent;
   @ViewChild('license') license: ModalComponent;
 
+  now: Date;
+
   showing: boolean = false;
   rolling: boolean = false;
   result: any;
@@ -34,6 +36,7 @@ export class FileViewerComponent implements OnInit {
   constructor(public solrService: SolrService) { }
 
   ngOnInit() {
+    this.now = new Date();
     jQuery('.carousel').carousel({
       interval: 500
     });

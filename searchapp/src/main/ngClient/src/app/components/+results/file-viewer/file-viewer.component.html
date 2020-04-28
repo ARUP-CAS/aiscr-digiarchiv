@@ -72,25 +72,26 @@
 
 <modal [animation]="true" #license *ngIf="selectedFile" style="z-index:1100;">
   <modal-body>
-    <div *ngIf="result.doctype !== 'pas'">
     <p>
-      Tento dokument podléhá licenci
+      {{ 'citation.start' | translate}}
       <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">
         {{ 'licence.cc_by_nc' | translate}}
       </a>
     </p>
+    <div *ngIf="result.doctype !== 'pas'">
     <p>
-      <strong>{{'Citujte jako' | translate}}</strong>:
+      <strong>{{'Citujte jako' | translate}}:</strong>
       {{autor}} {{result.rok_vzniku}}: {{'Dokument' | translate}}
-      {{ result.ident_cely }}. {{ organizace | translateHeslar : 'organizace' }}.<br/>
+      {{ result.ident_cely }}. {{ organizace | translateHeslar : 'organizace' }}. 
       {{ 'Dostupné z' | translate }}: <a [href]="'https://digiarchiv.aiscr.cz/id/'+ result.ident_cely">https://digiarchiv.aiscr.cz/id/{{ result.ident_cely }}</a>.
     </p>
     </div>
     <div *ngIf="result.doctype === 'pas'">
       <p>
-      <strong>{{'license.record' | translate}}:</strong>
+      <strong>{{'Citujte jako' | translate}}:</strong>
+      {{'license.record' | translate}}
       {{ result.ident_cely }}.
-      cit. {{result.datum_nalezu | date : 'yyyy-MM-dd'}}.
+      cit. {{now | date : 'yyyy-MM-dd'}}.
       {{ 'licence.work' | translate }}.
       {{ 'Dostupné z' | translate }}: <a [href]="link">{{link}}</a>.
       </p>

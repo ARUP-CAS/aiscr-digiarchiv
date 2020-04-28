@@ -12,7 +12,6 @@
   "Zobrazit detail": "Zobrazit detail",
   "Tisk dokumentu": "Tisk dokumentu",
   "Persistentní odkaz": "Persistentní odkaz",
-  "Citujte jako": "Citujte jako",
   "Dostupné z": "Dostupné z",
   "from": "od",
   "to": "do",
@@ -37,6 +36,10 @@
   "licence.cc_by_nc": "Creative Commons Uveďte původ-Neužívejte komerčně 4.0 Mezinárodní (CC BY-NC 4.0)",
   "licence.data_and_metadata_usage": "Užití dat i metadat podléhá této licenci, pokud není explicitně stanoveno jinak.",
   "license.record" : "AMČR: Záznam",
+  "Dokument": "Dokument",
+  "citation.start": "Tento dokument podléhá licenci",
+  "citation.intro": "Dokument citujte jako",
+  "Citujte jako": "Citujte jako",
 
   "insuficient rights": "Pro zobrazení tohoto dokumentu nemáte dostatečná oprávnění. Přihlaste se platným účtem AMČR nebo kontaktujte administrátora systému.",
 

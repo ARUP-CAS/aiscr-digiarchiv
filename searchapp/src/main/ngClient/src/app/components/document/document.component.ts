@@ -21,12 +21,14 @@ export class DocumentComponent implements OnInit, AfterViewInit, OnDestroy {
   
   docid : string;
   link: string;
+  now: Date;
 
   constructor(private titleService: Title, 
    private activatedRoute: ActivatedRoute,
    public solrService: SolrService) { }
    
   ngOnInit() {
+    this.now = new Date();
     this.docid = this.activatedRoute.snapshot.params.id;
     
     this.titleService.setTitle('Digitální archiv AMČR | Dokument');

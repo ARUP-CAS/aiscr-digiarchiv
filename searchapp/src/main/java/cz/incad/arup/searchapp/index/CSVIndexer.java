@@ -794,16 +794,30 @@ public class CSVIndexer {
         continue;
       }
       //Vyjimka pro autoru. Muze mit oddelovac ;
-      if (field.equals("autor")) {
-        ArrayList<String> values = new ArrayList<String>(Arrays.asList(record.get(field).split(";")));
-        doc.addField("autor", values);
-        doc.addField("autor_sort", values.get(0));
-      } else if (field.equals("vedouci_akce") || field.equals("vedouci_akce_ostatni")) {
-        ArrayList<String> values = new ArrayList<String>(Arrays.asList(record.get(field).split(";")));
-        doc.addField(field, values);
-      } else {
-        doc.addField(field, record.get(entry.getKey()));
+      switch (field) {
+        case "autor":
+          {
+            ArrayList<String> values = new ArrayList<>(Arrays.asList(record.get(field).split(";")));
+            doc.addField("autor", values);
+            doc.addField("autor_sort", values.get(0));
+            break;
+          }
+        case "vedouci_akce":
+        case "vedouci_akce_ostatni":
+          {
+            ArrayList<String> values = new ArrayList<>(Arrays.asList(record.get(field).split(";")));
+            doc.addField(field, values);
+            break;
+          }
+        default:
+          doc.addField(field, record.get(entry.getKey()));
+          break;
       }
+    }
+    
+    if ("1".equals(doc.getFieldValue("stav")) && "dokument".equals(doctype)) {
+      // Přestat indexovat dokumenty ve stavu 1 (nerevidováno) #160
+      return null;
     }
 
     String uniqueid;
