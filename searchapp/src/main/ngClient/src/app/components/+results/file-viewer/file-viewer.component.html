@@ -72,19 +72,28 @@
 
 <modal [animation]="true" #license *ngIf="selectedFile" style="z-index:1100;">
   <modal-body>
-    <div>
+    <div *ngIf="result.doctype !== 'pas'">
     <p>
       Tento dokument podléhá licenci
       <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">
-        Creative Commons Uveďte původ-Neužívejte komerčně 4.0 Mezinárodní (CC BY-NC 4.0).
+        {{ 'licence.cc_by_nc' | translate}}
       </a>
     </p>
     <p>
       <strong>{{'Citujte jako' | translate}}</strong>:
-      {{autor}} {{result.rok_vzniku}}: {{capitalFirst(result.typ_dokumentu, 'typ_dokumentu')}}
-      {{ result.ident_cely }}. {{ organizace }}.<br/>
+      {{autor}} {{result.rok_vzniku}}: {{'Dokument' | translate}}
+      {{ result.ident_cely }}. {{ organizace | translateHeslar : 'organizace' }}.<br/>
       {{ 'Dostupné z' | translate }}: <a [href]="'https://digiarchiv.aiscr.cz/id/'+ result.ident_cely">https://digiarchiv.aiscr.cz/id/{{ result.ident_cely }}</a>.
     </p>
+    </div>
+    <div *ngIf="result.doctype === 'pas'">
+      <p>
+      <strong>{{'license.record' | translate}}:</strong>
+      {{ result.ident_cely }}.
+      cit. {{result.datum_nalezu | date : 'yyyy-MM-dd'}}.
+      {{ 'licence.work' | translate }}.
+      {{ 'Dostupné z' | translate }}: <a [href]="link">{{link}}</a>.
+      </p>
     </div>
   </modal-body>
   <modal-footer>

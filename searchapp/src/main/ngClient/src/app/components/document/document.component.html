@@ -6,15 +6,23 @@
           [class.app-result-view-col]="solrService.itemView === 'col'">
       <!-- Result item container -->
       <div class="app-result-item-container" *ngFor="let result of solrService.docs" >
-        <div class="alert alert-info app-persistent-url " role="alert">
+        <div *ngIf="result.doctype !== 'pas'" class="alert alert-info app-persistent-url " role="alert">
           <strong>{{'Persistentní odkaz' | translate}}:</strong> {{link}} 
           <br/>
           <strong>{{'Citujte jako' | translate}}:</strong>
-          {{result.autor}} {{result.rok_vzniku}}: {{capitalFirst(result.typ_dokumentu, 'typ_dokumentu')}}
+          {{ result.autor }} {{result.rok_vzniku}}: {{'Dokument' | translate}}
           {{ result.ident_cely }}. {{ organizace(result) }}. 
           {{ 'Dostupné z' | translate }}: <a [href]="link">{{link}}</a>.
         </div>
-        <!-- <app-result-item [result]="result" (onViewFile)="onViewFile($event)"></app-result-item> -->
+        <div *ngIf="result.doctype === 'pas'" class="alert alert-info app-persistent-url " role="alert">
+          <strong>{{'Persistentní odkaz' | translate}}:</strong> {{link}} 
+          <br/>
+          <strong>{{'license.record' | translate}}:</strong>
+          {{ result.ident_cely }}.
+          cit. {{result.datum_nalezu | date : 'yyyy-MM-dd'}}.
+          {{ 'licence.work' | translate }}.
+          {{ 'Dostupné z' | translate }}: <a [href]="link">{{link}}</a>.
+        </div>
 
         <app-result-item *ngIf="result.doctype !== 'pas'" [result]="result" (onViewFile)="onViewFile($event)" (onViewDetail)="onViewDetail($event)" [inModal]="false"></app-result-item>
         <app-result-item-pas *ngIf="result.doctype === 'pas'" [result]="result" (onViewFile)="onViewFile($event)" (onViewDetail)="onViewDetail($event)" [inModal]="false"></app-result-item-pas>

@@ -81,7 +81,8 @@ export class DocumentComponent implements OnInit, AfterViewInit, OnDestroy {
       let os = [];
       let ret = "";
       for (let idx = 0; idx < result['organizace'].length; idx++) {
-        let o = result['organizace'][idx];
+        let org = result['organizace'][idx];
+        let o = org ? this.solrService.getTranslation(org, 'organizace') : '';
         if (os.indexOf(o) < 0 && o.trim() !== '') {
           os.push(o);
 

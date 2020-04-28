@@ -29,13 +29,14 @@ export class FileViewerComponent implements OnInit {
   currentPage: number = 1;
   currentPageDisplayed: number = 1;
   fileid: number = 0;
+  link: string;
 
   constructor(public solrService: SolrService) { }
 
   ngOnInit() {
     jQuery('.carousel').carousel({
       interval: 500
-    })
+    });
 
   }
   selectFile(file: File, idx: number) {
@@ -98,6 +99,7 @@ export class FileViewerComponent implements OnInit {
     this.files = [];
     this.showing = false;
     this.result = data.result;
+    this.link = this.solrService.config['serverUrl'] + '/id/' + this.result.ident_cely;
     this.autor = data.autor;
     this.organizace = data.organizace;
     setTimeout(() => {
