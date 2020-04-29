@@ -19,9 +19,9 @@
           <br/>
           <strong>{{'Citujte jako' | translate}}:</strong>
           {{'license.record' | translate}}
-          {{ result.ident_cely }}.
-          cit. {{now | date : 'yyyy-MM-dd'}}.
-          {{ 'licence.work' | translate }}.
+          {{ result.ident_cely }}
+          [cit. {{now | date : 'yyyy-MM-dd'}}].
+          {{ 'citation.work' | translate }}.
           {{ 'Dostupné z' | translate }}: <a [href]="link">{{link}}</a>.
         </div>
 
