@@ -38,6 +38,7 @@
   "Citujte jako": "Cite as",
     
   "insuficient rights": "You have insufficient user rights to view this document. Log in with a valid AMCR account or contact the system administrators.",
+  "idnotfound": "The referenced document could not be found. The document may have been deleted. If there are any remaining issues, please contact us.",
   "showWithoutThumbs":"show documents without thumbnail",
 
   "pivot": {

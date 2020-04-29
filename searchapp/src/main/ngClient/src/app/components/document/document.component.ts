@@ -22,6 +22,7 @@ export class DocumentComponent implements OnInit, AfterViewInit, OnDestroy {
   docid : string;
   link: string;
   now: Date;
+  notfound: boolean;
 
   constructor(private titleService: Title, 
    private activatedRoute: ActivatedRoute,
@@ -49,7 +50,9 @@ export class DocumentComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getData() {
     this.link = this.solrService.config['serverUrl'] + '/id/' + this.docid;
-    return this.solrService.getDocument(this.docid).subscribe();
+    return this.solrService.getDocument(this.docid).subscribe(res => {
+      this.notfound = this.solrService.docs.length === 0;
+    });
 
   }
   

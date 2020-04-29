@@ -5,6 +5,11 @@
           [class.app-result-view-row]="solrService.itemView === 'row'"
           [class.app-result-view-col]="solrService.itemView === 'col'">
       <!-- Result item container -->
+      <div class="app-result-item-container" *ngIf="notfound">
+        <div class="alert alert-info app-persistent-url " role="alert">
+        {{ 'idnotfound' | translate }}
+      </div>
+    </div>
       <div class="app-result-item-container" *ngFor="let result of solrService.docs" >
         <div *ngIf="result.doctype !== 'pas'" class="alert alert-info app-persistent-url " role="alert">
           <strong>{{'Persistentní odkaz' | translate}}:</strong> {{link}} 
