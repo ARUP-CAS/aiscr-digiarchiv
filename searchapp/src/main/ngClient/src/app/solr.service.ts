@@ -882,7 +882,7 @@ export class SolrService implements OnDestroy {
   /* Called in pagination when page changes */
   setStartPage(page: number) {
     this.start = (page - 1) * this.rows;
-    this.search();
+    this.search(true);
   }
 
   /* Search methods */
@@ -1002,7 +1002,11 @@ export class SolrService implements OnDestroy {
     return params;
   }
 
-  search() {
+  search(keepStart : boolean = false) {
+    console.log(keepStart);
+    if (!keepStart) {
+      this.start = 0;
+    }
     this.startProgress();
     this.docs = [];
     var url = this.baseUrl('core');

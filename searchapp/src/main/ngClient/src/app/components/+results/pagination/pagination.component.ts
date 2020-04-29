@@ -34,6 +34,7 @@ export class PaginationComponent implements OnInit {
 
   setRange(){
     this.hasPagination = this.solrService.totalPages > 1;
+    this.currentPage = Math.floor(this.solrService.start / this.solrService.rows) + 1;
     if (this.hasPagination && (this.currentPage > this.solrService.totalPages)) {
       this.currentPage = 1;
     }
@@ -56,7 +57,7 @@ export class PaginationComponent implements OnInit {
   next(){
     if(!this.nextDisabled){
       this.currentPage++;
-      this.setRange();
+      //this.setRange();
       this.solrService.setStartPage(this.currentPage);
     }
   }
@@ -64,14 +65,14 @@ export class PaginationComponent implements OnInit {
   prev(){
     if(!this.prevDisabled){
       this.currentPage--;
-      this.setRange();
+      //this.setRange();
       this.solrService.setStartPage(this.currentPage);
     }
   }
 
   goTo(page: number){
     this.currentPage = page;
-    this.setRange();
+    //this.setRange();
     this.solrService.setStartPage(this.currentPage);
   }
 
