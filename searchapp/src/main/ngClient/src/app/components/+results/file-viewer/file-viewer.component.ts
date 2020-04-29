@@ -59,6 +59,7 @@ export class FileViewerComponent implements OnInit {
     link.href = this.downloadUrl();
     link.download = this.selectedFile.nazev;
     link.click();
+    this.license.close();
   }
 
   confirmDownload() {

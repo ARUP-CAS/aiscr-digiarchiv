@@ -175,6 +175,7 @@ public class ImageSupport {
   }
 
   public static void resizeAndCropWithThumbnailator(BufferedImage srcImage, int w, int h, File dest) {
+    LOGGER.log(Level.INFO, "generating {0}", dest.getAbsoluteFile());
         try {
                 Thumbnails.of(srcImage)
                         .size(w, h)
@@ -207,8 +208,13 @@ public class ImageSupport {
     }
 
   private static int getImageType(BufferedImage img) {
-    WritableRaster raster = img.getRaster();
-    int elemCount = raster.getNumDataElements();
-    return (elemCount == 1) ? BufferedImage.TYPE_BYTE_GRAY : ThumbnailParameter.ORIGINAL_IMAGE_TYPE;
+    
+//    WritableRaster raster = img.getRaster();
+//    int elemCount = raster.getNumDataElements();
+//    System.out.println(elemCount);
+//    return (elemCount == 1) ? BufferedImage.TYPE_BYTE_GRAY : ThumbnailParameter.ORIGINAL_IMAGE_TYPE;
+    
+//    System.out.println(img.getColorModel().getPixelSize());
+    return (img.getColorModel().getPixelSize() == 8) ? BufferedImage.TYPE_BYTE_GRAY : ThumbnailParameter.ORIGINAL_IMAGE_TYPE;
   }
 }

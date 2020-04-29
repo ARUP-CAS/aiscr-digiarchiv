@@ -217,10 +217,17 @@ public class PDFThumbsGenerator {
       }
 
       String destDir = ImageSupport.makeDestDir(id) + id + File.separator;
+      // LOGGER.log(Level.INFO, "Dest dir {0}", destDir);
       new File(destDir).mkdir();
       outputFile = destDir + (pageCounter) + ".jpg";
       File f = new File(outputFile);
-      ImageSupport.resizeWithThumbnailator(bim, w, h, f);
+//      Thumbnails.of(bim)
+//              .size(w, h)
+//              .outputFormat("jpg")
+//              .toFile(outputFile);
+      
+       ImageSupport.resizeWithThumbnailator(bim, w, h, f);
+      
       //BufferedImage img2 = ImageSupport.scale(bim, w, h);
 //            ImageIO.write(img2, "jpg", new File(outputFile));
 //            LOGGER.info(outputFile);

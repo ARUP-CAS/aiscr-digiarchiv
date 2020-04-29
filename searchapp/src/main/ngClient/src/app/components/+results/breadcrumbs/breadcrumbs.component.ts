@@ -101,6 +101,7 @@ export class BreadcrumbsComponent implements OnInit {
           if (cf.hasOwnProperty('heslar')) {
             field = cf['heslar'];
           }
+          console.log(field + '_' + value)
 
           return this.solrService.translateKey(field + '_' + value);
         } else if (typ === 'heslar') {

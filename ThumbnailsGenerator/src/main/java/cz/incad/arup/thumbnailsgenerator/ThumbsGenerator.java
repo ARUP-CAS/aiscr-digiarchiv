@@ -50,11 +50,18 @@ public class ThumbsGenerator {
                     overwrite = true;
                     break;
                 }
-                case "-f":
+                case "-pdf":
                 {
                     String file = args[1];
                     PDFThumbsGenerator pg = new PDFThumbsGenerator(true);
                     pg.processFile(new File(file), true, false);
+                    return;
+                }
+                case "-f":
+                {
+                    String file = args[1];
+                    File f = new File(file);
+                    ImageSupport.thumbnailzeImg(f, f.getName(), false);
                     return;
                 }
                 case "-id":{

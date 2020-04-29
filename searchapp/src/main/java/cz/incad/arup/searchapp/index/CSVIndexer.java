@@ -155,7 +155,8 @@ public class CSVIndexer {
       LOGGER.log(Level.INFO, "indexing from {0}", thesauriDir);
       for (File file : dir.listFiles()) {
         LOGGER.log(Level.INFO, "indexing from {0}", file.getName());
-        Reader in = new FileReader(file);
+        // Reader in = new FileReader(file);
+        InputStreamReader in = new InputStreamReader(new FileInputStream(file), Charset.forName("UTF-8"));
         // Reader in = new FileReader(file, Charset.forName("UTF-8")); 
         //readOne( , uniqueid, "", translationsClient, ret, hasRelations);
 
