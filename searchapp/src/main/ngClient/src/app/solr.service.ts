@@ -1003,7 +1003,6 @@ export class SolrService implements OnDestroy {
   }
 
   search(keepStart : boolean = false) {
-    console.log(keepStart);
     if (!keepStart) {
       this.start = 0;
     }
