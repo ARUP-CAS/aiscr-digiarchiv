@@ -25,7 +25,10 @@ public class ImageAccess {
           field = "dokument";
         }
         String imgPr = SolrIndex.getPristupnostBySoubor(id, field);
-        if ("A".equals(imgPr)) {
+        if (imgPr == null) {
+          // File not in index
+          return true;
+        } else if ("A".equals(imgPr)) {
           allow = true;
         } else {
           String userPr = LoginServlet.pristupnost(request.getSession());

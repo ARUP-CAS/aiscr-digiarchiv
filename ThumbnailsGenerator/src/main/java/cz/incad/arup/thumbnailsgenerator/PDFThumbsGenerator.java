@@ -6,7 +6,6 @@
 package cz.incad.arup.thumbnailsgenerator;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 import org.apache.commons.io.FileUtils;
@@ -26,11 +24,7 @@ import org.apache.pdfbox.cos.COSObject;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.graphics.PDXObject;
-import org.apache.pdfbox.pdmodel.graphics.form.PDFormXObject;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.json.JSONException;
@@ -226,7 +220,7 @@ public class PDFThumbsGenerator {
 //              .outputFormat("jpg")
 //              .toFile(outputFile);
       
-       ImageSupport.resizeWithThumbnailator(bim, w, h, f);
+       ImageSupport.resizeWithThumbnailator(bim, w, h, f, ImageSupport.getImageType(bim));
       
       //BufferedImage img2 = ImageSupport.scale(bim, w, h);
 //            ImageIO.write(img2, "jpg", new File(outputFile));

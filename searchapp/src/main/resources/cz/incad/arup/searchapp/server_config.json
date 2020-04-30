@@ -307,7 +307,8 @@
       "rok_od",
       "rok_do",
       "osoby",
-      "datum_vzniku"
+      "datum_vzniku",
+      "duveryhodnost"
       
     ],
     "komponenta": [
