@@ -833,11 +833,31 @@ public class CSVIndexer {
       addRelations(uniqueid, doctype, doc);
     }
     if (doc.containsKey("pian_centroid_e")) {
-
       String loc = doc.getFieldValue("pian_centroid_n") + "," + doc.getFieldValue("pian_centroid_e");
       doc.addField("loc", loc);
       doc.addField("loc_rpt", loc);
     }
+    
+        
+    // Issue #158. Pro 3D pouzit easting a northing pole z extra_data
+    if ("3D".equals(doc.getFieldValue("rada")) && doc.containsKey("extra_data_easting")) {
+      String loc = doc.getFieldValue("extra_data_northing") + "," + doc.getFieldValue("extra_data_easting");
+      doc.addField("centroid_n", doc.getFieldValue("extra_data_northing"));
+        doc.addField("centroid_e", doc.getFieldValue("extra_data_easting"));
+      doc.addField("pian_centroid_n", doc.getFieldValue("extra_data_northing"));
+        doc.addField("pian_centroid_e", doc.getFieldValue("extra_data_easting"));
+        doc.addField("pian_ident_cely", uniqueid);
+        JSONObject pian =  new JSONObject()
+                .put("ident_cely", (new JSONArray()).put(uniqueid))
+                .put("parent_pristupnost", doc.getFieldValue("pristupnost"))
+                .put("centroid_n", (new JSONArray()).put(doc.getFieldValue("centroid_n")))
+                .put("centroid_e", (new JSONArray()).put(doc.getFieldValue("centroid_e")));
+        
+        doc.addField("pian", "["+pian.toString()+"]");
+        doc.addField("loc", loc);
+        doc.addField("loc_rpt", loc);
+    }
+        
     addSearchFields(doc, doctype);
     if (doctype.equals("pas")) {
 //      if (!csvStavyPas.contains(doc.getFieldValue("stav").toString())) {
@@ -1028,6 +1048,26 @@ public class CSVIndexer {
           idoc.addField("loc", loc);
           idoc.addField("loc_rpt", loc);
         }
+        
+    // Issue #158. Pro 3D pouzit easting a northing pole z extra_data
+    
+    if ("3D".equals(idoc.getFieldValue("rada")) && idoc.containsKey("extra_data_easting") && !"".equals(idoc.getFieldValue("extra_data_easting")) ) {
+      String loc = idoc.getFieldValue("extra_data_northing") + "," + idoc.getFieldValue("extra_data_easting");
+      idoc.addField("centroid_n", idoc.getFieldValue("extra_data_northing"));
+        idoc.addField("centroid_e", idoc.getFieldValue("extra_data_easting"));
+      idoc.addField("pian_centroid_n", idoc.getFieldValue("extra_data_northing"));
+        idoc.addField("pian_centroid_e", idoc.getFieldValue("extra_data_easting"));
+        idoc.addField("pian_ident_cely", id);
+        JSONObject pian =  new JSONObject()
+                .put("ident_cely", (new JSONArray()).put(id))
+                .put("parent_pristupnost", idoc.getFieldValue("pristupnost"))
+                .put("centroid_n", (new JSONArray()).put(idoc.getFieldValue("centroid_n")))
+                .put("centroid_e", (new JSONArray()).put(idoc.getFieldValue("centroid_e")));
+        
+        idoc.addField("pian", "["+pian.toString()+"]");
+        idoc.addField("loc", loc);
+        idoc.addField("loc_rpt", loc);
+    }
         dokumentClient.add(idoc);
         dokumentClient.commit();
         LOGGER.log(Level.INFO, "Doc {0} indexed", id);
