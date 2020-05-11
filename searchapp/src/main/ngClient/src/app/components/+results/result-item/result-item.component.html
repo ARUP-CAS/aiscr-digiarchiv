@@ -87,9 +87,9 @@
               <span>{{result.oznaceni_originalu}}</span>
             </li>
             <li *ngIf="hasValue('extra_data_pas') || hasValue('extra_data_easting') || hasValue('extra_data_northing')">
-              <label>{{'Souřadnice utm' | translate}}:</label>
+              <label>{{'Souřadnice (WGS-84)' | translate}}:</label>
               <span *ngIf="hasValue('extra_data_pas')">{{result.extra_data_pas}}</span>
-							<span *ngIf="hasValue('extra_data_easting')">{{result.extra_data_easting}}</span><span *ngIf="hasValue('extra_data_northing')">:{{result.extra_data_northing}}</span>
+							<span *ngIf="hasValue('extra_data_northing')">{{result.extra_data_northing}}N</span><span *ngIf="hasValue('extra_data_easting')"> : {{result.extra_data_easting}}E</span>
             </li>
             <li *ngIf="hasValue('extra_data_zachovalost') || hasValue('extra_data_nahrada')">
               <label>{{'Zachovalost (náhrada)' | translate}}:</label> 
