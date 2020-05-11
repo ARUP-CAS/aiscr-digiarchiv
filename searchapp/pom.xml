@@ -183,6 +183,7 @@
               </includes>
               <excludes>
                 <exclude>index.jsp</exclude>
+                <exclude>.gitignore</exclude>
               </excludes>
               <followSymlinks>false</followSymlinks>
             </fileset>
