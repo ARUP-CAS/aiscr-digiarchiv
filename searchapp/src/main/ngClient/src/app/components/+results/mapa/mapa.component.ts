@@ -463,7 +463,7 @@ export class MapaComponent implements OnInit {
     if (doc.hasOwnProperty('centroid_n') && doc.hasOwnProperty('pian')) {
       if (this.solrService.hasRights(doc['pristupnost'])){
         var ngMapa = this;
-        let pianId = doc['pian'][0];
+        let pianId = (JSON.parse(doc['pian'][0]))[0]['ident_cely'][0];
         var marker = L.marker([doc['centroid_n'][0], doc['centroid_e'][0]], { pianId: pianId });
         this.markersList.push(marker);
         marker['pianId'] = pianId;
