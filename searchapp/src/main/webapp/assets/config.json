@@ -277,7 +277,7 @@
         "lookupField": "zkratka",
         "retField": "nazev"
       }, 
-      "f_areal": {"type": "i18n", "heslar": "areal_druha", "lookupField": "caption", "retField": "caption"},
+      "f_areal": {"type": "l10n", "heslar": "areal_druha", "lookupField": "caption", "retField": "caption"},
       "loc_rpt": {
         "type": "other"
       },
@@ -289,7 +289,8 @@
   "poleToHeslar": {
     "f_druh_lokality": "druh_lokality_druha",
     "f_typ_dokumentu": "typ_dokumentu",
-    "f_organizace": "organizace"
+    "f_organizace": "organizace",
+    "f_areala": "areal_druha"
   },
   "heslarToPole": {
     "areal_druha": "f_areal",
