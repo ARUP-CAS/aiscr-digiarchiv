@@ -154,17 +154,11 @@ export class ResultItemPasComponent implements OnInit {
   }
 
   viewFile() {
-    if(this.solrService.hasRights(this.result['pristupnost'])){
       this.onViewFile.emit({
         result:this.result, 
         autor: this.result.nalezce, 
         organizace: this.organizace()
       });
-    } else {
-//    this.onViewFile.emit(this.result);
-      let msg = this.solrService.translateKey('insuficient rights');
-      alert(msg);
-    }
   }
 
   openDetail() {
