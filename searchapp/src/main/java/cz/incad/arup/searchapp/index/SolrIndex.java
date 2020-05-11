@@ -70,7 +70,9 @@ public class SolrIndex {
       } else {
         String dok = (String) rsp.getResults().get(0).getFirstValue("dokument");
         if (dok == null || "".equals(dok)) {
-          dok = (String) rsp.getResults().get(0).getFirstValue("samostatny_nalez");
+          // dok = (String) rsp.getResults().get(0).getFirstValue("samostatny_nalez");
+          // Pro smostatne nalezy obrazky vzdy povolene #162
+          return "A";
         }
         SolrClient dokClient = getClient("dokument");
         SolrQuery queryDok = new SolrQuery("*").addFilterQuery("ident_cely:\"" + dok + "\"").setRows(1).setFields("pristupnost");
