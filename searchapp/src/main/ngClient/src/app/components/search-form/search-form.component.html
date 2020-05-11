@@ -7,6 +7,7 @@
         <form class="form-inline">
           <div class="input-group">
             <input type="text" [placeholder]="'q.placeholder' | translate" class="form-control app-border-radius-l" 
+                    [title]="'q.tooltip' | translate" rel="tooltip"
                    name="q" id="q"
                    (keyup.enter)="search()"
                    [(ngModel)]="solrService.q" />
