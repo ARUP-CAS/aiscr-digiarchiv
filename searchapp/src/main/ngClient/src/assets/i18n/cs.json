@@ -43,7 +43,7 @@
   "citation.intro": "Dokument citujte jako",
   "Citujte jako": "Citujte jako",
 
-  "insuficient rights": "Pro zobrazení tohoto dokumentu nemáte dostatečná oprávnění. Přihlaste se platným účtem AMČR nebo kontaktujte administrátora systému.",
+  "insuficient rights": "Zobrazení tohoto dokumentu je možné až po přihlášení uživatelským jménem a heslem. Účet lze snadno zaregistrovat pomocí webového formuláře dostupného přes tlačítko Přihlásit -> Registrovat uživatele.\nPokud jste přihlášeni ke svému účtu AMČR a dokument přesto není přístupný, značí to jednu z těchto variant:\n\n1) Dokument obsahuje citlivé údaje a jeho zveřejnění je omezeno.\n2) Držitel autorských práv nedal souhlas se zveřejněním dokumentu.\n3) Neuplynula ochranná lhůta 3 let od archivace dokumentu.\n\nV takovém případě se prosím obraťte na správce AMČR nebo na příslušnou organizaci s žádostí o zpřístupnění. Vaše žádost bude individuálně posouzena a vyřízena.",
 
   "idnotfound": "Odkazovaný dokument se nepodařilo nalézt. Dokument mohl být odstraněn. V případě přetrvávajících problémů nás kontaktujte.",
 
