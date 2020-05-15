@@ -1,0 +1,96 @@
+<!-- Result item -->
+<div class="app-result-item app-border-radius" [class.app-result-item-open]="detailExpanded">
+  <!-- Reusult item mark -->
+  <span [class]="'app-result-item-triangle app-cat-'+result.kategorie+'-border'"></span><!--/.result item mark -->
+  
+  <!-- Top btn group -->
+  <div class="app-result-btn-group-top app-color-black">
+    <span [title]="'Tisk dokumentu' | translate" rel="tooltip" class="app-cursor-pointer" (click)="print(result.ident_cely)">
+      <i class="fa fa-print app-clean-pd app-color-gray" aria-hidden="true"></i>
+    </span>
+    <span [title]="'Persistentní odkaz' | translate" rel="tooltip" class="app-cursor-pointer" (click)="gotoDoc(result.ident_cely)">
+      <i class="fa fa-link app-clean-pd app-color-gray" aria-hidden="true"></i>
+    </span>
+    <span *ngIf="solrService.config.logged" rel="tooltip" 
+      [title]="isFav ? 'Odebrat z  oblíbených' : 'Uložit do oblíbených'" class="app-cursor-pointer" (click)="toggleFav()">
+      <i class="fa fa-star app-clean-pd app-color-gray" [class.app-color-yellow]="isFav" aria-hidden="true"></i>
+    </span>
+  </div><!--/.top btn group -->
+  
+  <!-- Result inner -->
+  <div class="app-result-item-inner clearfix">
+    <div class="hidden app-id">{{result.ident_cely}}</div>
+    <div class="media-left">
+      <img *ngIf="files.length > 0" class="app-result-item-img-thumb app-cursor-pointer" [src]="solrService.config.img + '?id='+files[0].filepath" (click)="viewFile()" />
+    </div>
+    <div class="media-body">
+      <h4 class="app-clean-mg-top app-color-blue-pastel app-result-item-header">{{result.nalezce}} 
+        <span class="app-color-silver">|</span> {{result.ident_cely}} 
+        <span class="app-color-silver">|</span> {{result.datum_nalezu}}
+      </h4>
+      <div class="app-color-gray-light">
+        <label>{{'Uložení' | translate}}:</label> {{result.predano_organizace | translateHeslar: 'organizace'}} | 
+        <label>{{'Ev. č' | translate}}:</label> {{result.inv_cislo | translateHeslar: 'pas'}} | 
+        <label>{{'Přístupnost' | translate}}:</label> {{result.pristupnost | translateHeslar: 'pristupnost'}}
+      </div>
+        <div>
+          <label>{{'Období' | translate}}:</label> {{'f_obdobi.' + result.obdobi | translate}} 
+          <span *ngIf="result.presna_datace && result.presna_datace[0] !== ''">({{result.presna_datace}})</span> |
+          <label>{{'Nález' | translate}}:</label> {{result.druh | translateHeslar: 'f_druh_nalezu'}} 
+          <span *ngIf="result.specifikace && result.specifikace[0] !== ''">({{result.specifikace | translateHeslar: 'specifikace_objektu_druha'}})</span> 
+        </div>
+        <div *ngIf="hasRights"><label>{{'Katastr (okres)' | translate}}:</label> {{okres()}}</div>
+        <div *ngIf="!hasRights"><label>{{'Okres' | translate}}:</label>  {{result.okres}}</div>
+    </div>
+  </div><!--/.result inner -->
+
+  <!-- Result collapse -->
+  <div [id]="'app-result-item-'+id()" class="collapse">
+    <div class="app-result-item-inner app-clean-pd-top">
+      <!-- Popis dokumentu -->
+      <ul class="nav app-result-item-nav">
+        <li>
+          <div class="app-result-item-nav-title app-border-radius app-color-blue-pastel " >
+            <strong>{{'Popis nálezu' | translate}}:</strong>
+          </div>
+          <ul class="list-unstyled app-nav-tree app-color-black">
+            <li class="app-nav-li-separator"></li>
+            <ng-container *ngFor="let f of detailFields">
+            <li *ngIf="hasValue(f)">
+              <label>{{f | translate}}:</label>
+              <span>{{result[f] | translateHeslar: 'pas'}}{{f === 'hloubka' ? ' cm' : ""}}</span>
+            </li>
+          </ng-container>
+            <li class="app-nav-li-separator"></li>
+          </ul>
+        </li>
+      </ul>
+      
+
+    </div>
+  </div><!--/.result collapse -->
+        
+  <!-- Bottom bar -->
+  <div class="app-result-item-bar clearfix">
+    <small class="app-color-gray-light">
+      
+      
+      <span *ngIf="showNalezy && numNalezu > 0">
+        {{'Počet nálezů' | translate}}: <strong>{{numNalezu}}</strong>
+        <span class="app-color-silver">|</span>
+      </span> 
+      
+			<span *ngIf="files.length > 0">
+				{{'Počet souborů' | translate}}: <strong>{{files.length}}</strong>
+			</span>
+    </small>
+    <!-- Btn for default and row view -->
+    <span class="app-btn app-cursor-pointer app-color-white collapsed" 
+          data-toggle="collapse" [attr.data-target]="'#app-result-item-'+id()"
+          (click)="toggleDetail()">{{toggleText | translate }}</span>
+    <!-- Btn for col view which should cause modal window for the detail -->
+    <span *ngIf="!inModal" class="app-btn app-btn-modal app-cursor-pointer app-color-white collapsed" (click)="openDetail()"> </span>
+    <!-- Btn for col view to close modal window -->
+    <span class="app-btn app-btn-modal-dismiss app-cursor-pointer app-color-white" data-dismiss="modal"> </span>
+  </div><!--/.bottom bar -->
+</div><!--/.result item -->

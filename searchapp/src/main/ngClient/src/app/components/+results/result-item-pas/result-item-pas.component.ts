@@ -4,11 +4,11 @@ import { NeidentAkce, Akce, Nalez, Lokalita, KomponentaDok } from '../../../shar
 
 @Component({
 
-  selector: 'app-result-item',
-  templateUrl: 'result-item.component.html',
-  styleUrls: ['result-item.component.css']
+  selector: 'app-result-item-pas',
+  templateUrl: 'result-item-pas.component.html',
+  styleUrls: ['result-item-pas.component.css']
 })
-export class ResultItemComponent implements OnInit {
+export class ResultItemPasComponent implements OnInit {
 
   @Input() result;
   @Input() highlighting;
@@ -17,12 +17,27 @@ export class ResultItemComponent implements OnInit {
   @Output() onViewFile = new EventEmitter();
   @Output() onViewDetail = new EventEmitter();
 
-  autor: string;
+  detailFields = [
+  // "projekt_id",
+  "pocet",
+  "nalezove_okolnosti",
+  "hloubka",
+  "poznamka",
+  // "geom_x",
+  // "geom_y",
+  // "obdobi",
+  // "presna_datace",
+  // "typ",
+  // "druh",
+  // "specifikace",
+  // "stav",
+  // "stav_popis",
+  // "predano"
+]
+
   files: any = [];
   lokality: Lokalita[] = [];
-  akce: Akce[] = [];
-  komponentaDok: KomponentaDok[] = [];
-  neidentAkce: NeidentAkce[] = [];
+  
   numNalezu: number = 0;
 
   isFav: boolean = false;
@@ -32,72 +47,30 @@ export class ResultItemComponent implements OnInit {
   toggleText: string = 'Zobrazit detail';
 
   public versions: any[] = [];
+  hasRights = false;
+
   constructor(public solrService: SolrService) { }
 
   ngOnInit() {
     
-    this.formatAutor();
-
     if (this.result.hasOwnProperty('soubor')) {
       this.files = JSON.parse(this.result.soubor[0]);
-    }
-
-    if (this.result.hasOwnProperty('akce_ident_cely')) {
-      for (let idx in this.result.akce_ident_cely) {
-        if(this.result.akce_ident_cely[idx] !== ''){
-          this.solrService.getAkce(this.result.akce_ident_cely[idx]).subscribe(res => {
-            this.akce.push(res);
-          });
-        }
-      }
-    }
-
-    if (this.result.hasOwnProperty('lokalita_ident_cely')) {
-      for (let idx in this.result.lokalita_ident_cely) {
-        if(this.result.lokalita_ident_cely[idx] !== ''){
-          this.solrService.getLokalita(this.result.lokalita_ident_cely[idx]).subscribe(res => {
-            this.lokality.push(res);
-          });
-        }
-      }
-    }
-
-    if (this.result.hasOwnProperty('neident_akce_ident_cely')) {
-      for (let idx in this.result['neident_akce_ident_cely']) {
-        let k = new NeidentAkce();
-        k.ident_cely = this.result['neident_akce_ident_cely'][idx];
-        k.setFieldFromDokument(this.result, idx);
-        this.neidentAkce.push(k);
-        this.neidentAkce.sort((a,b) => {
-          return a.ident_cely > b.ident_cely ? 1 : -1;
-        });
-      }
-    }
-    if (this.result.hasOwnProperty('komponenta_dokumentu_ident_cely')) {
-      for (let idx in this.result['komponenta_dokumentu_ident_cely']) {
-        let k = new KomponentaDok();
-
-        k.setFieldFromDokument(this.result, idx);
-        this.komponentaDok.push(k);
-        this.komponentaDok.sort((a,b) => {
-          return parseInt(a.poradi) - parseInt(b.poradi);
-        });
-      }
     }
 
     if (this.result.hasOwnProperty('nalez_druh_nalezu')) {
       this.numNalezu = this.result.nalez_druh_nalezu.length;
     }
+
+    this.hasRights = this.solrService.hasRights(this.result['pristupnost']);
+    
+    if(this.hasRights) {
+      this.detailFields.splice(2, 0, "lokalizace");
+    }
     
     this.getIsFav();
   }
   
-  formatAutor(){
-    if(this.result){
-      let autors : string[] = this.result['autor']
-      this.autor = autors.join("; ");
-    }
-  }
+  
   
   hasPopisletu(){
     return this.result.hasOwnProperty('let_ident_cely');
@@ -107,6 +80,28 @@ export class ResultItemComponent implements OnInit {
     return this.result.hasOwnProperty('tvar_dokument') && this.result['tvar_dokument'].length >0 ;
   }
 
+  katastr() {
+    if (this.result.hasOwnProperty('katastr_pas')) {
+      let katastry = [];
+      let ret = "";
+      for (let idx = 0; idx < this.result['f_okres'].length; idx++) {
+        
+        let katastr = this.result['katastr_pas'][idx];
+
+        if (katastry.indexOf(katastr) < 0) {
+          katastry.push(katastr);
+          if (idx > 0) {
+            ret += ', ';
+          }
+          ret += katastr;
+        }
+      }
+      return ret;
+    } else {
+      return "";
+    }
+  }
+
   okres() {
     if (this.result.hasOwnProperty('f_okres')) {
       let okresy = [];
@@ -114,7 +109,7 @@ export class ResultItemComponent implements OnInit {
       let ret = "";
       for (let idx = 0; idx < this.result['f_okres'].length; idx++) {
         let okres = this.result['f_okres'][idx];
-        let katastr = this.result['f_katastr'][idx];
+        let katastr = this.result['katastr_pas'][idx];
 
         if (katastry.indexOf(katastr) < 0) {
           okresy.push(okres);
@@ -159,17 +154,11 @@ export class ResultItemComponent implements OnInit {
   }
 
   viewFile() {
-    if(this.solrService.hasRights(this.result['pristupnost'])){
       this.onViewFile.emit({
         result:this.result, 
-        autor: this.autor, 
+        autor: this.result.nalezce, 
         organizace: this.organizace()
       });
-    } else {
-//    this.onViewFile.emit(this.result);
-      let msg = this.solrService.translateKey('insuficient rights');
-      alert(msg);
-    }
   }
 
   openDetail() {
@@ -191,15 +180,6 @@ export class ResultItemComponent implements OnInit {
     } else {
       return false;
     }
-  }
-
-  popisObsahuShort() {
-
-    let s: string = this.result.popis.substring(0, 70);
-    if (this.result.popis.length > 70) {
-      s += ' (...)';
-    }
-    return s;
   }
 
   popisObsahu(): string {

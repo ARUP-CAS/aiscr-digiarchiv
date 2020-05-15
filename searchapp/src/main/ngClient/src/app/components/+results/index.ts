@@ -15,5 +15,6 @@ export { NalezComponent } from './nalez/';
 export { NeidentAkceComponent } from './neident-akce/';
 export { PaginationComponent } from './pagination/';
 export { ResultItemComponent } from './result-item/';
+export { ResultItemPasComponent } from './result-item-pas/';
 export { TimelineComponent } from './timeline/';
 export {TvarComponent} from './tvar/';

@@ -11,7 +11,7 @@
     <div class="app-facet-nav-title app-border-radius app-cursor-pointer " data-toggle="collapse" [attr.data-target]="'#app-collapse-pristupnost'">
       <span></span><strong>{{'facet.pristupnost' | translate}}</strong>
     </div>
-    <ul class="app-color-gray list-unstyled " [id]="'app-collapse-pristupnost'">
+    <ul class="app-color-gray list-unstyled in" [id]="'app-collapse-pristupnost'">
       <li class="app-facet-nav-separator"></li>
       <li *ngFor="let facet of solrService.facets[0].values" >
         <input *ngIf="solrService.facets[0].isMultiple" type="checkbox" [checked]="facet.isUsed" /> 

@@ -1,6 +1,6 @@
 import { Component, OnInit, Renderer } from '@angular/core';
 
-import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
+import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { SolrService } from '../../../solr.service';
 import { MapBounds } from '../../../shared'
 
@@ -67,7 +67,8 @@ export class MapaComponent implements OnInit {
     private translate: TranslateService) { }
 
   ngOnInit() {
-    this.openSubs = this.solrService.mapOpenChanged.subscribe(val=> {
+    // this.solrService.mapOpen = true;
+    this.openSubs = this.solrService.mapOpenChanged.subscribe(val => {
       setTimeout(() => {
         this.setIsCollapsed();
         if (!this.isCollapsed) {
@@ -82,9 +83,9 @@ export class MapaComponent implements OnInit {
       }, 100);
 
     });
-    this.collSubs = this.solrService.routeChanged.subscribe(val=> {
+    this.collSubs = this.solrService.routeChanged.subscribe(val => {
       setTimeout(() => {
-        this.removeMarkers();
+        // this.removeMarkers();
         this.dirty = true;
         this.setIsCollapsed();
         if (!this.isCollapsed) {
@@ -93,18 +94,18 @@ export class MapaComponent implements OnInit {
         }
       }, 100);
     });
-      setTimeout(() => {
-        this.setIsCollapsed();
-        if (!this.isCollapsed) {
-          this.show();
-        }
-      }, 1000);
+    setTimeout(() => {
+      this.setIsCollapsed();
+      if (!this.isCollapsed) {
+        this.show();
+      }
+    }, 1000);
   }
 
   setIsCollapsed() {
     this.isCollapsed = !this.solrService.mapOpen;
     this.style = 'app-search-collapse app-search-collapse-map collapse ' + (this.isCollapsed ? '' : 'in');
-    if(this.isCollapsed){
+    if (this.isCollapsed) {
       this.height = '30px';
     } else {
       this.height = '690px';
@@ -118,9 +119,9 @@ export class MapaComponent implements OnInit {
           this.prepareMap();
         }
 
-        this.subs = this.solrService.docsInMapSubject.subscribe(val=> {
+        this.subs = this.solrService.docsInMapSubject.subscribe(val => {
           this.docs = val;
-          if (this.solrService.mapArea !== null){
+          if (this.solrService.mapArea !== null) {
             let southWest = L.latLng(this.solrService.mapArea[0], this.solrService.mapArea[1]);
             let northEast = L.latLng(this.solrService.mapArea[2], this.solrService.mapArea[3]);
             let bounds = L.latLngBounds(southWest, northEast);
@@ -144,18 +145,21 @@ export class MapaComponent implements OnInit {
   }
 
   search() {
-    this.solrService.searchMapa(this.getMapBounds());
+    if (this.map) {
+      this.solrService.searchMapa(this.getMapBounds());
+    }
+    
   }
 
 
   getMapBounds(): MapBounds {
-//    var b;
-//    if (this.solrService.mapArea !== null){
-//      b = this.locationFilter.getBounds();
-//    }else{
-//
-//      b = this.map.getBounds();
-//    }
+    //    var b;
+    //    if (this.solrService.mapArea !== null){
+    //      b = this.locationFilter.getBounds();
+    //    }else{
+    //
+    //      b = this.map.getBounds();
+    //    }
     let b = this.map.getBounds();
     return new MapBounds(b._southWest.lat, b._southWest.lng,
       b._northEast.lat, b._northEast.lng);
@@ -165,9 +169,9 @@ export class MapaComponent implements OnInit {
   prepareMap() {
     var baseLayer = L.tileLayer(
       'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> ',
-        maxZoom: this.conf.maxZoom
-      }
+      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> ',
+      maxZoom: this.conf.maxZoom
+    }
     );
 
     var cfg = {
@@ -184,6 +188,7 @@ export class MapaComponent implements OnInit {
 
 
     this.heatmapLayer = new HeatmapOverlay(cfg);
+
 
     this.map = new L.Map('map', {
       center: new L.LatLng(49.803, 15.496),
@@ -208,42 +213,42 @@ export class MapaComponent implements OnInit {
 
     //            this.map.on('click', _.bind(this.onMapClick, this));
     var mc = this;
-    this.map.on('zoomend', function() {
+    this.map.on('zoomend', function () {
       if (mc.solrService.route !== 'document') {
         mc.search();
       }
     });
-    this.map.on('dragend', function() {
+    this.map.on('dragend', function () {
       if (mc.solrService.route !== 'document') {
         mc.search();
       }
     });
-    this.map.on('fullscreenchange', function() {
+    this.map.on('fullscreenchange', function () {
       mc.onResize();
     });
-    this.map.on('resize', function() {
+    this.map.on('resize', function () {
       mc.onResize();
     });
 
-    this.locationFilter.on("change", function(e) {
+    this.locationFilter.on("change", function (e) {
       // Do something when the bounds change.
       // Bounds are available in `e.bounds`.
       mc.updateBounds(e.bounds);
     });
 
-    this.locationFilter.on("enabled", function() {
+    this.locationFilter.on("enabled", function () {
       // Do something when enabled.
       mc.updateBounds(mc.locationFilter.getBounds());
     });
 
-    this.locationFilter.on("disabled", function() {
+    this.locationFilter.on("disabled", function () {
       // Do something when disabled.
       mc.removeArea();
     });
 
 
 
-    if (this.solrService.mapArea !== null){
+    if (this.solrService.mapArea !== null) {
       let southWest = L.latLng(this.solrService.mapArea[0], this.solrService.mapArea[1]);
       let northEast = L.latLng(this.solrService.mapArea[2], this.solrService.mapArea[3]);
       let bounds = L.latLngBounds(southWest, northEast);
@@ -300,7 +305,7 @@ export class MapaComponent implements OnInit {
     this.markersList = [];
 
     this.renderSearchResults();
-
+    
     if (this.heatView) {
       var mapdata = [];
       var facet = this.solrService.facetHeatmaps['loc_rpt'];
@@ -342,12 +347,14 @@ export class MapaComponent implements OnInit {
         data: mapdata
       };
       this.heatmapLayer.setData(this.mapData);
+
     }
 
     this.overlayMaps = {
       "heat": this.heatmapLayer,
       "markers": this.markers
     };
+
   }
 
   getVisibleCount(): number {
@@ -376,6 +383,7 @@ export class MapaComponent implements OnInit {
 
   setView() {
     var count = this.getVisibleCount();
+
     if (count === 0) {
       this.heatView = false;
     } else {
@@ -383,6 +391,7 @@ export class MapaComponent implements OnInit {
         this.solrService.docsFoundInMapa > this.conf.displayRows &&
         count > this.conf.displayRows;
     }
+    
     if (this.heatView) {
 
       if (this.map.hasLayer(this.markers)) {
@@ -400,9 +409,11 @@ export class MapaComponent implements OnInit {
         this.map.removeLayer(this.heatmapLayer);
       }
     }
-    if (this.solrService.route === 'document' && this.docs.length === 1) {
+    if (this.solrService.route === 'document' && this.docs.length === 1 && this.docs[0]['pian_centroid_n']) {
       var ll = new L.LatLng(this.docs[0]['pian_centroid_n'][0], this.docs[0]['pian_centroid_e'][0]);
       this.map.panTo(ll);
+    // } else {
+    //   this.solrService.changeMapOpen();
     }
   }
 
@@ -437,9 +448,9 @@ export class MapaComponent implements OnInit {
     this.markersList = [];
   }
 
-  markerExists(pianId : string){
+  markerExists(pianId: string) {
     for (var i = 0; i < this.markersList.length; i++) {
-      if(pianId === this.markersList[i]['pianId']){
+      if (pianId === this.markersList[i]['pianId']) {
         return true;
       }
     }
@@ -447,14 +458,34 @@ export class MapaComponent implements OnInit {
   }
 
   addMarker(doc, idx) {
-    if (!doc.hasOwnProperty('pian')) {
-      return;
-    }
 
-    for (let i in doc['pian']) {
-      this.doAddMarker(doc, idx, doc['pian'][i]);
+    // samostatne nalezy maji jinak
+    if (doc.hasOwnProperty('centroid_n') && doc.hasOwnProperty('pian')) {
+      if (this.solrService.hasRights(doc['pristupnost'])){
+        var ngMapa = this;
+        let pianId = (JSON.parse(doc['pian'][0]))[0]['ident_cely'][0];
+        var marker = L.marker([doc['centroid_n'][0], doc['centroid_e'][0]], { pianId: pianId });
+        this.markersList.push(marker);
+        marker['pianId'] = pianId;
+
+        marker.on("popupopen", function () {
+          ngMapa.renderer.listen(document.getElementById(this['pianId']), 'click', (event) => {
+            ngMapa.solrService.setPianFilter(pianId);
+          });
+        });
+
+        marker.bindPopup(this.popUpHtml(pianId, doc['centroid_n'][0],
+        doc['centroid_e'][0], '')).addTo(this.markers);
+      }
+    } else if (doc.hasOwnProperty('pian')) {
+      for (let i in doc['pian']) {
+        this.doAddMarker(doc, idx, doc['pian'][i]);
+      }
+    } else {
+      //this.solrService.changeMapOpen();
     }
   }
+
 
   doAddMarker(doc, idx, serialized) {
     var ngMapa = this;
@@ -462,32 +493,32 @@ export class MapaComponent implements OnInit {
 
     for (let i in pians) {
       var pian = pians[i];
-      if(this.solrService.hasRights(pian['parent_pristupnost'])){
+      if (this.solrService.hasRights(pian['parent_pristupnost'])) {
         var pianId = pian['ident_cely'][0];
         if ((!this.pianFilter || (this.pianFilter === pianId)) &&
-            !this.markerExists(pianId)) {
-          var marker = L.marker([pian['centroid_n'][0], pian['centroid_e'][0]], { pianId: pianId});
+          !this.markerExists(pianId)) {
+          var marker = L.marker([pian['centroid_n'][0], pian['centroid_e'][0]], { pianId: pianId });
           this.markersList.push(marker);
           marker['pianId'] = pianId;
 
-          marker.on("popupopen", function() {
+          marker.on("popupopen", function () {
             ngMapa.renderer.listen(document.getElementById(this['pianId']), 'click', (event) => {
               ngMapa.solrService.setPianFilter(pianId);
             });
           });
 
           marker.bindPopup(this.popUpHtml(pianId, pian['centroid_n'][0],
-            pian['centroid_e'][0])).addTo(this.markers);
+            pian['centroid_e'][0], 'PIAN: ')).addTo(this.markers);
         }
       }
     }
   }
 
-  popUpHtml(ident_cely, centroid_n, centroid_e) {
-    return '<h4><a id="' + ident_cely + '">PIAN: ' +
-        ident_cely + ' (' +
-        this.solrService.formatNumber(centroid_n) + ' ' +
-        this.solrService.formatNumber(centroid_e) + ')</span></h4>';
+  popUpHtml(ident_cely, centroid_n, centroid_e, prefix) {
+    return '<h4><a id="' + ident_cely + '">' + prefix +
+      ident_cely + ' (' +
+      this.solrService.formatNumber(centroid_n) + ' ' +
+      this.solrService.formatNumber(centroid_e) + ')</span></h4>';
   }
 
 

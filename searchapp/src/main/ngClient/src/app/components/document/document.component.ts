@@ -19,34 +19,39 @@ export class DocumentComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('fileViewer') fileViewer: FileViewerComponent;
   paramsObserver: Subscription;
   
-  hasConfig : boolean = false;
-  
   docid : string;
   link: string;
+  now: Date;
+  notfound: boolean;
 
   constructor(private titleService: Title, 
    private activatedRoute: ActivatedRoute,
    public solrService: SolrService) { }
    
   ngOnInit() {
+    this.now = new Date();
+    this.docid = this.activatedRoute.snapshot.params.id;
+    
     this.titleService.setTitle('Digitální archiv AMČR | Dokument');
     this.solrService.configObservable.subscribe(val => {
-      this.hasConfig =  true; 
+      this.getData();
     });
     
     this.paramsObserver = this.activatedRoute.params.subscribe((params: Params) => {
       this.docid = params['id'];
-      if (this.hasConfig){
-        this.link = this.solrService.config['serverUrl'] + '/id/' + this.docid;
-        return this.solrService.getDocument(params['id']).subscribe();
-      } else {
-        return setTimeout(() => {
-          
-          this.link = this.solrService.config['serverUrl'] + '/id/' + this.docid;
-          return this.solrService.getDocument(params['id']).subscribe();
-        }, 100);
+      
+      if (this.solrService.config){
+        this.getData();
       }
       
+    });
+
+  }
+
+  getData() {
+    this.link = this.solrService.config['serverUrl'] + '/id/' + this.docid;
+    return this.solrService.getDocument(this.docid).subscribe(res => {
+      this.notfound = this.solrService.docs.length === 0;
     });
 
   }
@@ -72,8 +77,37 @@ export class DocumentComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onViewFile(doc) {
-    console.log(this.fileViewer);
+    // console.log(this.fileViewer);
     this.fileViewer.openModal(doc);
+  }
+  
+  organizace(result) {
+    if (result.hasOwnProperty('organizace')) {
+      let os = [];
+      let ret = "";
+      for (let idx = 0; idx < result['organizace'].length; idx++) {
+        let org = result['organizace'][idx];
+        let o = org ? this.solrService.getTranslation(org, 'organizace') : '';
+        if (os.indexOf(o) < 0 && o.trim() !== '') {
+          os.push(o);
+
+          if (idx > 0) {
+            ret += ', ';
+          }
+          ret += o;
+        }
+
+      }
+      return ret;
+    } else {
+      return "";
+    }
+
+  }
+
+  capitalFirst(heslo: string, heslar: string) {
+    let ret = this.solrService.getTranslation(heslo, heslar);
+    return ret[0].toUpperCase() + ret.slice(1);
   }
 
 }

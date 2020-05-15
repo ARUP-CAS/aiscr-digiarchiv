@@ -7,18 +7,28 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
-
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.WritableRaster;
+import java.awt.image.ColorModel;
+import java.io.FileInputStream;
+import java.io.StringWriter;
 import java.util.Date;
+import javax.imageio.ImageReader;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.metadata.IIOMetadataFormatImpl;
+import javax.imageio.stream.ImageInputStream;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import net.coobird.thumbnailator.ThumbnailParameter;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  *
@@ -27,62 +37,6 @@ import org.json.JSONException;
 public class ImageSupport {
 
   public static final Logger LOGGER = Logger.getLogger(ImageSupport.class.getName());
-
-  private static String resize(String outputFile, BufferedImage sourceImage, int t_width, int t_height) {
-
-    try {
-      if (sourceImage == null) {
-
-        LOGGER.log(Level.WARNING, "Cannot read image");
-        return "Cannot read image";
-      }
-
-      int width = sourceImage.getWidth();
-      int height = sourceImage.getHeight();
-
-      if (width > height) {
-        float extraSize = height - t_height;
-        float percentHight = (extraSize / height) * 100;
-        float percentWidth = width - ((width / t_width) * percentHight);
-        BufferedImage img = new BufferedImage((int) percentWidth, t_height, BufferedImage.TYPE_INT_RGB);
-        Image scaledImage = sourceImage.getScaledInstance((int) percentWidth, t_height, Image.SCALE_SMOOTH);
-        img.createGraphics().drawImage(scaledImage, 0, 0, null);
-        BufferedImage img2;// = new BufferedImage(100, 100 ,BufferedImage.TYPE_INT_RGB);
-        img2 = img.getSubimage((int) ((percentWidth - 100) / 2), 0, t_width, t_height);
-
-        ImageIO.write(img2, "jpg", new File(outputFile));
-
-        img.flush();
-        img = null;
-        img2.flush();
-        img2 = null;
-      } else {
-        float extraSize = width - t_width;
-        float percentWidth = (extraSize / width) * 100;
-        float percentHight = height - ((height / t_height) * percentWidth);
-        BufferedImage img = new BufferedImage(t_width, (int) percentHight, BufferedImage.TYPE_INT_RGB);
-        Image scaledImage = sourceImage.getScaledInstance(t_width, (int) percentHight, Image.SCALE_SMOOTH);
-        img.createGraphics().drawImage(scaledImage, 0, 0, null);
-        BufferedImage img2;// = new BufferedImage(100, 100 ,BufferedImage.TYPE_INT_RGB);
-        img2 = img.getSubimage(0, (int) ((percentHight - 100) / 2), t_width, t_height);
-
-        ImageIO.write(img2, "jpg", new File(outputFile));
-
-        img.flush();
-        img = null;
-        img2.flush();
-        img2 = null;
-      }
-      sourceImage.flush();
-      sourceImage = null;
-      return outputFile;
-    } catch (Exception ex) {
-
-      LOGGER.log(Level.SEVERE, "Error creating thumb {0}, ", outputFile);
-      LOGGER.log(Level.SEVERE, null, ex);
-      return null;
-    }
-  }
 
   public static boolean thumbExists(String f) {
 
@@ -94,8 +48,8 @@ public class ImageSupport {
     String dest = getDestDir(f);
     return (new File(dest)).exists();
   }
-  
-  public static String getDestDir(String f){
+
+  public static String getDestDir(String f) {
     try {
       Options opts = Options.getInstance();
       String destDir = opts.getString("thumbsDir");
@@ -111,7 +65,6 @@ public class ImageSupport {
       }
 
       //new File(destDir + sb.toString()).mkdirs();
-
       return destDir + sb.toString();
     } catch (IOException | JSONException ex) {
       LOGGER.log(Level.SEVERE, null, ex);
@@ -120,40 +73,41 @@ public class ImageSupport {
   }
 
   public static String makeDestDir(String f) {
-   
-      String destDir = getDestDir(f);
 
-      new File(destDir).mkdirs();
+    String destDir = getDestDir(f);
 
-      return destDir;
+    new File(destDir).mkdirs();
+
+    return destDir;
   }
-  
-    public static String thumbnailzeImg(File f, String id, boolean onlyThumbs) {
 
-        String outputFile = getDestDir(id) + id;
-        try {
-            BufferedImage srcImage = ImageIO.read(f);
-            Options opts = Options.getInstance();
-            
-            makeDestDir(id);
-            int t_width = opts.getInt("thumbWidth", 100);
-            int t_height = opts.getInt("thumbHeight", 100);
+  public static String thumbnailzeImg(File f, String id, boolean onlyThumbs) {
 
-            resizeAndCropWithThumbnailator(srcImage, t_width, t_height, new File(outputFile + "_thumb.jpg"));
-            
-            if(!onlyThumbs){
-                int max = opts.getInt("mediumHeight", 1000);
-                resizeWithThumbnailator(srcImage, max, max, new File(outputFile + "_medium.jpg"));
-            }
+    String outputFile = getDestDir(id) + id;
 
-            return outputFile;
-        } catch (Exception ex) {
+    try {
+      BufferedImage srcImage = ImageIO.read(f);
+      Options opts = Options.getInstance();
 
-            LOGGER.log(Level.SEVERE, "Error creating thumb {0}, ", outputFile);
-            LOGGER.log(Level.SEVERE, null, ex);
-            return null;
-        }
+      makeDestDir(id);
+      int t_width = opts.getInt("thumbWidth", 100);
+      int t_height = opts.getInt("thumbHeight", 100);
+
+      resizeAndCropWithThumbnailator(srcImage, t_width, t_height, new File(outputFile + "_thumb.jpg"), getImageType(f, srcImage));
+
+      if (!onlyThumbs) {
+        int max = opts.getInt("mediumHeight", 1000);
+        resizeWithThumbnailator(srcImage, max, max, new File(outputFile + "_medium.jpg"), getImageType(f, srcImage));
+      }
+
+      return outputFile;
+    } catch (Exception ex) {
+
+      LOGGER.log(Level.SEVERE, "Error creating thumb {0}, ", outputFile);
+      LOGGER.log(Level.SEVERE, null, ex);
+      return null;
     }
+  }
 
   public static void writeSkipped(int page, String id, String size) {
     String d = new Date().toString();
@@ -174,41 +128,123 @@ public class ImageSupport {
     }
   }
 
-  public static void resizeAndCropWithThumbnailator(BufferedImage srcImage, int w, int h, File dest) {
-        try {
-                Thumbnails.of(srcImage)
-                        .size(w, h)
-                        .crop(Positions.CENTER)
-                        .imageType(getImageType(srcImage))
-                        .outputFormat("jpg")
-                        .toFile(dest);
-        } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Error in image resizer:", ex);
-        }
+  public static void resizeAndCropWithThumbnailator(BufferedImage srcImage, int w, int h, File dest, int imageType) {
+    LOGGER.log(Level.INFO, "generating {0}", dest.getAbsoluteFile());
+    try {
+      Thumbnails.of(srcImage)
+              .size(w, h)
+              .crop(Positions.CENTER)
+              .imageType(imageType)
+              .outputFormat("jpg")
+              .toFile(dest);
+    } catch (Exception ex) {
+      LOGGER.log(Level.SEVERE, "Error in image resizer:", ex);
     }
-  
-  public static void resizeWithThumbnailator(BufferedImage srcImage, int w, int h, File f) {
-        byte[] retval = null;
-        try {
+  }
+
+  public static void resizeWithThumbnailator(BufferedImage srcImage, int w, int h, File f, int imageType) {
+    byte[] retval = null;
+    try {
 //                ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-                Thumbnails.of(srcImage)
-                        .size(w, h)
-                        .imageType(getImageType(srcImage))
-                        .outputFormat("jpg")
-                        .toFile(f);
+      Thumbnails.of(srcImage)
+              .size(w, h)
+              .imageType(imageType)
+              .outputFormat("jpg")
+              .toFile(f);
 //                retval = os.toByteArray();
 //                os.close();
-            
-        } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, "Error in image resizer:", ex);
-        }
-//        return retval;
-    }
 
-  private static int getImageType(BufferedImage img) {
-    WritableRaster raster = img.getRaster();
-    int elemCount = raster.getNumDataElements();
-    return (elemCount == 1) ? BufferedImage.TYPE_BYTE_GRAY : ThumbnailParameter.ORIGINAL_IMAGE_TYPE;
+    } catch (Exception ex) {
+      LOGGER.log(Level.SEVERE, "Error in image resizer:", ex);
+    }
+//        return retval;
+  }
+
+  public static int getImageType(BufferedImage img) {
+
+//    WritableRaster raster = img.getRaster();
+//    int elemCount = raster.getNumDataElements();
+//    return (elemCount == 1) ? BufferedImage.TYPE_BYTE_GRAY : ThumbnailParameter.ORIGINAL_IMAGE_TYPE;
+    return (img.getColorModel().getPixelSize() == 8) ? BufferedImage.TYPE_BYTE_GRAY : ThumbnailParameter.ORIGINAL_IMAGE_TYPE;
+  }
+
+  private static int getImageType(File f, BufferedImage img) {
+
+//    WritableRaster raster = img.getRaster();
+//    int elemCount = raster.getNumDataElements();
+    //System.out.println(elemCount);
+//    return (elemCount == 1) ? BufferedImage.TYPE_BYTE_GRAY : ThumbnailParameter.ORIGINAL_IMAGE_TYPE;
+//    System.out.println(img);
+//    ColorModel cm = img.getColorModel();
+//    System.out.println(cm);
+//    System.out.println(cm.getColorSpace().getType());
+//    return (img.getColorModel().getPixelSize() == 8) ? BufferedImage.TYPE_BYTE_GRAY : ThumbnailParameter.ORIGINAL_IMAGE_TYPE;
+    //return (isGray(f, img)) ? BufferedImage.TYPE_BYTE_GRAY : ThumbnailParameter.ORIGINAL_IMAGE_TYPE;
+    return (isGray(f, img)) ? BufferedImage.TYPE_BYTE_GRAY : BufferedImage.TYPE_INT_RGB;
+  }
+
+  private static boolean isGray(File f, BufferedImage img) {
+    if (img.getColorModel().getPixelSize() > 8) {
+      return false;
+    }
+    try (ImageInputStream input = ImageIO.createImageInputStream(new FileInputStream(f))) {
+      ImageReader reader = ImageIO.getImageReaders(input).next(); // Assumes PNGImageReader is always there
+      reader.setInput(input);
+
+      IIOMetadata metadata = reader.getImageMetadata(0);
+//      Node nativeTree = metadata.getAsTree(metadata.getNativeMetadataFormatName());
+      Node standardTree = metadata.getAsTree(IIOMetadataFormatImpl.standardMetadataFormatName);
+
+//      StringWriter writer = new StringWriter();
+//      Transformer transformer = TransformerFactory.newInstance().newTransformer();
+//      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+//
+//      transformer.transform(new DOMSource(nativeTree), new StreamResult(writer));
+//      String xml = writer.toString();
+//      System.out.println(xml);
+//      
+//      writer = new StringWriter();
+//      transformer.transform(new DOMSource(standardTree), new StreamResult(writer));
+//      xml = writer.toString();
+//      System.out.println(xml);
+      NodeList nodes = standardTree.getFirstChild().getChildNodes();
+      for (int i = 0; i < nodes.getLength(); i++) {
+        Node n = nodes.item(i);
+        switch (n.getNodeName()) {
+          case "ColorSpaceType":
+            if ("GRAY".equals(n.getAttributes().getNamedItem("name").getNodeValue())) {
+              // System.out.println("IS GRAY");
+              return true;
+            }
+            break;
+          case "Palette":
+            // Has Pallete. Should test if all values are grays
+            NodeList paletteEntries = n.getChildNodes();
+            // System.out.println(paletteEntries.getLength());
+            for (int j = 0; j < paletteEntries.getLength(); j++) {
+              Node pe = paletteEntries.item(j);
+              // System.out.println(pe.getNodeName());
+              if ("PaletteEntry".equals(pe.getNodeName())) {
+                String red = pe.getAttributes().getNamedItem("red").getNodeValue();
+                String green = pe.getAttributes().getNamedItem("green").getNodeValue();
+                String blue = pe.getAttributes().getNamedItem("blue").getNodeValue();
+                // System.out.println(red + ", " + green + ", " + blue);
+                if (!red.equals(blue) || !red.equals(green)) {
+                  System.out.println("NOT GRAY");
+                  return false;
+                }
+              }
+            }
+            System.out.println("IS GRAY");
+            return true;
+          default:
+        }
+      }
+      // System.out.println(standardTree.getFirstChild().getFirstChild().getAttributes().getNamedItem("name").getNodeValue());
+    } catch (Exception ex) {
+      LOGGER.log(Level.SEVERE, null, ex);
+    }
+    return false;
   }
 }

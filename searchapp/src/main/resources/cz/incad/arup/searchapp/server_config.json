@@ -103,6 +103,10 @@
     "plán sondy": "mplany",
     "plán objektu": "mplany",
     "mapa": "mplany",
+    
+    "3D – textura": "ddata3d",
+    "3D – rekonstrukce": "ddata3d",
+    "3D – dokumentace": "ddata3d",
     "-": "neuvedeno"
   },
   "kategorie": {
@@ -219,7 +223,8 @@
     "komponenta",
     "externi_zdroj",
     "let",
-    "dokument"
+    "dokument",
+    "pas"
   ],
   "csvRelationTables": [
     "vazba_projekt_akce",
@@ -302,7 +307,8 @@
       "rok_od",
       "rok_do",
       "osoby",
-      "datum_vzniku"
+      "datum_vzniku",
+      "duveryhodnost"
       
     ],
     "komponenta": [
@@ -443,6 +449,9 @@
     "1",
     "3"
   ],
+  "csvStavyPas": [
+    "4"
+  ],
   "heslare": [
     "organizace",
     "uzivatele",
@@ -500,5 +509,6 @@
     "druh_lokality_prvni",
     "druh_lokality_druha"
 
-  ]
+  ],
+  "pasSecuredFields": ["lokalizace", "katastr"]
 }

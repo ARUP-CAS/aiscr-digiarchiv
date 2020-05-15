@@ -389,6 +389,8 @@ export class SolrService implements OnDestroy {
 
               } else if (p === 'adv') {
                 this.setConditionsFromUrl(param.split(','));
+              } else if (this.config.urlFields.indexOf(p) < 0) {
+                // Ignore this param
               } else {
               
                 let f = new Filter();
@@ -438,6 +440,8 @@ export class SolrService implements OnDestroy {
             } else {
               if (p === 'adv') {
                 this.setConditionsFromUrl(param);
+              } else if (this.config.urlFields.indexOf(p) < 0) {
+                // Ignore this param
               } else {
                 let f = new Filter();
                 f.field = p;
@@ -583,8 +587,8 @@ export class SolrService implements OnDestroy {
     this.itemView = 'default';
     this.mapOpen = true;
     this.shouldPrint = print;
-    this.router.navigate(['/id', id]);
     this._routeChanged.next(this.route);
+    this.router.navigate(['/id', id]);
   }
 
   setUrl(route: string) {
@@ -878,7 +882,7 @@ export class SolrService implements OnDestroy {
   /* Called in pagination when page changes */
   setStartPage(page: number) {
     this.start = (page - 1) * this.rows;
-    this.search();
+    this.search(true);
   }
 
   /* Search methods */
@@ -977,7 +981,9 @@ export class SolrService implements OnDestroy {
           }
           params.append('fq', fqValue);
         } else if (name.toString() === 'q') {
-          params.set('q', this.q);
+          const fullText = this.config['logged'] ? 'full_text_logged' : 'full_text_notlogged';
+          params.set('q',  this.q);
+          params.set('df', fullText);
         } else {
           params.append('fq', this.filters[f].queryValue);
         }
@@ -996,7 +1002,10 @@ export class SolrService implements OnDestroy {
     return params;
   }
 
-  search() {
+  search(keepStart : boolean = false) {
+    if (!keepStart) {
+      this.start = 0;
+    }
     this.startProgress();
     this.docs = [];
     var url = this.baseUrl('core');

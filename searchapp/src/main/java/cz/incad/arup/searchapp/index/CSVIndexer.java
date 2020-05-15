@@ -5,6 +5,7 @@ import cz.incad.FormatUtils;
 import cz.incad.arup.searchapp.I18n;
 import cz.incad.arup.searchapp.Options;
 import cz.incad.arup.searchapp.imaging.ImageSupport;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -13,13 +14,15 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.csv.CSVFormat;
@@ -29,10 +32,13 @@ import org.apache.commons.io.FileUtils;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -56,6 +62,9 @@ public class CSVIndexer {
   ArrayList<String> csvExcludeRelations;
   ArrayList<String> csvStavyAkce;
   ArrayList<String> csvStavyLokalita;
+  ArrayList<String> csvStavyPas;
+
+  Map<String, String> obdobi_poradi;
 
   public CSVIndexer() throws IOException {
 
@@ -75,6 +84,11 @@ public class CSVIndexer {
     csvStavyLokalita = new ArrayList<>();
     for (int i = 0; i < opts.getJSONArray("csvStavyLokalita").length(); i++) {
       csvStavyLokalita.add(opts.getJSONArray("csvStavyLokalita").getString(i));
+    }
+
+    csvStavyPas = new ArrayList<>();
+    for (int i = 0; i < opts.getJSONArray("csvStavyPas").length(); i++) {
+      csvStavyPas.add(opts.getJSONArray("csvStavyPas").getString(i));
     }
   }
 
@@ -115,6 +129,7 @@ public class CSVIndexer {
       ret.put("relations", indexSource(relationsClient, opts.getJSONArray("csvRelationTables"), null, false));
       ret.put("tables", indexSource(exportClient, opts.getJSONArray("csvTables"), "ident_cely", false));
       ret.put("dokuments", indexSource(dokumentClient, new JSONArray().put("dokument"), "ident_cely", true));
+      ret.put("pas", indexSource(dokumentClient, new JSONArray().put("pas"), "ident_cely", true));
 
       closeClients();
 
@@ -137,9 +152,12 @@ public class CSVIndexer {
       ret.put("errors msgs", ja);
       String thesauriDir = opts.getString("thesauriDir");
       File dir = new File(thesauriDir);
+      LOGGER.log(Level.INFO, "indexing from {0}", thesauriDir);
       for (File file : dir.listFiles()) {
         LOGGER.log(Level.INFO, "indexing from {0}", file.getName());
-        Reader in = new FileReader(file);
+        // Reader in = new FileReader(file);
+        InputStreamReader in = new InputStreamReader(new FileInputStream(file), Charset.forName("UTF-8"));
+        // Reader in = new FileReader(file, Charset.forName("UTF-8")); 
         //readOne( , uniqueid, "", translationsClient, ret, hasRelations);
 
         Date tstart = new Date();
@@ -186,7 +204,6 @@ public class CSVIndexer {
           typeJson.put("ellapsed time", FormatUtils.formatInterval(tend.getTime() - tstart.getTime()));
           ret.put(file.getName(), typeJson).put("docs indexed", success);
         } finally {
-
           parser.close();
         }
 
@@ -216,6 +233,7 @@ public class CSVIndexer {
         SolrQuery query = new SolrQuery();
         query.setQuery("dokument:\"" + uniqueid + "\"");
         query.setFilterQueries("doctype:\"extra_data\"");
+        query.setRows(100);
         //JSONObject resp = SolrIndex.json(query, "relations/");
         //doc.addField("extra_data", resp.getJSONObject("response").getJSONArray("docs"));
         SolrDocumentList docs = relationsClient.query(query).getResults();
@@ -226,7 +244,7 @@ public class CSVIndexer {
             addFields(doc, qdoc, "extra_data");
           }
         }
-        
+
         if (doc.containsKey("let")) {
           String let = (String) doc.getFieldValue("let");
           getLet(let, doc);
@@ -235,11 +253,57 @@ public class CSVIndexer {
         getOdkaz(uniqueid, doc);
         getTvar(uniqueid, doc);
         getJednotkaDokument(uniqueid, doc);
+
       } catch (IOException | SolrServerException ex) {
         LOGGER.log(Level.SEVERE,
                 "Error adding relations,\n uniqueid: {0} \n doctype: {1} \n doc {2}",
                 new Object[]{uniqueid, doctype, doc});
         LOGGER.log(Level.SEVERE, null, ex);
+      }
+    } else if (doctype.equals("pas")) {
+
+      try {
+        //add soubory to samostatny_nalez
+        SolrQuery query = new SolrQuery();
+
+        query.setQuery("samostatny_nalez:\"" + uniqueid + "\"");
+        query.setFilterQueries("doctype:\"soubor\"");
+        query.setRows(100);
+        JSONObject resp = SolrIndex.json(query, "relations/");
+        //LOGGER.log(Level.INFO, resp.getJSONObject("response").getJSONArray("docs").toString());
+        if (resp.getJSONObject("response").getJSONArray("docs").length() > 0) {
+          doc.addField("soubor", resp.getJSONObject("response").getJSONArray("docs").toString());
+
+          String filepath = resp.getJSONObject("response").getJSONArray("docs").getJSONObject(0).optJSONArray("filepath").getString(0);
+          String dest = ImageSupport.getDestDir(filepath);
+          String fname = dest + filepath + "_thumb.jpg";
+
+          //LOGGER.log(Level.INFO, fname);
+          doc.addField("hasThumb", new File(fname).exists() || new File(dest + "_thumb.jpg").exists());
+
+        } else {
+          doc.addField("hasThumb", true);
+        }
+      } catch (IOException ex) {
+        LOGGER.log(Level.SEVERE,
+                "Error adding files,\n uniqueid: {0} \n doctype: {1} \n doc {2}",
+                new Object[]{uniqueid, doctype, doc}); 
+        LOGGER.log(Level.SEVERE, null, ex);
+      }
+    }
+  }
+
+  private void addSearchFields(SolrInputDocument idoc, String doctype) {
+    if (doctype.equals("dokument") || doctype.equals("pas")) {
+      List<String> excludePas = Arrays.asList(opts.getStrings("pasSecuredFields"));
+      Object[] fields = idoc.getFieldNames().toArray();
+      String pristupnost = (String) idoc.getFieldValue("pristupnost");
+      for (Object f : fields) {
+        String s = (String) f;
+        idoc.addField("full_text_logged", idoc.getFieldValues(s));
+        if (!"pas".equals(doctype) || !excludePas.contains(s) || "A".equals(pristupnost)) {
+          idoc.addField("full_text_notlogged", idoc.getFieldValues(s));
+        }
       }
     }
   }
@@ -314,8 +378,10 @@ public class CSVIndexer {
       } else {
         for (SolrDocument doc : docs) {
           //getNeidentAkce(idoc, doc.getFirstValue("ident_cely").toString());
-          String childid = doc.getFirstValue("vazba").toString();
-          getChilds(idoc, childid);
+          if (doc.getFirstValue("vazba") != null) {
+            String childid = doc.getFirstValue("vazba").toString();
+            getChilds(idoc, childid);
+          }
           getKomponentaDokumentu(idoc, doc.getFirstValue("ident_cely").toString());
         }
       }
@@ -679,15 +745,16 @@ public class CSVIndexer {
       for (final CSVRecord record : parser) {
         try {
           SolrInputDocument doc = parseCsvLine(header, record, uniqueField, doctype, hasRelations);
-
-          docs.add(doc);
-          tsuccess++;
-          success++;
-          if (success % 500 == 0) {
-            sclient.add(docs);
-            sclient.commit();
-            docs.clear();
-            LOGGER.log(Level.INFO, "Indexed {0} docs", success);
+          if (doc != null) {
+            docs.add(doc);
+            tsuccess++;
+            success++;
+            if (success % 500 == 0) {
+              sclient.add(docs);
+              sclient.commit();
+              docs.clear();
+              LOGGER.log(Level.INFO, "Indexed {0} docs", success);
+            }
           }
         } catch (Exception ex) {
           terrors++;
@@ -728,16 +795,30 @@ public class CSVIndexer {
         continue;
       }
       //Vyjimka pro autoru. Muze mit oddelovac ;
-      if (field.equals("autor")) {
-        ArrayList<String> values = new ArrayList<String>(Arrays.asList(record.get(field).split(";")));
-        doc.addField("autor", values);
-        doc.addField("autor_sort", values.get(0));
-      } else if (field.equals("vedouci_akce") || field.equals("vedouci_akce_ostatni")) {
-        ArrayList<String> values = new ArrayList<String>(Arrays.asList(record.get(field).split(";")));
-        doc.addField(field, values);
-      } else {
-        doc.addField(field, record.get(entry.getKey()));
+      switch (field) {
+        case "autor":
+          {
+            ArrayList<String> values = new ArrayList<>(Arrays.asList(record.get(field).split(";")));
+            doc.addField("autor", values);
+            doc.addField("autor_sort", values.get(0));
+            break;
+          }
+        case "vedouci_akce":
+        case "vedouci_akce_ostatni":
+          {
+            ArrayList<String> values = new ArrayList<>(Arrays.asList(record.get(field).split(";")));
+            doc.addField(field, values);
+            break;
+          }
+        default:
+          doc.addField(field, record.get(entry.getKey()));
+          break;
       }
+    }
+    
+    if ("1".equals(doc.getFieldValue("stav")) && "dokument".equals(doctype)) {
+      // Přestat indexovat dokumenty ve stavu 1 (nerevidováno) #160
+      return null;
     }
 
     String uniqueid;
@@ -752,13 +833,110 @@ public class CSVIndexer {
       addRelations(uniqueid, doctype, doc);
     }
     if (doc.containsKey("pian_centroid_e")) {
-
       String loc = doc.getFieldValue("pian_centroid_n") + "," + doc.getFieldValue("pian_centroid_e");
       doc.addField("loc", loc);
       doc.addField("loc_rpt", loc);
     }
-    return doc;
+    
+        
+    // Issue #158. Pro 3D pouzit easting a northing pole z extra_data
+    if ("3D".equals(doc.getFieldValue("rada")) && doc.containsKey("extra_data_easting")) {
+      String loc = doc.getFieldValue("extra_data_northing") + "," + doc.getFieldValue("extra_data_easting");
+      doc.addField("centroid_n", doc.getFieldValue("extra_data_northing"));
+        doc.addField("centroid_e", doc.getFieldValue("extra_data_easting"));
+      doc.addField("pian_centroid_n", doc.getFieldValue("extra_data_northing"));
+        doc.addField("pian_centroid_e", doc.getFieldValue("extra_data_easting"));
+        doc.addField("pian_ident_cely", uniqueid);
+        JSONObject pian =  new JSONObject()
+                .put("ident_cely", (new JSONArray()).put(uniqueid))
+                .put("parent_pristupnost", doc.getFieldValue("pristupnost"))
+                .put("centroid_n", (new JSONArray()).put(doc.getFieldValue("centroid_n")))
+                .put("centroid_e", (new JSONArray()).put(doc.getFieldValue("centroid_e")));
+        
+        doc.addField("pian", "["+pian.toString()+"]");
+        doc.addField("loc", loc);
+        doc.addField("loc_rpt", loc);
+    }
+        
+    addSearchFields(doc, doctype);
+    if (doctype.equals("pas")) {
+//      if (!csvStavyPas.contains(doc.getFieldValue("stav").toString())) {
+//        LOGGER.log(Level.FINE, "Skip doc as stav is {0}", doc.getFieldValue("stav"));
+//        return null;
+//      }
+      
+      doc.addField("katastr_pas", doc.getFieldValues("katastr"));
+      doc.removeField("katastr");
+      doc.addField("f_typ_dokumentu", "Samostatné nálezy");
+      doc.addField("komponenta_dokumentu_obdobi", doc.getFieldValue("obdobi"));
+      doc.addField("kategorie", "pas");
+      doc.addField("dokument_popis", doc.getFieldValue("lokalizace") + " " + doc.getFieldValue("poznamka"));
+      if (doc.getFieldValue("centroid_n") != null && !doc.getFieldValue("centroid_n").equals("")) {
+        String loc = doc.getFieldValue("centroid_n") + "," + doc.getFieldValue("centroid_e");
+        doc.addField("pian_centroid_n", doc.getFieldValue("centroid_n"));
+        doc.addField("pian_centroid_e", doc.getFieldValue("centroid_e"));
+        doc.addField("pian_ident_cely", uniqueid);
+        JSONObject pian =  new JSONObject()
+                .put("ident_cely", (new JSONArray()).put(uniqueid))
+                .put("parent_pristupnost", doc.getFieldValue("pristupnost"))
+                .put("centroid_n", (new JSONArray()).put(doc.getFieldValue("centroid_n")))
+                .put("centroid_e", (new JSONArray()).put(doc.getFieldValue("centroid_e")));
+        
+        doc.addField("pian", "["+pian.toString()+"]");
+        doc.addField("loc", loc);
+        doc.addField("loc_rpt", loc);
+        
+      }
+    }
 
+    // Pridame pole pro adv search
+    if (doc.getFieldValue("obdobi") != null && !doc.getFieldValue("obdobi").equals("")) {
+      doc.addField("obdobi_poradi", getObdobiPoradi((String) doc.getFieldValue("obdobi")));
+    }
+    if (doc.getFieldValue("specifikace") != null && !doc.getFieldValue("specifikace").equals("")) {
+      doc.addField("nalez_specifikace", doc.getFieldValue("specifikace"));
+    }
+    if (doc.getFieldValue("druh") != null && !doc.getFieldValue("druh").equals("")) {
+      doc.addField("druh_nalezu", doc.getFieldValue("druh"));
+    }
+    if (doc.getFieldValue("predano_organizace") != null && !doc.getFieldValue("predano_organizace").equals("")) {
+      doc.addField("organizace", doc.getFieldValue("predano_organizace"));
+    }
+    if (doc.getFieldValue("nalezce") != null && !doc.getFieldValue("nalezce").equals("")) {
+      doc.addField("adv_jmeno", doc.getFieldValue("nalezce"));
+    }
+
+    if (doc.getFieldValue("datum_nalezu") != null && !doc.getFieldValue("datum_nalezu").equals("")) {
+      doc.addField("datum", doc.getFieldValue("datum_nalezu"));
+    }
+
+    return doc;
+  }
+
+  private String getObdobiPoradi(String obdobi) {
+    if (obdobi_poradi == null) {
+      initObdobiPoradi();
+    }
+    return obdobi_poradi.get(obdobi.toLowerCase());
+  }
+
+  private void initObdobiPoradi() {
+    try (SolrClient solr = new HttpSolrClient.Builder(String.format("%s%s",
+            SolrIndex.host(),
+            "heslar/")).build()) {
+      obdobi_poradi = new HashMap<>();
+
+      SolrQuery query = new SolrQuery()
+              .setQuery("heslar_name:obdobi_druha")
+              .setRows(1000)
+              .setFields("poradi,nazev");
+      QueryResponse resp = solr.query(query);
+      for (SolrDocument doc : resp.getResults()) {
+        obdobi_poradi.put(((String) doc.getFieldValue("nazev")).toLowerCase(), "" + doc.getFieldValue("poradi"));
+      }
+    } catch (SolrServerException | IOException ex) {
+      LOGGER.log(Level.SEVERE, null, ex);
+    }
   }
 
   public JSONObject indexTable(String doctype) {
@@ -815,6 +993,37 @@ public class CSVIndexer {
     return ret;
   }
 
+  public JSONObject cleanPas() {
+    try {
+      dokumentClient = SolrIndex.getClient(opts.getString("dokumentsCore", "dokument/"));
+      dokumentClient.deleteByQuery("doctype:pas", 1);
+      dokumentClient.close();
+      return new JSONObject().put("message", "Pas cleaned");
+    } catch (IOException | JSONException | SolrServerException ex) {
+      LOGGER.log(Level.SEVERE, null, ex);
+      return new JSONObject().put("error", ex);
+    }
+  }
+
+  public JSONObject indexPas() {
+    JSONObject ret = new JSONObject();
+    try {
+
+      getClients();
+
+      success = 0;
+      errors = 0;
+      ret.put("pas", indexSource(dokumentClient, new JSONArray().put("pas"), "ident_cely", true));
+
+      closeClients();
+
+    } catch (Exception ex) {
+      LOGGER.log(Level.SEVERE, null, ex);
+      ret.put("error", ex);
+    }
+    return ret;
+  }
+
   public JSONObject indexDokument(String id) {
     getClients();
     JSONObject ret = new JSONObject();
@@ -839,11 +1048,90 @@ public class CSVIndexer {
           idoc.addField("loc", loc);
           idoc.addField("loc_rpt", loc);
         }
+        
+    // Issue #158. Pro 3D pouzit easting a northing pole z extra_data
+    
+    if ("3D".equals(idoc.getFieldValue("rada")) && idoc.containsKey("extra_data_easting") && !"".equals(idoc.getFieldValue("extra_data_easting")) ) {
+      String loc = idoc.getFieldValue("extra_data_northing") + "," + idoc.getFieldValue("extra_data_easting");
+      idoc.addField("centroid_n", idoc.getFieldValue("extra_data_northing"));
+        idoc.addField("centroid_e", idoc.getFieldValue("extra_data_easting"));
+      idoc.addField("pian_centroid_n", idoc.getFieldValue("extra_data_northing"));
+        idoc.addField("pian_centroid_e", idoc.getFieldValue("extra_data_easting"));
+        idoc.addField("pian_ident_cely", id);
+        JSONObject pian =  new JSONObject()
+                .put("ident_cely", (new JSONArray()).put(id))
+                .put("parent_pristupnost", idoc.getFieldValue("pristupnost"))
+                .put("centroid_n", (new JSONArray()).put(idoc.getFieldValue("centroid_n")))
+                .put("centroid_e", (new JSONArray()).put(idoc.getFieldValue("centroid_e")));
+        
+        idoc.addField("pian", "["+pian.toString()+"]");
+        idoc.addField("loc", loc);
+        idoc.addField("loc_rpt", loc);
+    }
         dokumentClient.add(idoc);
         dokumentClient.commit();
         LOGGER.log(Level.INFO, "Doc {0} indexed", id);
         ret.put(id, "success");
       }
+      closeClients();
+    } catch (Exception ex) {
+      LOGGER.log(Level.SEVERE, null, ex);
+      ret.put("error", ex);
+    }
+    return ret;
+  }
+
+  public JSONObject indexPasDokument(String id) {
+    getClients();
+    JSONObject ret = new JSONObject();
+    try {
+      SolrQuery query = new SolrQuery();
+      query.setQuery("ident_cely:\"" + id + "\"");
+      SolrDocumentList docs = exportClient.query(query).getResults();
+      if (docs.isEmpty()) {
+        LOGGER.log(Level.INFO, "Doc {0} not found", id);
+        ret.put(id, "not exists");
+      } else {
+        SolrInputDocument idoc = new SolrInputDocument();
+        addFields(idoc, docs.get(0), "pas", true);
+        idoc.removeField("indextime");
+        idoc.removeField("_version_");
+        idoc.removeField("_root_");
+        String uniqueid = "pas_" + id;
+        idoc.setField("uniqueid", uniqueid);
+        idoc.setField("doctype", "pas");
+
+        //idoc.addField("f_typ_dokumentu", "Samostatné nálezy");
+//        idoc.addField("kategorie", "pas");
+//        if (idoc.getFieldValue("geom_x") != null && !idoc.getFieldValue("geom_x").equals("")) {
+//          String loc = idoc.getFieldValue("geom_x") + "," + idoc.getFieldValue("geom_y");
+//          idoc.addField("pian_centroid_n", idoc.getFieldValue("geom_x"));
+//          idoc.addField("pian_centroid_e", idoc.getFieldValue("geom_y"));
+//          idoc.addField("pian_ident_cely", uniqueid);
+//          idoc.addField("pian", uniqueid);
+//          idoc.addField("loc", loc);
+//          idoc.addField("loc_rpt", loc);
+//        }
+        dokumentClient.add(idoc);
+        dokumentClient.commit();
+        LOGGER.log(Level.INFO, "Doc {0} indexed", id);
+        ret.put(id, "success");
+      }
+      closeClients();
+    } catch (Exception ex) {
+      LOGGER.log(Level.SEVERE, null, ex);
+      ret.put("error", ex);
+    }
+    return ret;
+  }
+
+  public JSONObject indexTables() {
+    JSONObject ret = new JSONObject();
+    try {
+      getClients();
+      success = 0;
+      errors = 0;
+      ret.put("tables", indexSource(exportClient, opts.getJSONArray("csvTables"), "ident_cely", false));
       closeClients();
     } catch (Exception ex) {
       LOGGER.log(Level.SEVERE, null, ex);

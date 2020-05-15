@@ -1,13 +1,36 @@
 <ul *ngIf="hasPagination" class="pagination app-pagination">
+  <li [class.disabled]="prevDisabled" (click)="goTo(1)">
+    <a aria-label="Previous" class="app-border-radius-left app-cursor-pointer">
+      <i class="fa fa-fast-backward" aria-hidden="true" style="padding-right: 0"></i>
+    </a>
+  </li>
   <li [class.disabled]="prevDisabled" (click)="prev()">
     <a aria-label="Previous" class="app-border-radius-left app-cursor-pointer">
-      <span aria-hidden="true">&laquo;</span>
+      <i class="fa fa-backward" aria-hidden="true" style="padding-right: 0"></i>
     </a>
   </li>
   <li *ngFor="let page of range" [class.active]="isActive(page)"><a (click)="goTo(page)" class="app-cursor-pointer">{{page}}</a></li>
   <li [class.disabled]="nextDisabled" (click)="next()">
     <a aria-label="Next" class="app-border-radius-right app-cursor-pointer">
-      <span aria-hidden="true">&raquo;</span>
+      <i class="fa fa-forward" aria-hidden="true" style="padding-right: 0"></i>
+    </a>
+  </li>
+  <li [class.disabled]="nextDisabled" (click)="goTo(solrService.totalPages)">
+    <a aria-label="Previous" class="app-border-radius-left app-cursor-pointer">
+      <i class="fa fa-fast-forward" aria-hidden="true" style="padding-right: 0"></i>
+    </a>
+  </li>
+
+  <li>
+    <input type="number" [(ngModel)]="jumpPage" class="app-border-radius-right " 
+    min="1" [max]="solrService.totalPages"
+    style="width: 60px;
+    height: 34px; text-align: right; padding: 2px;
+    float: left;
+    margin-left: 30px;
+    margin-right: 3px;" (keyup.enter)="jump();" />
+    <a aria-label="Přejít" class="app-border-radius-right app-cursor-pointer" (click)="jump()">
+      <span aria-hidden="true">{{ 'Přejít' | translate }}</span>
     </a>
   </li>
 </ul>

@@ -67,8 +67,8 @@ public class LoginServlet extends HttpServlet {
       out.print(e1.toString());
     }
   }
-  
-  public static String pristupnost(HttpSession session){
+
+  public static String pristupnost(HttpSession session) {
     JSONObject ses = (JSONObject) session.getAttribute("user");
     String userid = (String) session.getAttribute("userid");
     String pristupnost = "A";
@@ -91,11 +91,19 @@ public class LoginServlet extends HttpServlet {
           if (user != null) {
             AmcrAPI amcr = new AmcrAPI();
             jo = amcr.login(user, req.getParameter("pwd"));
+            if (jo.has("error")) {
+              if (req.getParameter("json.wrf") != null) {
+                out.println(req.getParameter("json.wrf") + "(" + jo.toString() + ")");
+              } else {
+                out.println(jo.toString(2));
+              }
+              return;
+            }
             Iterator it = jo.keys();
-            if(it.hasNext()){
+            if (it.hasNext()) {
               String userid = (String) it.next();
               int auth = jo.getJSONObject(userid).getInt("auth");
-              
+
 //Jméno uživ. skupiny    kód   kód binárně  Označení v hesláři Přístupnost
 //anonym                  0     0                     A 
 //badatel                 1     1                     B 
@@ -103,24 +111,23 @@ public class LoginServlet extends HttpServlet {
 //archivář                16    10000                 D
 //administrátor           4     100                   E
 // ((auth & kodSkupinyBinarne) == kodSkupinyBinarne)
-
-              if(((auth & 4) == 4)){
+              if (((auth & 4) == 4)) {
                 jo.getJSONObject(userid).put("pristupnost", "E");
-              }else if(((auth & 16) == 16)){
+              } else if (((auth & 16) == 16)) {
                 jo.getJSONObject(userid).put("pristupnost", "D");
-              }else if(((auth & 2) == 2)){
+              } else if (((auth & 2) == 2)) {
                 jo.getJSONObject(userid).put("pristupnost", "C");
-              }else if(((auth & 1) == 1)){
+              } else if (((auth & 1) == 1)) {
                 jo.getJSONObject(userid).put("pristupnost", "B");
-              }else if(((auth) == 0)){
+              } else if (((auth) == 0)) {
                 jo.getJSONObject(userid).put("pristupnost", "A");
               }
-              
-            LOGGER.log(Level.FINE, jo.toString(2));
+
+              LOGGER.log(Level.FINE, jo.toString(2));
               req.getSession().setAttribute("user", jo);
               req.getSession().setAttribute("userid", userid);
             }
-            
+
           } else {
             req.getSession().setAttribute("user", null);
             req.getSession().setAttribute("userid", null);
@@ -130,6 +137,7 @@ public class LoginServlet extends HttpServlet {
         } catch (Exception ex) {
           req.getSession().setAttribute("user", null);
           req.getSession().setAttribute("userid", null);
+          // LOGGER.log(Level.SEVERE, null, ex);
           jo.put("error", ex.toString());
         }
 
@@ -171,7 +179,7 @@ public class LoginServlet extends HttpServlet {
         JSONObject jo = new JSONObject();
         try {
           jo = (JSONObject) req.getSession().getAttribute("user");
-          if(jo == null){
+          if (jo == null) {
             jo = new JSONObject();
             jo.put("error", "nologged");
           }

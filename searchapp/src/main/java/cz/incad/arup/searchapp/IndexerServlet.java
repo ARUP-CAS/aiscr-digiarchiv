@@ -5,17 +5,12 @@
  */
 package cz.incad.arup.searchapp;
 
-import cz.incad.FormatUtils;
-import cz.incad.arup.searchapp.imaging.ImageSupport;
 import cz.incad.arup.searchapp.index.AmcrAPI;
 import cz.incad.arup.searchapp.index.CSVIndexer;
 import cz.incad.arup.searchapp.index.Indexer;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -24,7 +19,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -190,7 +184,10 @@ public class IndexerServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
         JSONObject json = new JSONObject();
         try {
-
+          if (Boolean.parseBoolean(req.getParameter("clean"))) {
+            Indexer indexer = new Indexer();
+            json.put("clean heslare", indexer.cleanHeslare());
+          }
           Indexer indexer = new Indexer();
 
           JSONObject r = indexer.indexHeslare();
@@ -211,7 +208,7 @@ public class IndexerServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
         JSONObject json = new JSONObject();
         try {
-          
+
           Indexer indexer = new Indexer();
           JSONObject r = indexer.clean();
 
@@ -238,18 +235,22 @@ public class IndexerServlet extends HttpServlet {
 
           Options.resetInstance();
           JSONObject r = new JSONObject();
-          
-          if(Boolean.parseBoolean(req.getParameter("clean"))){
+
+          if (req.getParameter("clean") == null || Boolean.parseBoolean(req.getParameter("clean"))) {
             Indexer indexer = new Indexer();
             r.put("clean", indexer.clean());
+            r.put("clean heslare", indexer.cleanHeslare());
           }
+
+          Indexer indexer = new Indexer();
+          r.put("heslare", indexer.indexHeslare());
+
           CSVIndexer csvindexer = new CSVIndexer();
           r.put("full", csvindexer.run());
-          
+
 //          Indexer indexer = new Indexer();
 //
 //          JSONObject r = indexer.indexExport();
-
           json.put("message", r);
         } catch (Exception ex) {
           json.put("error", ex.toString());
@@ -259,7 +260,7 @@ public class IndexerServlet extends HttpServlet {
           // shouldn't happen
           LOGGER.log(Level.WARNING, "indexing flag updates crossed");
         }
-        
+
         out.println(json.toString(2));
       }
     },
@@ -347,6 +348,28 @@ public class IndexerServlet extends HttpServlet {
         }
       }
     },
+    INDEX_CSV_PAS {
+      @Override
+      void doPerform(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        resp.setContentType("application/json;charset=UTF-8");
+
+        PrintWriter out = resp.getWriter();
+        JSONObject json = new JSONObject();
+        try {
+
+          Options.resetInstance();
+          CSVIndexer indexer = new CSVIndexer();
+          indexer.cleanPas();
+          JSONObject r = indexer.indexPas();
+
+          out.println(r.toString(2));
+        } catch (Exception ex) {
+          json.put("error", ex.toString());
+
+          out.println(json.toString(2));
+        }
+      }
+    },
     INDEX_DOKUMENT {
       @Override
       void doPerform(HttpServletRequest req, HttpServletResponse resp) throws Exception {
@@ -368,6 +391,27 @@ public class IndexerServlet extends HttpServlet {
         }
       }
     },
+    INDEX_PAS_DOKUMENT {
+      @Override
+      void doPerform(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        resp.setContentType("application/json;charset=UTF-8");
+
+        PrintWriter out = resp.getWriter();
+        JSONObject json = new JSONObject();
+        try {
+
+          Options.resetInstance();
+          CSVIndexer indexer = new CSVIndexer();
+          JSONObject r = indexer.indexPasDokument(req.getParameter("id"));
+
+          out.println(r.toString(2));
+        } catch (Exception ex) {
+          json.put("error", ex.toString());
+
+          out.println(json.toString(2));
+        }
+      }
+    },
     INDEX_CSV_TRANSLATIONS {
       @Override
       void doPerform(HttpServletRequest req, HttpServletResponse resp) throws Exception {
@@ -380,6 +424,27 @@ public class IndexerServlet extends HttpServlet {
           Options.resetInstance();
           CSVIndexer indexer = new CSVIndexer();
           JSONObject r = indexer.indexTranslations();
+
+          out.println(r.toString(2));
+        } catch (Exception ex) {
+          json.put("error", ex.toString());
+
+          out.println(json.toString(2));
+        }
+      }
+    },
+    INDEX_CSV_TABLES {
+      @Override
+      void doPerform(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        resp.setContentType("application/json;charset=UTF-8");
+
+        PrintWriter out = resp.getWriter();
+        JSONObject json = new JSONObject();
+        try {
+
+          Options.resetInstance();
+          CSVIndexer indexer = new CSVIndexer();
+          JSONObject r = indexer.indexTables();
 
           out.println(r.toString(2));
         } catch (Exception ex) {

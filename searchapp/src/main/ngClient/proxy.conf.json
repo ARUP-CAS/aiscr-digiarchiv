@@ -10,7 +10,7 @@
     "secure": false
   },
   
-  "/assets/**": {
+  "/_assets/**": {
     "target": "http://localhost:8082/assets/",
     "ignorePath": false,
     "logLevel": "debug",

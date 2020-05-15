@@ -3,6 +3,7 @@
   "usedFilters": "Použité filtry",
   "indexing in progress": "Probíhá aktualizace databáze. Vraťte se prosím později.",
   "q.placeholder": "Zadejte dotaz pro vyhledávání v dokumentech",
+  "q.tooltip": "Při zadávání víceslovných výrazů použijte uvozovky (např. \"hledaný výraz\" či \"hledaný-výraz\"). V opačném případě dojde k vyhledání všech výskytů dílčích užitých slov samostatně.",
   "advanced search": "Rozšířené vyhledávání",
   "close search": "Zavřít formulář",
   "search map": "Hledej na mapě",
@@ -12,6 +13,7 @@
   "Zobrazit detail": "Zobrazit detail",
   "Tisk dokumentu": "Tisk dokumentu",
   "Persistentní odkaz": "Persistentní odkaz",
+  "Dostupné z": "Dostupné z",
   "from": "od",
   "to": "do",
   "Texty": "Texty",
@@ -34,8 +36,16 @@
   "licence.licenced_under": "podléhá licenci",
   "licence.cc_by_nc": "Creative Commons Uveďte původ-Neužívejte komerčně 4.0 Mezinárodní (CC BY-NC 4.0)",
   "licence.data_and_metadata_usage": "Užití dat i metadat podléhá této licenci, pokud není explicitně stanoveno jinak.",
+  "license.record" : "AMČR: Záznam",
+  "Dokument": "Dokument",
+  "citation.work": "Archeologická mapa České republiky",
+  "citation.start": "Tento dokument podléhá licenci",
+  "citation.intro": "Dokument citujte jako",
+  "Citujte jako": "Citujte jako",
 
   "insuficient rights": "Zobrazení tohoto dokumentu je možné až po přihlášení uživatelským jménem a heslem. Účet lze snadno zaregistrovat pomocí webového formuláře dostupného přes tlačítko Přihlásit -> Registrovat uživatele.\nPokud jste přihlášeni ke svému účtu AMČR a dokument přesto není přístupný, značí to jednu z těchto variant:\n\n1) Dokument obsahuje citlivé údaje a jeho zveřejnění je omezeno.\n2) Držitel autorských práv nedal souhlas se zveřejněním dokumentu.\n3) Neuplynula ochranná lhůta 3 let od archivace dokumentu.\n\nV takovém případě se prosím obraťte na správce AMČR nebo na příslušnou organizaci s žádostí o zpřístupnění. Vaše žádost bude individuálně posouzena a vyřízena.",
+
+  "idnotfound": "Odkazovaný dokument se nepodařilo nalézt. Dokument mohl být odstraněn. V případě přetrvávajících problémů nás kontaktujte.",
 
   "facet": {
     "kategorie": "Typ dokumentu",
@@ -73,7 +83,9 @@
       "lfoto": "Letecké fotografie",
       "ddata": "Digitální data",
       "mplany": "Plány a mapy",
-      "neuvedeno": "Neuvedeno"
+      "ddata3d": "Knihovna 3D",
+      "neuvedeno": "Neuvedeno",
+      "pas": "Samostatné nálezy"
     }
   },
   "kategorie": {
@@ -82,7 +94,9 @@
     "lfoto": "Letecké fotografie",
     "ddata": "Digitální data",
     "mplany": "Plány a mapy",
-    "neuvedeno": "Neuvedeno"
+    "ddata3d": "Knihovna 3D",
+    "neuvedeno": "Neuvedeno",
+    "pas": "Samostatné nálezy"
   },
   "adv.add.condition": "Přidat další kritérium",
   "adv.sendQuery": "Odeslat dotaz",
@@ -408,6 +422,7 @@
   "Typ": "Typ",
   "Datum výzkumu": "Datum výzkumu",
   "Lokalizace": "Lokalizace",
+  "lokalizace": "Lokalizace",
   "Poznámka": "Poznámka",
   "Uložení nálezů": "Uložení nálezů",
   "výsledků": "výsledků",
@@ -445,6 +460,7 @@
   "Datum": "Datum",
   "Ident": "Ident",
   "Paginace": "Paginace",
+  "max page": "Poslední stránka je ",
 
   "Přejděte číslo stránky": "Přejděte číslo stránky",
   "stránka ze": "stránka ze",
@@ -458,6 +474,7 @@
   "Období": "Období",
   "Areál": "Areál",
 
+  "Uložení": "Uložení",
   "Lokalita": "Lokalita",
   "Druh lokality": "Druh lokality",
   "Název lokality": "Název lokality",
@@ -474,9 +491,17 @@
   "Materiál": "Materiál",
   "Řada": "Řada",
   "Popis dokumentu": "Popis dokumentu",
+  "Popis nálezu": "Popis nálezu",
+  "Ev. č": "Ev. č",
+  "Nález": "Nález",
+  "projekt_id": "Projekt id",
+  "pocet": "Počet",
+  "nalezove_okolnosti": "Okolnosti",
+  "hloubka": "Hloubka",
+  "poznamka": "Poznámka",
   "Přístupnost záznamu": "Přístupnost záznamu",
   "Popis obsahu": "Popis obsahu",
-  "Souřadnice utm": "Souřadnice utm",
+  "Souřadnice (WGS-84)": "Souřadnice (WGS-84)",
   "Zachovalost (náhrada)": "Zachovalost (náhrada)",
   "Varianty originálu": "Varianty originálu",
   "Odkaz": "Odkaz",
@@ -499,6 +524,7 @@
 
   "Počet akcí": "Počet akcí",
   "Počet nálezů": "Počet nálezů",
+
   "Počet lokalit": "Počet lokalit",
 
   "Správa dat, uživatelů a podpora pro oblast Čech": "Správa dat, uživatelů a podpora pro oblast Čech",

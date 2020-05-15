@@ -34,13 +34,14 @@ import {ResultsComponent,
     NeidentAkceComponent,
     PaginationComponent,
     ResultItemComponent,
+    ResultItemPasComponent,
     TimelineComponent,
     TvarComponent} from './components/+results/';
 import { FreeTextComponent } from './components/free-text/free-text.component';
     
     // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: Http) {
-  return new TranslateHttpLoader(http, '/assets/i18n/', '');
+  return new TranslateHttpLoader(http, '/i18n/', '.json');
 }
 
 
@@ -71,6 +72,7 @@ export function HttpLoaderFactory(http: Http) {
     NeidentAkceComponent,
     PaginationComponent,
     ResultItemComponent,
+    ResultItemPasComponent,
     TimelineComponent,
     TvarComponent,
     

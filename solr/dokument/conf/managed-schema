@@ -165,6 +165,8 @@
    -->
    
 
+   <field name="full_text_logged" type="text_general_cs" indexed="true" stored="false" multiValued="true" />
+   <field name="full_text_notlogged" type="text_general_cs" indexed="true" stored="false" multiValued="true" />
    <field name="text_all" type="text_general_cs" indexed="true" stored="false" multiValued="true" /> 
    
 

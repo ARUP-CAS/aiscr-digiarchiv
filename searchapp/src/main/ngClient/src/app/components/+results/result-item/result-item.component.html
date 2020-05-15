@@ -33,9 +33,24 @@
         <label>{{'Materiál' | translate}}:</label> {{result.material_originalu | translateHeslar: 'material_dokumentu'}} | 
         <label>{{'Řada' | translate}}:</label> {{result.rada}} | 
         <label>{{'Přístupnost' | translate}}:</label> {{result.pristupnost | translateHeslar: 'pristupnost'}}
+        
       </div>
+      <ng-container *ngIf="result.rada[0] !== '3D'">
         <div><label>{{'Organizace' | translate}}:</label> {{organizace()}}</div>
         <div><label>{{'Katastr (okres)' | translate}}:</label> {{okres()}}</div>
+        <div *ngIf="hasValue('popis')"><label>{{'Popis' | translate}}:</label> {{popisObsahuShort()}}</div>
+      </ng-container>
+      <ng-container *ngIf="result.rada[0] === '3D'">
+        <div>
+          <label>{{'Období' | translate}}:</label> <span *ngFor="let obdobi of result.komponenta_dokumentu_obdobi">{{'f_obdobi.' + obdobi | translate}}</span> |
+          <label>{{'Areál' | translate}}:</label> {{result.komponenta_dokumentu_areal | translateHeslar: 'areal_druha'}}
+        </div>
+        <div *ngIf="hasValue('extra_data_odkaz')">
+          <label>{{'Odkaz' | translate}}:</label> 
+          <span><a [href]="result.extra_data_odkaz" target="_blank">{{result.extra_data_odkaz}}</a></span>
+        </div>
+        <div *ngIf="hasValue('popis')"><label>{{'Popis' | translate}}:</label> {{popisObsahuShort()}}</div>
+      </ng-container>
     </div>
   </div><!--/.result inner -->
 
@@ -45,10 +60,10 @@
       <!-- Popis dokumentu -->
       <ul class="nav app-result-item-nav">
         <li>
-          <div class="app-result-item-nav-title app-border-radius app-cursor-pointer app-color-blue-pastel collapsed" data-toggle="collapse" [attr.data-target]="'#popis_'+ id()">
+          <div class="app-result-item-nav-title app-border-radius app-cursor-pointer app-color-blue-pastel" data-toggle="collapse" [attr.data-target]="'#popis_'+ id()">
             <strong>{{'Popis dokumentu' | translate}}:</strong>
           </div>
-          <ul class="list-unstyled app-nav-tree app-color-black collapse" [id]="'popis_'+ id()">
+          <ul class="list-unstyled app-nav-tree app-color-black collapse in" [id]="'popis_'+ id()">
             <li class="app-nav-li-separator"></li>
             <li *ngIf="hasValue('jazyk_dokumentu')">
               <label>{{'Jazyk' | translate}}:</label>
@@ -72,9 +87,9 @@
               <span>{{result.oznaceni_originalu}}</span>
             </li>
             <li *ngIf="hasValue('extra_data_pas') || hasValue('extra_data_easting') || hasValue('extra_data_northing')">
-              <label>{{'Souřadnice utm' | translate}}:</label>
+              <label>{{'Souřadnice (WGS-84)' | translate}}:</label>
               <span *ngIf="hasValue('extra_data_pas')">{{result.extra_data_pas}}</span>
-							<span *ngIf="hasValue('extra_data_easting')">{{result.extra_data_easting}}</span><span *ngIf="hasValue('extra_data_northing')">:{{result.extra_data_northing}}</span>
+							<span *ngIf="hasValue('extra_data_northing')">{{result.extra_data_northing}}N</span><span *ngIf="hasValue('extra_data_easting')"> : {{result.extra_data_easting}}E</span>
             </li>
             <li *ngIf="hasValue('extra_data_zachovalost') || hasValue('extra_data_nahrada')">
               <label>{{'Zachovalost (náhrada)' | translate}}:</label> 
@@ -85,14 +100,17 @@
               <label>{{'Varianty originálu' | translate}}:</label>
               <span>{{result.extra_data_pocet_variant_originalu}}</span>
             </li>
-            <li *ngIf="hasValue('extra_data_odkaz')">
+            <li *ngIf="hasValue('extra_data_odkaz') && result.rada[0] !== '3D'">
               <label>{{'Odkaz' | translate}}:</label> 
-              <span>{{result.extra_data_odkaz}}</span>
+              <span><a [href]="result.extra_data_odkaz" target="_blank">{{result.extra_data_odkaz}}</a></span>
             </li>
-            <li *ngIf="hasValue('extra_data_format') || hasValue('extra_data_vyska') && hasValue('extra_data_sirka')">
+            <li *ngIf="(hasValue('extra_data_format') || hasValue('extra_data_vyska') && hasValue('extra_data_sirka')) && result.rada[0] !== '3D'">
               <label>{{'Formát/rozměry' | translate}}:</label>
               <span *ngIf="hasValue('extra_data_format')">{{result.extra_data_format}}</span>
 							<span *ngIf="hasValue('extra_data_vyska') && hasValue('extra_data_sirka')">({{result.extra_data_vyska * result.extra_data_sirka}})</span>
+            </li>
+            <li *ngIf="result.rada[0] === '3D'">
+              <label>{{'Formát' | translate}}:</label> {{result.extra_data_format}}
             </li>
             <li *ngIf="hasValue('extra_data_meritko')">
               <label>{{'Měřítko' | translate}}:</label>
@@ -117,6 +135,11 @@
               <label>{{'Datum vzniku' | translate}}:</label> 
               <span>{{result.extra_data_datum_vzniku}}</span>
             </li>
+            <li *ngIf="hasValue('extra_data_duveryhodnost')">
+              <label>{{'Důvěryhodnost' | translate}}:</label> 
+              <span>{{result.extra_data_duveryhodnost}} %</span>
+            </li>
+
             <li class="app-nav-li-separator"></li>
           </ul>
         </li>

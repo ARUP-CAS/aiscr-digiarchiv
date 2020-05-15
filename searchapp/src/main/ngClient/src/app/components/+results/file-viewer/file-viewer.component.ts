@@ -15,10 +15,15 @@ declare var jQuery: any;
 export class FileViewerComponent implements OnInit {
 
   @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('license') license: ModalComponent;
+
+  now: Date;
 
   showing: boolean = false;
   rolling: boolean = false;
   result: any;
+  autor: string;
+  organizace: string;
 
   files: File[] = [];
   selectedFile: File = null;
@@ -26,13 +31,15 @@ export class FileViewerComponent implements OnInit {
   currentPage: number = 1;
   currentPageDisplayed: number = 1;
   fileid: number = 0;
+  link: string;
 
   constructor(public solrService: SolrService) { }
 
   ngOnInit() {
+    this.now = new Date();
     jQuery('.carousel').carousel({
       interval: 500
-    })
+    });
 
   }
   selectFile(file: File, idx: number) {
@@ -47,8 +54,16 @@ export class FileViewerComponent implements OnInit {
   }
   
   download(){
-    
-    window.open(this.downloadUrl());
+    // window.open(this.downloadUrl(), 'Download');
+    var link=document.createElement('a');
+    link.href = this.downloadUrl();
+    link.download = this.selectedFile.nazev;
+    link.click();
+    this.license.close();
+  }
+
+  confirmDownload() {
+    this.license.open();
   }
 
   nextPage() {
@@ -83,11 +98,14 @@ export class FileViewerComponent implements OnInit {
     }
   }
 
-  openModal(result) {
+  openModal(data) {
     this.selectedFile = null;
     this.files = [];
     this.showing = false;
-    this.result = result;
+    this.result = data.result;
+    this.link = this.solrService.config['serverUrl'] + '/id/' + this.result.ident_cely;
+    this.autor = data.autor;
+    this.organizace = data.organizace;
     setTimeout(() => {
       this.rolling = false;
       let fs = JSON.parse(this.result.soubor[0]);
@@ -134,6 +152,11 @@ export class FileViewerComponent implements OnInit {
       return s;
     }
     
+  }
+
+  capitalFirst(heslo: string, heslar: string) {
+    let ret = this.solrService.getTranslation(heslo, heslar);
+    return ret[0].toUpperCase() + ret.slice(1);
   }
 
 

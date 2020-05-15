@@ -41,8 +41,8 @@ export class ResultsComponent implements OnInit {
 
   }
 
-  onViewFile(doc) {
-    this.fileViewer.openModal(doc);
+  onViewFile(data) {
+    this.fileViewer.openModal(data);
   }
 
   onViewDetail(doc) {
