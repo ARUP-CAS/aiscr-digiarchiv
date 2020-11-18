@@ -1,4 +1,5 @@
 Od verze 2.0 vývoj aplikace nadále probíhá v novém repozitáři: https://github.com/ARUP-CAS/aiscr-digiarchiv-2/
+
 Since version 2.0, application is further developed in the new repository: https://github.com/ARUP-CAS/aiscr-digiarchiv-2/
 
 # Digitální archiv AMČR - o aplikaci
